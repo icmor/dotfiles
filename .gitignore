@@ -1,0 +1,14 @@
+vim/.vim/*
+!vim/.vim/undo
+!vim/.vim/swapfiles
+
+emacs/.emacs.d/eln-cache
+emacs/.emacs.d/elpa
+emacs/.emacs.d/etc/*
+emacs/.emacs.d/var/*
+!emacs/.emacs.d/etc/custom.el
+!emacs/.emacs.d/var/bookmark-default.el
+!emacs/.emacs.d/var/org-roam.db
+
+offlineimap/.offlineimap/
+!offlineimap/.offlineimap/.offlineimap.py
