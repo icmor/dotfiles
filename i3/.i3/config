@@ -1,0 +1,175 @@
+#===General Options===#
+set $mod Mod4
+
+focus_follows_mouse no
+hide_edge_borders both
+
+font pango:Noto Sans 8
+
+#===Variables===#
+set $ws1 "1:🦊"
+set $ws2 "2:🦬"
+set $ws3 "3:🐧"
+set $ws4 "4:📧"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8:📱"
+set $ws9 "9:📫"
+set $ws10 "10:🎵"
+
+#===Startup Programs===#
+# exec --no-startup-id i3-msg 'workspace $ws1; exec firefox'
+exec --no-startup-id i3-msg 'workspace $ws2'
+exec --no-startup-id emacsclient -nca ""
+
+exec --no-startup-id ~/.fehbg
+exec --no-startup-id dunst
+exec --no-startup-id nm-applet
+exec --no-startup-id dropbox
+exec --no-startup-id lxqt-policykit-agent
+exec --no-startup-id udiskie
+exec --no-startup-id picom --no-fading-openclose
+exec --no-startup-id redshift -l 21:-86 -t 6500K:2500K
+exec --no-startup-id xidlehook \
+     		     --detect-sleep \
+		     --not-when-fullscreen \
+		     --not-when-audio \
+		     --timer 240 \
+		     'brightnessctl --save; brightnessctl set 0%' \
+		     'brightnessctl --restore' \
+		     --timer 15 \
+		     'brightnessctl --restore; systemctl suspend' \
+		     ''
+
+#===Program shortcuts===#
+bindsym $mod+space exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+e exec --no-startup-id pcmanfm
+bindsym $mod+m exec --no-startup-id emacsclient -nca ""
+bindsym $mod+Shift+Return exec --no-startup-id alacritty
+bindsym $mod+Return exec --no-startup-id \
+			 emacsclient -ca "" -e '(vterm)'
+
+#===Scripts===#
+bindsym Print exec --no-startup-id screenshot.sh
+bindsym $mod+Shift+q exec --no-startup-id exit_menu.sh
+
+#===Convenience Shortcuts===#
+bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 && pkill -SIGRTMIN+10 i3blocks
+bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id pamixer --set-volume 100 && pkill -SIGRTMIN+10 i3blocks
+bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5 && pkill -SIGRTMIN+10 i3blocks
+bindsym Shift+XF86AudioLowerVolume exec --no-startup-id pamixer --set-volume 0 && pkill -SIGRTMIN+10 i3blocks
+bindsym XF86AudioMute exec --no-startup-id pamixer -t && pkill -SIGRTMIN+10 i3blocks
+
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
+bindsym Shift+XF86MonBrightnessUp exec --no-startup-id brightnessctl set 100%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+bindsym Shift+XF86MonBrightnessDown exec --no-startup-id  brightnessctl set 1
+
+bindsym XF86KbdBrightnessUp exec --no-startup-id brightnessctl --device='ite_8291::kbd_backlight' set +10%
+bindsym Shift+XF86KbdBrightnessUp exec --no-startup-id brightnessctl --device='ite_8291::kbd_backlight' set 100%
+bindsym XF86KbdBrightnessDown exec --no-startup-id brightnessctl --device='ite_8291::kbd_backlight' set 10%-
+bindsym Shift+XF86KbdBrightnessDown exec --no-startup-id brightnessctl --device='ite_8291::kbd_backlight' set 0%
+
+bindsym $mod+Shift+space exec --no-startup-id switch_layouts.sh && pkill -SIGRTMIN+12 i3blocks
+
+#===Program Assignments===#
+assign [class="discord"] → $ws9
+assign [class="zoom"] → $ws8
+assign [class="telegram-desktop"] → $ws9
+assign [class="Slack"] → $ws9
+for_window [class="Spotify"] move to workspace $ws10
+
+#===WM Shortcuts===#
+bindsym $mod+q kill
+
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+bindsym $mod+n split v
+bindsym $mod+Shift+n split h
+
+bindsym $mod+a focus parent
+bindsym $mod+Shift+a focus child
+bindsym $mod+f fullscreen toggle
+
+floating_modifier $mod
+bindsym $mod+Shift+p floating toggle
+bindsym $mod+p focus mode_toggle
+
+bindsym $mod+w layout stacking
+bindsym $mod+d layout tabbed
+bindsym $mod+s layout toggle split
+
+bindsym $mod++o scratchpad show
+bindsym $mod+Shift+o move scratchpad
+
+bindsym $mod+Left workspace prev
+bindsym $mod+Right workspace next
+
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+
+set $bg-color		 #0e1111
+set $inactive-bg-color   #232b2b
+set $text-color          #cccccc
+set $inactive-text-color #626569
+set $urgent-bg-color     #D0D0D0
+
+#                       border              background         text                 indicator
+client.focused          $bg-color           $bg-color          $text-color          #00ff00
+client.unfocused        $inactive-bg-color  $inactive-bg-color $inactive-text-color #00ff00
+client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-color #00ff00
+client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          #00ff00
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+	bindsym h resize shrink width 10 px or 10 ppt
+	bindsym j resize grow height 10 px or 10 ppt
+	bindsym k resize shrink height 10 px or 10 ppt
+	bindsym l resize grow width 10 px or 10 ppt
+
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+bar {
+	font pango:Noto Sans 14
+	strip_workspace_numbers yes
+	status_command i3blocks -c ~/.i3/i3blocks.conf
+	colors {
+	urgent_workspace   #000000 #FFFFFF
+	}
+}
