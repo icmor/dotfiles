@@ -1,0 +1,36 @@
+[general]
+accounts = Ciencias, Personal
+maxsyncaccounts = 2
+pythonfile = ~/.offlineimap/offlineimap.py
+
+[Account Ciencias]
+localrepository = ciencias
+remoterepository = ciencias-remote
+
+[Repository ciencias]
+type = GmailMaildir
+localfolders = ~/.mail/ciencias
+
+[Repository ciencias-remote]
+type = Gmail
+remoteuser = cornejodlm@ciencias.unam.mx
+remotepasseval = get_password("cornejodlm@ciencias.unam.mx")
+ssl_version = tls1_2
+maxconnections = 1
+folderfilter = lambda foldername: foldername not in ['[Gmail]/All Mail']
+
+[Account Personal]
+localrepository = personal
+remoterepository = personal-remote
+
+[Repository personal]
+type = GmailMaildir
+localfolders = ~/.mail/personal
+
+[Repository personal-remote]
+type = Gmail
+remoteuser = icornejomora@gmail.com
+remotepasseval = get_password("icornejomora@gmail.com")
+ssl_version = tls1_2
+maxconnections = 1
+folderfilter = lambda foldername: foldername not in ['[Gmail]/All Mail']
