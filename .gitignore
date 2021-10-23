@@ -8,7 +8,6 @@ emacs/.emacs.d/etc/*
 emacs/.emacs.d/var/*
 emacs/.emacs.d/eglot-eclipse-jdt-cache
 !emacs/.emacs.d/etc/custom.el
-!emacs/.emacs.d/var/bookmark-default.el
 
 offlineimap/.offlineimap/
 !offlineimap/.offlineimap/.offlineimap.py
