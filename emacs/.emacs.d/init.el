@@ -158,62 +158,13 @@
      (define-key vterm-mode-map (kbd "C-S-M-v") nil)
      (define-key vterm-mode-map [f2] nil)))
 
-;;;; mu4e
-(setq user-mail-address "cornejodlm@ciencias.unam.mx")
-(setq user-full-name "Iñaki Cornejo")
-
-(require 'mu4e)
-(setq mu4e-get-mail-command "offlineimap")
-(setq mu4e-attachment-dir "~/Downloads")
-(setq mu4e-update-interval 600)
-(setq mu4e-change-filenames-when-moving t)
-(setq mu4e-sent-messages-behavior 'delete)
-(setq message-kill-buffer-on-exit t)
-(add-to-list 'mu4e-bookmarks
-	     '("m:/ciencias/INBOX or m:/personal/INBOX" "All Inboxes" ?i))
-(setq mu4e-contexts
-      `(,(make-mu4e-context
-          :name "Ciencias"
-          :match-func
-          (lambda (msg)
-            (when msg
-              (string-prefix-p "/ciencias" (mu4e-message-field msg :maildir))))
-          :vars '((user-mail-address . "cornejodlm@ciencias.unam.mx")
-                  (user-full-name    . "Iñaki Cornejo")
-                  (mu4e-drafts-folder  . "/ciencias/[Gmail].Drafts")
-                  (mu4e-sent-folder  . "/ciencias/[Gmail].Sent Mail")
-                  (mu4e-trash-folder  . "/ciencias/[Gmail].Trash")
-		  (smtpmail-smtp-user . "cornejodlm@ciencias.unam.mx")
-		  (mu4e-maildir-shortcuts .
-					  (("/ciencias/INBOX" .  ?i)
-					   ("/ciencias/Uni" . ?u)
-					   ("/ciencias/[Gmail].Sent Mail" . ?s)
-					   ("/ciencias/[Gmail].Trash" . ?t)))))
-	,(make-mu4e-context
-          :name "Personal"
-          :match-func
-          (lambda (msg)
-            (when msg
-              (string-prefix-p "/personal" (mu4e-message-field msg :maildir))))
-          :vars '((user-mail-address . "icornejomora@gmail.com")
-                  (user-full-name    . "Iñaki Cornejo")
-                  (mu4e-drafts-folder  . "/personal/[Gmail].Drafts")
-                  (mu4e-sent-folder  . "/personal/[Gmail].Sent Mail")
-                  (mu4e-trash-folder  . "/personal/[Gmail].Trash")
-		  (smtpmail-smtp-user . "icornejomora@gmail.com")
-	  	  (mu4e-maildir-shortcuts .
-					  (("/personal/INBOX" .  ?i)
-					   ("/personal/[Gmail].Sent Mail" . ?s)
-					   ("/personal/[Gmail].Trash" . ?t)))))))
-
-(global-set-key (kbd "C-c m") #'mu4e)
-
+;;;; Mail
 (require 'smtpmail)
-(setq message-send-mail-function 'smtpmail-send-it
-      starttls-use-gnutls t
-      smtpmail-stream-type 'starttls
-      smtpmail-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-service 587)
+(setq message-send-mail-function 'smtpmail-send-it)
+(setq smtpmail-smtp-server "smtp.gmail.com")
+(setq smtpmail-stream-type 'starttls)
+(setq smtpmail-smtp-service 587)
+(setq starttls-use-gnutls t)
 
 ;;;; Magit
 (global-set-key (kbd "C-x g") 'magit)
@@ -258,6 +209,10 @@
 (setenv "CLASSPATH" ":/home/pink/.emacs.d/var/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar")
 
 ;;; Miscellaneous
+;;;; General
+(setq user-mail-address "cornejodlm@ciencias.unam.mx")
+(setq user-full-name "Iñaki Cornejo")
+
 ;;;; Visual
 (add-to-list 'default-frame-alist
 	     '(font . "Source Code Pro-14"))
