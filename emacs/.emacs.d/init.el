@@ -78,7 +78,7 @@
 ;;;; General
 (setq org-directory "~/org/")
 (setq org-agenda-files '("~/org/gtd/"))
-(setq org-refile-targets '((nil . (:level . 1))
+(setq org-refile-targets '((nil . (:maxlevel . 3))
 			   (org-agenda-files . (:level . 1))))
 (setq org-log-into-drawer t)
 (setq org-return-follows-link t)
@@ -109,6 +109,8 @@
          "* TODO %?\n")
 	("i" "Inbox" entry (file+headline "gtd/inbox.org" "Inbox")
 	 "* TODO %?\n")
+	("b" "Buy" entry (file+headline "gtd/inbox.org" "Things to Buy")
+	 "* %?\n")
 	("d" "Ideas" entry (file+headline "gtd/inbox.org" "Ideas")
 	 "* %?\n")
 	("j" "Journal" plain (file+olp+datetree "life/journal.org.gpg")
