@@ -180,6 +180,10 @@
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
 (add-hook 'prog-mode-hook #'auto-fill-mode)
 
+;;;; Eglot
+(setq eglot-events-buffer-size 0)
+(setq eglot-autoshutdown t)
+
 ;;;; Comint
 (setq shell-command-prompt-show-cwd t)
 (setq comint-prompt-read-only t)
