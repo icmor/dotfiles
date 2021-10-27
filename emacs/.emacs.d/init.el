@@ -114,6 +114,7 @@
                              '((emacs-lisp . t)
 			       (python . t)))
 (setq org-src-preserve-indentation t)
+(setq org-confirm-babel-evaluate t)
 
 ;;; Essentials
 ;;;; Security
