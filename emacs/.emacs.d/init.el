@@ -62,16 +62,7 @@
 (global-set-key [f2] #'my/vterm-toggle)
 (global-set-key (kbd "C-<f2>") #'vterm-other-window)
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
-(global-set-key (kbd "C-s") #'isearch-forward-regexp)
-(global-set-key (kbd "C-r") #'isearch-backward-regexp)
-(global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "C-c @ @") #'outline-minor-mode)
-(global-set-key (kbd "M-z") #'zap-up-to-char)
-(global-set-key (kbd "C-x l") #'count-words)
-(global-set-key (kbd "C-x r m") #'bookmark-set-no-overwrite)
-(global-set-key (kbd "C-x r M") #'bookmark-set)
-(global-set-key (kbd "C-o") #'split-line)
-(global-set-key (kbd "C-M-o") #'open-line)
 
 
 ;;; Org-mode
@@ -137,7 +128,6 @@
 (setq image-dired-thumb-size 500)
 (setq image-dired-thumb-width 500)
 (setq image-dired-thumb-height 500)
-
 
 ;;;; Which-Key
 (setq which-key-idle-delay 0.5)
@@ -212,6 +202,18 @@
 ;;;; General
 (setq user-mail-address "cornejodlm@ciencias.unam.mx")
 (setq user-full-name "Iñaki Cornejo")
+
+;;;; Better defaults
+(setq kill-whole-line t)
+(global-set-key (kbd "C-s") #'isearch-forward-regexp)
+(global-set-key (kbd "C-r") #'isearch-backward-regexp)
+(global-set-key (kbd "C-x C-b") #'ibuffer)
+(global-set-key (kbd "M-z") #'zap-up-to-char)
+(global-set-key (kbd "C-x l") #'count-words)
+(global-set-key (kbd "C-x r m") #'bookmark-set-no-overwrite)
+(global-set-key (kbd "C-x r M") #'bookmark-set)
+(global-set-key (kbd "C-o") #'split-line)
+(global-set-key (kbd "C-M-o") #'open-line)
 
 ;;;; Visual
 (add-to-list 'default-frame-alist
