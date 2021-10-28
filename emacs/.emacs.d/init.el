@@ -53,11 +53,6 @@
       (previous-buffer)
     (call-interactively #'vterm)))
 
-(defun my/lookup-password (&rest keys)
-  (let ((result (apply #'auth-source-search keys)))
-    (if result
-        (funcall (plist-get (car result) :secret)))))
-
 ;;; Global Bindings
 (global-set-key [f2] #'my/vterm-toggle)
 (global-set-key (kbd "C-<f2>") #'vterm-other-window)
@@ -119,7 +114,6 @@
 ;;; Essentials
 ;;;; Security
 (setq auth-sources '("~/.authinfo.gpg"))
-(setq auth-source-save-behavior nil)
 
 ;;;; Dired
 (setq dired-dwim-target t)
