@@ -27,6 +27,7 @@
 (setq eshell-directory-name		(concat user-var-dir "eshell/"))
 (setq image-dired-dir			(concat user-var-dir "image-dired/"))
 (setq nsm-settings-file                 (concat user-var-dir "network-security.data"))
+(setq org-preview-latex-image-directory (concat user-var-dir "ltximg/"))
 (setq project-list-file			(concat user-var-dir "projects"))
 (setq savehist-file			(concat user-var-dir "savehist"))
 (setq speed-type-gb-dir			(concat user-var-dir "speed-type/"))
