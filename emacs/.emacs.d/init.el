@@ -54,6 +54,12 @@
       (previous-buffer)
     (call-interactively #'vterm)))
 
+(defun my/org-sort (arg)
+  (interactive "P")
+  (org-map-entries
+   (lambda () (org-sort-entries nil ?a))
+   (concat "LEVEL=" (number-to-string (or arg 1)))))
+
 ;;; Global Bindings
 (global-set-key [f2] #'my/vterm-toggle)
 (global-set-key (kbd "C-<f2>") #'vterm-other-window)
