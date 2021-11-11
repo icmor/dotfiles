@@ -139,6 +139,7 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
+#===Visual===#
 set $bg-color		 #0e1111
 set $inactive-bg-color   #232b2b
 set $text-color          #cccccc
