@@ -58,8 +58,8 @@
 (global-set-key [f2] #'my/vterm-toggle)
 (global-set-key (kbd "C-<f2>") #'vterm-other-window)
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
-(global-set-key (kbd "C-c @ @") #'outline-minor-mode)
-
+(global-set-key (kbd "C-x r w") #'burly-bookmark-windows)
+(global-set-key (kbd "C-x r f") #'burly-bookmark-frames)
 
 ;;; Org-mode
 ;;;; General
@@ -166,6 +166,9 @@
       '(("irc.libera.chat"
 	 :port 6697
 	 :encryption tls)))
+
+;;;; Burly
+(setq burly-bookmark-prefix nil)
 
 ;;; Programming
 ;;;; General
