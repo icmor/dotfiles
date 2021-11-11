@@ -14,6 +14,6 @@ export MOZ_X11_EGL=1
 
 xset -dpms
 xset s off
-xrandr -r 60
+xrandr --rate 60 --dpi 96
 
 exec i3
