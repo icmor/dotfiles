@@ -173,6 +173,9 @@
 	 :port 6697
 	 :encryption tls)))
 
+;;;; Calc
+(setq calc-prefer-frac t)
+
 ;;;; Burly
 (setq burly-bookmark-prefix nil)
 
