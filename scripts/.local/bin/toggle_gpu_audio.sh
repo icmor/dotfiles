@@ -1,6 +1,6 @@
 #!/bin/bash
 
-rules_file="/lib/udev/rules.d/80-nvidia-pm.rules"
+rules_file="/etc/udev/rules.d/80-nvidia-pm.rules"
 
 if [ "$EUID" -ne 0 ]; then
     echo "Root permission is needed to run this script"
