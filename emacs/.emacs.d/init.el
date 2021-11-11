@@ -201,7 +201,7 @@
 
 ;;;; C
 (setq c-default-style
-      '((java-mode . "linux")
+      '((java-mode . "java")
 	(awk-mode . "awk")
 	(c-mode . "k&r")
 	(other . "gnu")))
