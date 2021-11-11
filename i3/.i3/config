@@ -29,7 +29,9 @@ exec --no-startup-id nm-applet
 exec --no-startup-id dropbox
 exec --no-startup-id lxqt-policykit-agent
 exec --no-startup-id udiskie
-exec --no-startup-id picom --no-fading-openclose
+exec --no-startup-id picom \
+     --no-fading-openclose \
+     --shadow-exclude "name = 'cpt_frame_window'"
 exec --no-startup-id redshift -l 21:-86 -t 6500K:2500K
 exec --no-startup-id xidlehook \
      		     --detect-sleep \
