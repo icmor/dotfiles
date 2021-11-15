@@ -68,6 +68,10 @@
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
 (global-set-key (kbd "C-x r w") #'burly-bookmark-windows)
 (global-set-key (kbd "C-x r f") #'burly-bookmark-frames)
+(global-set-key (kbd "C-s-k") #'windmove-swap-states-up)
+(global-set-key (kbd "C-s-j") #'windmove-swap-states-down)
+(global-set-key (kbd "C-s-h") #'windmove-swap-states-left)
+(global-set-key (kbd "C-s-l") #'windmove-swap-states-right)
 
 ;;; Org-mode
 ;;;; General

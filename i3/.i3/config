@@ -85,10 +85,10 @@ for_window [class="Spotify"] move to workspace $ws10
 #===WM Shortcuts===#
 bindsym $mod+q kill
 
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
+bindsym $mod+h exec emacs_i3.sh left
+bindsym $mod+j exec emacs_i3.sh down
+bindsym $mod+k exec emacs_i3.sh up
+bindsym $mod+l exec emacs_i3.sh right
 
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+j move down
