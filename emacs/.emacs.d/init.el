@@ -13,6 +13,7 @@
 ;;;; General
 (setq user-var-dir (concat user-emacs-directory "var/"))
 (setq user-etc-dir (concat user-emacs-directory "etc/"))
+(setq emacs-source-dir "/home/pink/.cache/yay/emacs-git/src/emacs-git/src")
 
 ;;;; Backups and Auto-save files
 (setq auto-save-list-file-prefix (concat user-var-dir "auto-save-list/.saves-"))
