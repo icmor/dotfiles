@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t; -*-
+
 ;;; init.el --- icmor's Emacs
 ;;;; Commentary
 ;; Got inspired to start a new Emacs journey based on the
