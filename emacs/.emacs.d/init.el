@@ -28,7 +28,6 @@
 (setq bookmark-default-file		(concat user-var-dir "bookmark-default.el"))
 (setq custom-file			(concat user-etc-dir "custom.el"))
 (setq eshell-directory-name		(concat user-var-dir "eshell/"))
-(setq image-dired-dir			(concat user-var-dir "image-dired/"))
 (setq nsm-settings-file                 (concat user-var-dir "network-security.data"))
 (setq org-preview-latex-image-directory (concat user-var-dir "ltximg/"))
 (setq project-list-file			(concat user-var-dir "projects"))
@@ -130,9 +129,7 @@
 (setq dired-hide-details-hide-symlink-targets nil)
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (setq dired-listing-switches "-Alh")
-(setq image-dired-thumb-size 500)
-(setq image-dired-thumb-width 500)
-(setq image-dired-thumb-height 500)
+(setq image-dired-thumbnail-storage 'standard-x-large)
 
 ;;;; Which-Key
 (setq which-key-idle-delay 0.5)
