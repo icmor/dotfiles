@@ -1,0 +1,6 @@
+#!/bin/bash
+
+if ! [[ "$(xdotool getactivewindow getwindowclassname)" == "Emacs" &&
+	  "$(emacsclient -e "(windmove-swap-states-$1)")" ]]; then
+    i3-msg move $1
+fi

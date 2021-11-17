@@ -10,13 +10,8 @@ font pango:Noto Sans 8
 set $ws1 "1:🦊"
 set $ws2 "2:🦬"
 set $ws3 "3:🐧"
-set $ws4 "4:📧"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8:📱"
-set $ws9 "9:📫"
-set $ws10 "10:🎵"
+set $ws4 "4:📱"
+set $ws5 "5:🎵"
 
 #===Startup Programs===#
 # exec --no-startup-id i3-msg 'workspace $ws1; exec firefox'
@@ -53,8 +48,8 @@ bindsym $mod+Return exec --no-startup-id \
 			 emacsclient -ca "" -e '(vterm)'
 
 #===Scripts===#
-bindsym Print exec --no-startup-id screenshot.sh
-bindsym $mod+Shift+q exec --no-startup-id exit_menu.sh
+bindsym Print exec --no-startup-id screenshot
+bindsym $mod+Shift+q exec --no-startup-id exit-menu
 
 #===Convenience Shortcuts===#
 bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 && pkill -SIGRTMIN+10 i3blocks
@@ -73,27 +68,27 @@ bindsym Shift+XF86KbdBrightnessUp exec --no-startup-id brightnessctl --device='i
 bindsym XF86KbdBrightnessDown exec --no-startup-id brightnessctl --device='ite_8291::kbd_backlight' set 10%-
 bindsym Shift+XF86KbdBrightnessDown exec --no-startup-id brightnessctl --device='ite_8291::kbd_backlight' set 0%
 
-bindsym $mod+Shift+space exec --no-startup-id switch_layouts.sh && pkill -SIGRTMIN+12 i3blocks
+bindsym $mod+Shift+space exec --no-startup-id switch-layouts && pkill -SIGRTMIN+12 i3blocks
 
 #===Program Assignments===#
-assign [class="discord"] → $ws9
-assign [class="zoom"] → $ws8
-assign [class="telegram-desktop"] → $ws9
-assign [class="Slack"] → $ws9
-for_window [class="Spotify"] move to workspace $ws10
+assign [class="discord"] → $ws4
+assign [class="zoom"] → $ws4
+assign [class="telegram-desktop"] → $ws4
+assign [class="Slack"] → $ws4
+for_window [class="Spotify"] move to workspace $ws5
 
 #===WM Shortcuts===#
 bindsym $mod+q kill
 
-bindsym $mod+h exec emacs_i3.sh left
-bindsym $mod+j exec emacs_i3.sh down
-bindsym $mod+k exec emacs_i3.sh up
-bindsym $mod+l exec emacs_i3.sh right
+bindsym $mod+h exec emacs-focus left
+bindsym $mod+j exec emacs-focus down
+bindsym $mod+k exec emacs-focus up
+bindsym $mod+l exec emacs-focus right
 
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+bindsym $mod+Shift+h exec emacs-move left
+bindsym $mod+Shift+j exec emacs-move down
+bindsym $mod+Shift+k exec emacs-move up
+bindsym $mod+Shift+l exec emacs-move right
 
 bindsym $mod+n split v
 bindsym $mod+Shift+n split h
@@ -110,7 +105,7 @@ bindsym $mod+w layout stacking
 bindsym $mod+d layout tabbed
 bindsym $mod+s layout toggle split
 
-bindsym $mod++o scratchpad show
+bindsym $mod+o scratchpad show
 bindsym $mod+Shift+o move scratchpad
 
 bindsym $mod+Left workspace prev
@@ -121,22 +116,12 @@ bindsym $mod+2 workspace $ws2
 bindsym $mod+3 workspace $ws3
 bindsym $mod+4 workspace $ws4
 bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
-bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
 
 bindsym $mod+Shift+1 move container to workspace $ws1
 bindsym $mod+Shift+2 move container to workspace $ws2
 bindsym $mod+Shift+3 move container to workspace $ws3
 bindsym $mod+Shift+4 move container to workspace $ws4
 bindsym $mod+Shift+5 move container to workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6
-bindsym $mod+Shift+7 move container to workspace $ws7
-bindsym $mod+Shift+8 move container to workspace $ws8
-bindsym $mod+Shift+9 move container to workspace $ws9
-bindsym $mod+Shift+0 move container to workspace $ws10
 
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
