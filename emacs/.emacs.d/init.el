@@ -168,7 +168,8 @@
 (setq starttls-use-gnutls t)
 
 ;;;; Magit
-(setq magit-define-global-key-bindings t)
+(global-set-key (kbd "C-x g") #'magit))
+(global-set-key (kbd "C-x M-g") #'magit-file-dispatch)
 
 ;;;; Pdf-Tools
 (pdf-loader-install)
@@ -246,6 +247,8 @@
 (setq bookmark-set-fringe-mark nil)
 (blink-cursor-mode -1)
 (tooltip-mode -1)
+(minions-mode)
+(setq minions-mode-line-lighter "λ")
 
 ;;;; Completion
 (setq read-buffer-completion-ignore-case t)
