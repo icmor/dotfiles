@@ -160,7 +160,7 @@
 (setq starttls-use-gnutls t)
 
 ;;;; Magit
-(global-set-key (kbd "C-x g") 'magit)
+(setq magit-define-global-key-bindings t)
 
 ;;;; Pdf-Tools
 (pdf-loader-install)
