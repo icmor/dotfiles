@@ -45,7 +45,6 @@ alias prime-run='__NV_PRIME_RENDER_OFFLOAD=1\
      __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia'
 
 # aliases to know
-alias retrigger="sudo udevadm control --reload-rules && sudo udevadm trigger"
 alias video='xrandr --output HDMI-1-0 --auto \
       && systemd-inhibit --what=handle-lid-switch sleep 1d'
 alias bluetooth='\

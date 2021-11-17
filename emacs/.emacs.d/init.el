@@ -127,6 +127,7 @@
 ;;;; Dired
 (setq dired-dwim-target t)
 (setq dired-hide-details-hide-symlink-targets nil)
+(setq wdired-allow-to-change-permissions t)
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (setq dired-listing-switches "-Alh")
 (setq image-dired-thumbnail-storage 'standard-x-large)
@@ -184,6 +185,7 @@
 (show-paren-mode 1)
 (setq show-paren-delay 0)
 (setq show-paren-style 'mixed)
+(setq show-paren-context-when-offscreen t)
 (setq outline-minor-mode-cycle t)
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
 (add-hook 'prog-mode-hook #'auto-fill-mode)
@@ -217,6 +219,8 @@
 
 ;;;; Better defaults
 (setq kill-whole-line t)
+(repeat-mode)
+(global-so-long-mode)
 (global-set-key (kbd "C-s") #'isearch-forward-regexp)
 (global-set-key (kbd "C-r") #'isearch-backward-regexp)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
