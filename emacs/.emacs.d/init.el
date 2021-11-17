@@ -62,6 +62,14 @@
    (lambda () (org-sort-entries nil ?a))
    (concat "LEVEL=" (number-to-string (or arg 1)))))
 
+;;;; Doom Hacks
+(gcmh-mode)
+(setq gcmh-idle-delay 'auto
+      gcmh-auto-idle-delay-factor 10
+      gcmh-high-cons-threshold (* 16 1024 1024))
+(setq read-process-output-max (* 64 1024))
+(setq auto-mode-case-fold nil)
+
 ;;; Global Bindings
 (global-set-key [f2] #'my/vterm-toggle)
 (global-set-key (kbd "C-<f2>") #'vterm-other-window)
