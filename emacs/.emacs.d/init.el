@@ -76,6 +76,7 @@
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
 (global-set-key (kbd "C-x r w") #'burly-bookmark-windows)
 (global-set-key (kbd "C-x r f") #'burly-bookmark-frames)
+(global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
 
 ;;; Org-mode
 ;;;; General
@@ -168,7 +169,7 @@
 (setq starttls-use-gnutls t)
 
 ;;;; Magit
-(global-set-key (kbd "C-x g") #'magit))
+(global-set-key (kbd "C-x g") #'magit)
 (global-set-key (kbd "C-x M-g") #'magit-file-dispatch)
 
 ;;;; Pdf-Tools
