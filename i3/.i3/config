@@ -64,10 +64,8 @@ bindsym Shift+XF86MonBrightnessUp exec --no-startup-id brightnessctl set 100%
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 bindsym Shift+XF86MonBrightnessDown exec --no-startup-id  brightnessctl set 1
 
-bindsym XF86KbdBrightnessUp exec --no-startup-id brightnessctl --device='ite_8291::kbd_backlight' set +10%
-bindsym Shift+XF86KbdBrightnessUp exec --no-startup-id brightnessctl --device='ite_8291::kbd_backlight' set 100%
-bindsym XF86KbdBrightnessDown exec --no-startup-id brightnessctl --device='ite_8291::kbd_backlight' set 10%-
-bindsym Shift+XF86KbdBrightnessDown exec --no-startup-id brightnessctl --device='ite_8291::kbd_backlight' set 0%
+bindsym Control+F7 exec --no-startup-id sudo cycle-backlight-color
+bindsym Control+F6 exec --no-startup-id sudo cycle-backlight-color --previous
 
 bindsym $mod+Shift+space exec --no-startup-id switch-layouts && pkill -SIGRTMIN+12 i3blocks
 
