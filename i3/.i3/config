@@ -49,6 +49,7 @@ bindsym $mod+Return exec --no-startup-id \
 
 #===Scripts===#
 bindsym Print exec --no-startup-id screenshot
+bindsym Shift+Print exec --no-startup-id screenshot --interactive
 bindsym $mod+Shift+q exec --no-startup-id exit-menu
 
 #===Convenience Shortcuts===#

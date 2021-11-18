@@ -9,4 +9,8 @@ if [ -f ~/Pictures/${file} ]; then
    [ "$select" != "yes" ] && exit 0
 fi
 
-import -window root ~/Pictures/${file}
+if [ "$1" = "--interactive" ]; then
+    import ~/Pictures/${file}
+else
+    import -window root ~/Pictures/${file}
+fi
