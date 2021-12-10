@@ -9,7 +9,7 @@
 shopt -s histappend
 
 # variables
-PATH="$PATH:/usr/lib/jvm/default/bin"
+PATH="$PATH:/usr/lib/jvm/default/bin:~/.local/bin"
 HISTCONTROL=erasedups
 HISTSIZE=-1
 HISTFILESIZE=-1
@@ -48,11 +48,11 @@ alias prime-run='__NV_PRIME_RENDER_OFFLOAD=1\
 alias video='xrandr --output HDMI-1-0 --auto \
       && systemd-inhibit --what=handle-lid-switch sleep 1d'
 alias bluetooth='\
-      sudo rfkill unblock bluetooth\
+      sudo modprobe btusb\
       && sudo systemctl start bluetooth\
       && bluetoothctl;\
       sudo systemctl stop bluetooth;\
-      sudo rfkill block bluetooth'
+      sudo rmmod btusb'
 alias -- update-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg\
       && sudo mkinitcpio -p linux'
 alias xidle="xidlehook \

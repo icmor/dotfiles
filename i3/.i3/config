@@ -14,10 +14,9 @@ set $ws4 "4:📱"
 set $ws5 "5:🎵"
 
 #===Startup Programs===#
-# exec --no-startup-id i3-msg 'workspace $ws1; exec firefox'
 exec --no-startup-id i3-msg 'workspace $ws2'
-exec --no-startup-id emacsclient -nca ""
-
+exec --no-startup-id emacsclient -nce \
+     		     "(progn (org-agenda-list) (delete-other-windows))"
 exec --no-startup-id ~/.fehbg
 exec --no-startup-id dunst
 exec --no-startup-id nm-applet
@@ -53,19 +52,31 @@ bindsym Shift+Print exec --no-startup-id screenshot --interactive
 bindsym $mod+Shift+q exec --no-startup-id exit-menu
 
 #===Convenience Shortcuts===#
-bindsym XF86AudioRaiseVolume exec --no-startup-id pamixer -i 5 && pkill -SIGRTMIN+10 i3blocks
-bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id pamixer --set-volume 100 && pkill -SIGRTMIN+10 i3blocks
-bindsym XF86AudioLowerVolume exec --no-startup-id pamixer -d 5 && pkill -SIGRTMIN+10 i3blocks
-bindsym Shift+XF86AudioLowerVolume exec --no-startup-id pamixer --set-volume 0 && pkill -SIGRTMIN+10 i3blocks
-bindsym XF86AudioMute exec --no-startup-id pamixer -t && pkill -SIGRTMIN+10 i3blocks
+bindsym XF86AudioRaiseVolume \
+	exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% \
+	&& pkill -SIGRTMIN+10 i3blocks
+bindsym Shift+XF86AudioRaiseVolume \
+	exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 100% \
+	&& pkill -SIGRTMIN+10 i3blocks
+bindsym XF86AudioLowerVolume \
+	exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% \
+	&& pkill -SIGRTMIN+10 i3blocks
+bindsym Shift+XF86AudioLowerVolume \
+	exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 0% \
+	&& pkill -SIGRTMIN+10 i3blocks
+bindsym XF86AudioMute \
+	exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle \
+	&& pkill -SIGRTMIN+10 i3blocks
 
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
 bindsym Shift+XF86MonBrightnessUp exec --no-startup-id brightnessctl set 100%
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 bindsym Shift+XF86MonBrightnessDown exec --no-startup-id  brightnessctl set 1
 
-bindsym Control+F7 exec --no-startup-id sudo cycle-backlight-color
-bindsym Control+F6 exec --no-startup-id sudo cycle-backlight-color --previous
+bindsym XF86KbdBrightnessUp exec --no-startup-id brightnessctl --device="ite_8291::kbd_backlight" set +5%
+bindsym Shift+XF86KbdBrightnessUp exec --no-startup-id brightnessctl --device="ite_8291::kbd_backlight" set 100%
+bindsym XF86KbdBrightnessDown exec --no-startup-id brightnessctl --device="ite_8291::kbd_backlight" set 5%-
+bindsym Shift+XF86KbdBrightnessDown exec --no-startup-id brightnessctl --device="ite_8291::kbd_backlight" set 1%
 
 bindsym $mod+Shift+space exec --no-startup-id switch-layouts && pkill -SIGRTMIN+12 i3blocks
 

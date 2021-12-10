@@ -62,6 +62,12 @@
    (lambda () (org-sort-entries nil ?a))
    (concat "LEVEL=" (number-to-string (or arg 1)))))
 
+
+(defun dired-find-file-other-frame ()
+  "In Dired, visit this file or directory in another frame."
+  (interactive)
+  (dired--find-file #'find-file-other-frame (dired-get-file-for-visit)))
+
 ;;;; Doom Hacks
 (gcmh-mode)
 (setq gcmh-idle-delay 'auto
@@ -74,8 +80,6 @@
 (global-set-key [f2] #'my/vterm-toggle)
 (global-set-key (kbd "C-<f2>") #'vterm-other-window)
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
-(global-set-key (kbd "C-x r w") #'burly-bookmark-windows)
-(global-set-key (kbd "C-x r f") #'burly-bookmark-frames)
 (global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
 
 ;;; Org-mode
@@ -87,13 +91,14 @@
 (setq org-log-into-drawer t)
 (setq org-return-follows-link t)
 (setq org-capture-bookmark nil)
+(setq org-list-allow-alphabetical t)
 
 ;;;; Visual
 (add-hook 'org-mode-hook 'visual-line-mode)
 (setq org-adapt-indentation nil)
 (add-hook 'org-mode-hook (lambda () (setq fill-column 100)))
 (setq org-startup-with-inline-images t)
-(setq org-image-actual-width 750)
+(setq org-image-actual-width 250)
 (eval-after-load 'org
   (lambda () (setq org-format-latex-options
 		   (plist-put org-format-latex-options :scale 2.0))))
@@ -135,11 +140,14 @@
 
 ;;;; Dired
 (setq dired-dwim-target t)
+(setq dired-free-space nil)
 (setq dired-hide-details-hide-symlink-targets nil)
 (setq wdired-allow-to-change-permissions t)
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (setq dired-listing-switches "-Alh")
 (setq image-dired-thumbnail-storage 'standard-x-large)
+(with-eval-after-load 'dired
+  (define-key dired-mode-map (kbd "C-M-o") #'dired-find-file-other-frame))
 
 ;;;; Which-Key
 (setq which-key-idle-delay 0.5)
@@ -187,9 +195,6 @@
 ;;;; Calc
 (setq calc-prefer-frac t)
 
-;;;; Burly
-(setq burly-bookmark-prefix nil)
-
 ;;; Programming
 ;;;; General
 (show-paren-mode 1)
@@ -203,6 +208,13 @@
 ;;;; Eglot
 (setq eglot-events-buffer-size 0)
 (setq eglot-autoshutdown t)
+
+;;;; Tree-sitter
+(with-eval-after-load 'prog-mode
+  (require 'tree-sitter))
+
+(with-eval-after-load 'prog-mode
+  (require 'tree-sitter-langs))
 
 ;;;; Comint
 (setq shell-command-prompt-show-cwd t)
@@ -228,11 +240,8 @@
 (setq user-full-name "Iñaki Cornejo")
 
 ;;;; Better defaults
-(setq kill-whole-line t)
 (repeat-mode)
 (global-so-long-mode)
-(global-set-key (kbd "C-s") #'isearch-forward-regexp)
-(global-set-key (kbd "C-r") #'isearch-backward-regexp)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "M-z") #'zap-up-to-char)
 (global-set-key (kbd "C-x l") #'count-words)
@@ -250,6 +259,8 @@
 (tooltip-mode -1)
 (minions-mode)
 (setq minions-mode-line-lighter "λ")
+(set-face-attribute 'mode-line-active nil :inherit 'mode-line)
+(set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
 
 ;;;; Completion
 (setq read-buffer-completion-ignore-case t)
