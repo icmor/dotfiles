@@ -11,6 +11,7 @@ fi
 export PATH="$PATH:$HOME/.local/bin"
 export XAUTHORITY=~/.Xauthority
 export MOZ_X11_EGL=1
+export MOZ_USE_XINPUT2=1
 
 xset -dpms
 xset s off
