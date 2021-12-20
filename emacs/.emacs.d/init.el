@@ -132,7 +132,9 @@
 	 "* %?\n")
 	("d" "Ideas" entry (file+headline "gtd/inbox.org" "Ideas")
 	 "* %?\n")
-	("p" "Programs" entry (file+headline "gtd/projects.org" "Program Ideas")
+	("c" "Programs" entry (file+headline "gtd/projects.org" "Program Ideas")
+	 "* %?\n")
+	("p" "Projects" entry (file+headline "gtd/projects.org" "Projects")
 	 "* %?\n")
 	("j" "Journal" plain (file+olp+datetree "life/journal.org.gpg")
 	 "%?")
@@ -188,7 +190,8 @@
      (define-key vterm-mode-map (kbd "C-SPC") #'vterm-copy-mode)
      (define-key vterm-mode-map (kbd "C-M-v") nil)
      (define-key vterm-mode-map (kbd "C-S-M-v") nil)
-     (define-key vterm-mode-map [f2] nil)))
+     (define-key vterm-mode-map [f2] nil)
+     (define-key vterm-mode-map [f9] nil)))
 
 ;;;; Mail
 (require 'smtpmail)
