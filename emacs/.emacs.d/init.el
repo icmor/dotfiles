@@ -87,6 +87,7 @@
 
 ;;; Global Bindings
 (global-set-key [f2] #'my/vterm-toggle)
+(global-set-key [f9] #'proced)
 (global-set-key (kbd "C-<f2>") #'vterm-other-window)
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
 (global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
