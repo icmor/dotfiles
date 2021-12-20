@@ -13,7 +13,7 @@
 ;;;; General
 (setq user-var-dir (concat user-emacs-directory "var/"))
 (setq user-etc-dir (concat user-emacs-directory "etc/"))
-(setq emacs-source-dir "/home/pink/.cache/yay/emacs-git/src/emacs-git/src")
+(setq source-directory "/home/pink/.cache/yay/emacs-git/src/emacs-git/src")
 
 ;;;; Backups and Auto-save files
 (setq auto-save-list-file-prefix (concat user-var-dir "auto-save-list/.saves-"))
@@ -31,6 +31,7 @@
 (setq nsm-settings-file                 (concat user-var-dir "network-security.data"))
 (setq org-preview-latex-image-directory (concat user-var-dir "ltximg/"))
 (setq project-list-file			(concat user-var-dir "projects"))
+(setq racket-repl-history-directory     (concat user-var-dir "racket-mode"))
 (setq savehist-file			(concat user-var-dir "savehist"))
 (setq speed-type-gb-dir			(concat user-var-dir "speed-type/"))
 (setq tramp-persistency-file-name	(concat user-var-dir "tramp/persistency.el"))
@@ -48,6 +49,14 @@
 (package-install-selected-packages)
 
 ;;; Functions
+(defun my/shell-toggle (arg)
+  "Toggle a vterm window"
+  (interactive "P")
+  (if (and (eq major-mode 'shell-mode)
+	   (not arg))
+      (previous-buffer)
+    (shell)))
+
 (defun my/vterm-toggle (arg)
   "Toggle a vterm window"
   (interactive "P")
@@ -122,10 +131,22 @@
 	 "* %?\n")
 	("d" "Ideas" entry (file+headline "gtd/inbox.org" "Ideas")
 	 "* %?\n")
+	("p" "Programs" entry (file+headline "gtd/projects.org" "Program Ideas")
+	 "* %?\n")
 	("j" "Journal" plain (file+olp+datetree "life/journal.org.gpg")
 	 "%?")
 	("u" "Quotes" plain (file "roam/quotes.txt")
 	 "%?\n%")))
+
+;;;; Org-roam
+(setq org-roam-directory (file-truename "~/roam"))
+(setq org-roam-node-display-template "${title}")
+(global-set-key (kbd "C-c n f") #'org-roam-node-find)
+(global-set-key (kbd "C-c n l") #'org-roam-buffer-toggle)
+(global-set-key (kbd "C-c n i") #'org-roam-node-insert)
+(global-set-key (kbd "C-c n c") #'org-roam-capture)
+(global-set-key (kbd "C-c n g") #'org-roam-graph)
+(org-roam-db-autosync-enable)
 
 ;;;; Babel
 (org-babel-do-load-languages 'org-babel-load-languages
@@ -156,9 +177,9 @@
 
 ;;;; Avy
 (global-set-key (kbd "M-o") 'avy-goto-char-timer)
-(setq avy-timeout-seconds 0.15)
+(setq avy-timeout-seconds 0.2)
 
-;;;; Vterm
+;;;; vterm
 (setq vterm-max-scrollback 10000)
 (eval-after-load 'vterm
   '(progn
@@ -209,13 +230,6 @@
 (setq eglot-events-buffer-size 0)
 (setq eglot-autoshutdown t)
 
-;;;; Tree-sitter
-(with-eval-after-load 'prog-mode
-  (require 'tree-sitter))
-
-(with-eval-after-load 'prog-mode
-  (require 'tree-sitter-langs))
-
 ;;;; Comint
 (setq shell-command-prompt-show-cwd t)
 (setq comint-prompt-read-only t)
@@ -241,6 +255,7 @@
 
 ;;;; Better defaults
 (repeat-mode)
+(setq view-read-only t)
 (global-so-long-mode)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "M-z") #'zap-up-to-char)
@@ -261,6 +276,8 @@
 (setq minions-mode-line-lighter "λ")
 (set-face-attribute 'mode-line-active nil :inherit 'mode-line)
 (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
+(add-hook 'pdf-view-mode-hook #'hide-mode-line-mode)
+(add-hook 'proced-mode-hook #'hide-mode-line-mode)
 
 ;;;; Completion
 (setq read-buffer-completion-ignore-case t)
