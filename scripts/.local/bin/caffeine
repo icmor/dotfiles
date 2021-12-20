@@ -1,13 +1,12 @@
 #!/bin/bash
 
-id="$(pgrep xidlehook)"
 
-if [ ! -z "$id" ]; then
-    kill -9 $id
+kill -9 $(pgrep xidlehook)
+if [ $? -ne 0 ]; then
+    i3-msg exec -q xidle
+else
     coffee="☕"
     color="#B8860B"
-else
-    i3-msg exec -q xidle
 fi
 
 
