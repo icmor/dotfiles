@@ -24,8 +24,9 @@ exec --no-startup-id dropbox
 exec --no-startup-id lxqt-policykit-agent
 exec --no-startup-id udiskie
 exec --no-startup-id picom \
-     --no-fading-openclose \
-     --shadow-exclude "name = 'cpt_frame_window'"
+     		     --no-fading-openclose \
+     		     --inactive-opacity=0.9 \
+     		     --shadow-exclude "name = 'cpt_frame_window'"
 exec --no-startup-id redshift -l 21:-86 -t 6500K:2500K
 exec --no-startup-id xidlehook \
      		     --detect-sleep \
@@ -42,9 +43,10 @@ exec --no-startup-id xidlehook \
 bindsym $mod+space exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+e exec --no-startup-id pcmanfm
 bindsym $mod+m exec --no-startup-id emacsclient -nca ""
+bindsym $mod+Return exec --no-startup-id emacsclient -ca "" -e '(vterm)'
 bindsym $mod+Shift+Return exec --no-startup-id alacritty
-bindsym $mod+Return exec --no-startup-id \
-			 emacsclient -ca "" -e '(vterm)'
+bindsym $mod+Shift+F12 exec pkill -SIGRTMIN+9 i3blocks
+bindsym $mod+Shift+space exec pkill -SIGRTMIN+12 i3blocks
 
 #===Scripts===#
 bindsym Print exec --no-startup-id screenshot
@@ -52,20 +54,21 @@ bindsym Shift+Print exec --no-startup-id screenshot --interactive
 bindsym $mod+Shift+q exec --no-startup-id exit-menu
 
 #===Convenience Shortcuts===#
-bindsym XF86AudioRaiseVolume \
-	exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% \
+### Convenience Shortcuts
+bindsym XF86AudioRaiseVolume exec --no-startup-id \
+	pactl set-sink-volume @DEFAULT_SINK@ +5% \
 	&& pkill -SIGRTMIN+10 i3blocks
-bindsym Shift+XF86AudioRaiseVolume \
-	exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 100% \
+bindsym Shift+XF86AudioRaiseVolume exec --no-startup-id \
+	pactl set-sink-volume @DEFAULT_SINK@ 100% \
 	&& pkill -SIGRTMIN+10 i3blocks
-bindsym XF86AudioLowerVolume \
-	exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% \
+bindsym XF86AudioLowerVolume exec --no-startup-id \
+	pactl set-sink-volume @DEFAULT_SINK@ -5% \
 	&& pkill -SIGRTMIN+10 i3blocks
 bindsym Shift+XF86AudioLowerVolume \
 	exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ 0% \
 	&& pkill -SIGRTMIN+10 i3blocks
-bindsym XF86AudioMute \
-	exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle \
+bindsym XF86AudioMute exec --no-startup-id \
+	pactl set-sink-mute @DEFAULT_SINK@ toggle \
 	&& pkill -SIGRTMIN+10 i3blocks
 
 bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
@@ -73,12 +76,11 @@ bindsym Shift+XF86MonBrightnessUp exec --no-startup-id brightnessctl set 100%
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 bindsym Shift+XF86MonBrightnessDown exec --no-startup-id  brightnessctl set 1
 
-bindsym XF86KbdBrightnessUp exec --no-startup-id brightnessctl --device="ite_8291::kbd_backlight" set +5%
+bindsym XF86KbdBrightnessUp exec --no-startup-id \
+	brightnessctl --device="ite_8291::kbd_backlight" set +5%
 bindsym Shift+XF86KbdBrightnessUp exec --no-startup-id brightnessctl --device="ite_8291::kbd_backlight" set 100%
 bindsym XF86KbdBrightnessDown exec --no-startup-id brightnessctl --device="ite_8291::kbd_backlight" set 5%-
 bindsym Shift+XF86KbdBrightnessDown exec --no-startup-id brightnessctl --device="ite_8291::kbd_backlight" set 1%
-
-bindsym $mod+Shift+space exec --no-startup-id switch-layouts && pkill -SIGRTMIN+12 i3blocks
 
 #===Program Assignments===#
 assign [class="discord"] → $ws4
@@ -90,15 +92,15 @@ for_window [class="Spotify"] move to workspace $ws5
 #===WM Shortcuts===#
 bindsym $mod+q kill
 
-bindsym $mod+h exec emacs-focus left
-bindsym $mod+j exec emacs-focus down
-bindsym $mod+k exec emacs-focus up
-bindsym $mod+l exec emacs-focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
-bindsym $mod+Shift+h exec emacs-move left
-bindsym $mod+Shift+j exec emacs-move down
-bindsym $mod+Shift+k exec emacs-move up
-bindsym $mod+Shift+l exec emacs-move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 bindsym $mod+n split v
 bindsym $mod+Shift+n split h

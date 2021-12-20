@@ -1,0 +1,14 @@
+#!/bin/bash
+
+id="$(pgrep xidlehook)"
+
+if [ ! -z "$id" ]; then
+    kill -9 $id
+    coffee="☕"
+    color="#B8860B"
+else
+    i3-msg exec -q xidle
+fi
+
+
+printf '{"full_text":"%s", "color":"%s"}\n' "$coffee" "$color"

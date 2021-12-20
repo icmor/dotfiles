@@ -55,16 +55,7 @@ alias bluetooth='\
       sudo rmmod btusb'
 alias -- update-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg\
       && sudo mkinitcpio -p linux'
-alias xidle="xidlehook \
-      --detect-sleep \
-      --not-when-fullscreen \
-      --not-when-audio \
-      --timer 180 \
-      'brightnessctl --save; brightnessctl set 0%' \
-      'brightnessctl --restore' \
-      --timer 15 \
-      'systemctl suspend; brightnessctl --restore' \
-      ''"
+
 # emacs
 function vterm_printf(){
          printf "\e]%s\e\\" "$1"

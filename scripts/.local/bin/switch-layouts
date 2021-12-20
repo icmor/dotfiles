@@ -6,4 +6,5 @@ if [ "$layout" != "us" ]; then
     setxkbmap -layout "us"
 else
     setxkbmap -layout "latam"
+    echo "Ñ"
 fi

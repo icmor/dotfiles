@@ -1,0 +1,12 @@
+#!/bin/bash
+
+xidlehook \
+    --detect-sleep \
+    --not-when-fullscreen \
+    --not-when-audio \
+    --timer 240 \
+    'brightnessctl --save; brightnessctl set 0%' \
+    'brightnessctl --restore' \
+    --timer 15 \
+    'brightnessctl --restore; systemctl suspend' \
+    ''
