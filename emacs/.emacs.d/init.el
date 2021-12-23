@@ -43,6 +43,7 @@
 (load custom-file t)
 
 ;;; Package Configuration
+(require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/") t)
 (setq package-native-compile t)
