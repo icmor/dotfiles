@@ -27,9 +27,19 @@
 ;;;; Litter
 (setq bookmark-default-file		(concat user-var-dir "bookmark-default.el"))
 (setq custom-file			(concat user-etc-dir "custom.el"))
+(setq dap-breakpoints-file		(concat user-var-dir "dap/breakpoints.el"))
+(setq dap-java-test-runner		(concat user-var-dir "lsp-java/jdtls/test-runner/junit-platform-console-standalone.jar"))
+(setq dap-utils-extension-path		(concat user-var-dir "dap/extensions/"))
 (setq eshell-directory-name		(concat user-var-dir "eshell/"))
+(setq lsp-java-server-install-dir	(concat user-var-dir "lsp-java/jdtls/"))
+(setq lsp-java-workspace-dir		(concat user-var-dir "lsp-java/workspace/"))
+(setq lsp-server-install-dir		(concat user-var-dir "lsp/server/"))
+(setq lsp-session-file			(concat user-var-dir "lsp/session.el"))
+(setq lsp-session-file 			(concat user-var-dir ".lsp-session-v1"))
+(setq multisession-directory            (concat user-var-dir "multisession/"))
 (setq nsm-settings-file                 (concat user-var-dir "network-security.data"))
 (setq org-preview-latex-image-directory (concat user-var-dir "ltximg/"))
+(setq org-roam-db-location 		(concat user-var-dir "org-roam.db"))
 (setq project-list-file			(concat user-var-dir "projects"))
 (setq racket-repl-history-directory     (concat user-var-dir "racket-mode"))
 (setq savehist-file			(concat user-var-dir "savehist"))
@@ -40,6 +50,7 @@
 (setq transient-values-file		(concat user-etc-dir "transient/values.el"))
 (setq url-cache-directory		(concat user-var-dir "url/cache/"))
 (setq url-configuration-directory	(concat user-var-dir "url/configuration/"))
+
 (load custom-file t)
 
 ;;; Package Configuration
@@ -234,10 +245,20 @@
 ;;;; Eglot
 (setq eglot-events-buffer-size 0)
 (setq eglot-autoshutdown t)
+;;;; LSP
+(setq lsp-keymap-prefix "C-c l")
+(add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+(setq read-process-output-max (* 1024 1024))
 
 ;;;; Comint
 (setq shell-command-prompt-show-cwd t)
 (setq comint-prompt-read-only t)
+
+;;;; Markdown & RST
+(add-hook 'markdown-mode-hook 'visual-line-mode)
+(add-hook 'markdown-mode-hook 'read-only-mode)
+(add-hook 'rst-mode-hook 'visual-line-mode)
+(add-hook 'rst-mode-hook 'read-only-mode)
 
 ;;;; Python
 (setq python-indent-offset 4)
@@ -250,8 +271,7 @@
 	(other . "gnu")))
 
 ;;;; Java
-(add-hook 'java-mode-hook #'eglot-ensure)
-(setenv "CLASSPATH" ":/home/pink/.emacs.d/var/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar")
+(add-hook 'java-mode-hook #'lsp-deferred)
 
 ;;; Miscellaneous
 ;;;; General
