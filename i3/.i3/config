@@ -15,8 +15,6 @@ set $ws5 "5:🎵"
 
 #===Startup Programs===#
 exec --no-startup-id i3-msg 'workspace $ws2'
-exec --no-startup-id emacsclient -nce \
-     		     "(progn (org-agenda-list) (delete-other-windows))"
 exec --no-startup-id ~/.fehbg
 exec --no-startup-id dunst
 exec --no-startup-id nm-applet
@@ -27,7 +25,8 @@ exec --no-startup-id picom \
      		     --no-fading-openclose \
      		     --inactive-opacity=0.9 \
      		     --shadow-exclude "name = 'cpt_frame_window'"
-exec --no-startup-id redshift -l 21:-86 -t 6500K:2500K
+# exec --no-startup-id redshift -l 21:-86 -t 6500k:2500k
+exec --no-startup-id redshift -l 19:-99 -t 6500K:2500K
 exec --no-startup-id xidlehook \
      		     --detect-sleep \
 		     --not-when-fullscreen \
@@ -45,7 +44,8 @@ bindsym $mod+e exec --no-startup-id pcmanfm
 bindsym $mod+m exec --no-startup-id emacsclient -nca ""
 bindsym $mod+Return exec --no-startup-id emacsclient -ca "" -e '(vterm)'
 bindsym $mod+Shift+Return exec --no-startup-id alacritty
-bindsym $mod+Shift+F12 exec pkill -SIGRTMIN+9 i3blocks
+bindsym $mod+F1 exec firefox
+bindsym $mod+F12 exec pkill -SIGRTMIN+9 i3blocks
 bindsym $mod+Shift+space exec pkill -SIGRTMIN+12 i3blocks
 
 #===Scripts===#

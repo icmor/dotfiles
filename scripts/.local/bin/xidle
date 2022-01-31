@@ -9,4 +9,4 @@ xidlehook \
     'brightnessctl --restore' \
     --timer 15 \
     'brightnessctl --restore; systemctl suspend' \
-    ''
+    '' &
