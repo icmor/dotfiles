@@ -62,18 +62,17 @@
 
 ;;; Functions
 (defun my/shell-toggle (arg)
-  "Toggle a vterm window"
+  "Toggle a shell window"
   (interactive "P")
-  (if (and (eq major-mode 'shell-mode)
-	   (not arg))
+  (if (and (eq major-mode 'shell-mode) (not arg))
       (previous-buffer)
-    (shell)))
+    (shell (if (not arg) nil
+	    (format "*shell*<%d>" (prefix-numeric-value arg))))))
 
 (defun my/vterm-toggle (arg)
   "Toggle a vterm window"
   (interactive "P")
-  (if (and (eq major-mode 'vterm-mode)
-	   (not arg))
+  (if (and (eq major-mode 'vterm-mode) (not arg))
       (previous-buffer)
     (call-interactively #'vterm)))
 
@@ -99,10 +98,14 @@
 
 ;;; Global Bindings
 (global-set-key [f2] #'my/vterm-toggle)
-(global-set-key [f9] #'proced)
 (global-set-key (kbd "C-<f2>") #'vterm-other-window)
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
 (global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
+(global-set-key (kbd "C-x C-<left>") #'windmove-swap-states-left)
+(global-set-key (kbd "C-x C-<right>") #'windmove-swap-states-right)
+(global-set-key (kbd "C-x C-<up>") #'windmove-swap-states-up)
+(global-set-key (kbd "C-x C-<down>") #'windmove-swap-states-down)
+
 
 ;;; Org-mode
 ;;;; General
@@ -140,10 +143,10 @@
          "* TODO %?\n")
 	("i" "Inbox" entry (file+headline "gtd/inbox.org" "Inbox")
 	 "* TODO %?\n")
-	("b" "Buy" entry (file+headline "gtd/inbox.org" "Things to Buy")
-	 "* %?\n")
 	("d" "Ideas" entry (file+headline "gtd/inbox.org" "Ideas")
 	 "* %?\n")
+	("b" "Buy" entry (file+headline "gtd/purchase.org" "Things")
+	 "* TODO %?\n")
 	("c" "Programs" entry (file+headline "gtd/projects.org" "Program Ideas")
 	 "* %?\n")
 	("p" "Projects" entry (file+headline "gtd/projects.org" "Projects")
@@ -161,7 +164,7 @@
 (global-set-key (kbd "C-c n i") #'org-roam-node-insert)
 (global-set-key (kbd "C-c n c") #'org-roam-capture)
 (global-set-key (kbd "C-c n g") #'org-roam-graph)
-(org-roam-db-autosync-enable)
+;; (org-roam-db-autosync-enable)
 
 ;;;; Babel
 (org-babel-do-load-languages 'org-babel-load-languages
@@ -200,12 +203,14 @@
   '(progn
      (define-key vterm-mode-map (kbd "C-u") #'vterm--self-insert)
      (define-key vterm-mode-map (kbd "C-SPC") #'vterm-copy-mode)
+     (define-key vterm-copy-mode-map (kbd "M-w") #'vterm-copy-mode-done)
      (define-key vterm-mode-map (kbd "C-M-v") nil)
      (define-key vterm-mode-map (kbd "C-S-M-v") nil)
      (define-key vterm-mode-map [f2] nil)
      (define-key vterm-mode-map [f9] nil)))
 
 ;;;; Mail
+(setq user-mail-address "cornejodlm@ciencias.unam.mx")
 (require 'smtpmail)
 (setq message-send-mail-function 'smtpmail-send-it)
 (setq smtpmail-smtp-server "smtp.gmail.com")
@@ -232,6 +237,9 @@
 ;;;; Calc
 (setq calc-prefer-frac t)
 
+;;;; EWW
+(setq eww-search-prefix "https://www.google.com/search?q=")
+
 ;;; Programming
 ;;;; General
 (show-paren-mode 1)
@@ -242,9 +250,6 @@
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
 (add-hook 'prog-mode-hook #'auto-fill-mode)
 
-;;;; Eglot
-(setq eglot-events-buffer-size 0)
-(setq eglot-autoshutdown t)
 ;;;; LSP
 (setq lsp-keymap-prefix "C-c l")
 (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
@@ -253,6 +258,13 @@
 ;;;; Comint
 (setq shell-command-prompt-show-cwd t)
 (setq comint-prompt-read-only t)
+
+;;;; Man
+(add-to-list 'display-buffer-alist
+     '("\\`\\*Man .*\\*\\'" .
+       (display-buffer-reuse-mode-window
+        (inhibit-same-window . nil)
+        (mode . Man-mode))))
 
 ;;;; Markdown & RST
 (add-hook 'markdown-mode-hook 'visual-line-mode)
@@ -275,7 +287,6 @@
 
 ;;; Miscellaneous
 ;;;; General
-(setq user-mail-address "cornejodlm@ciencias.unam.mx")
 (setq user-full-name "Iñaki Cornejo")
 
 ;;;; Better defaults
