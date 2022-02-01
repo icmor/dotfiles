@@ -10,21 +10,47 @@
 ;; knowledge and humility.
 
 ;;; No littering
-(require 'no-littering)
+;;;; General
+(setq user-var-dir (concat user-emacs-directory "var/"))
+(setq user-etc-dir (concat user-emacs-directory "etc/"))
+(setq source-directory "/home/pink/.cache/yay/emacs-git/src/emacs-git/src")
 
-;;;; Backups, auto-save files
-(setq auto-save-list-file-prefix
-      (concat no-littering-var-directory "auto-save-list/.saves-"))
-(setq backup-directory-alist
-      `((".*" . ,(no-littering-expand-var-file-name "backup"))))
+;;;; Backups and Auto-save files
+(setq auto-save-list-file-prefix (concat user-var-dir "auto-save-list/.saves-"))
+(setq backup-directory-alist `((".*" . ,(concat user-var-dir "backup"))))
 (setq tramp-backup-directory-alist backup-directory-alist)
 (setq version-control t)
 (setq kept-new-versions 4)
 (setq kept-old-versions 2)
 (setq delete-old-versions t)
 
-;;;; Custom
-(setq custom-file (concat no-littering-etc-directory "custom.el"))
+;;;; Litter
+(setq bookmark-default-file		(concat user-var-dir "bookmark-default.el"))
+(setq custom-file			(concat user-etc-dir "custom.el"))
+(setq dap-breakpoints-file		(concat user-var-dir "dap/breakpoints.el"))
+(setq dap-java-test-runner		(concat user-var-dir "lsp-java/jdtls/test-runner/junit-platform-console-standalone.jar"))
+(setq dap-utils-extension-path		(concat user-var-dir "dap/extensions/"))
+(setq eshell-directory-name		(concat user-var-dir "eshell/"))
+(setq lsp-java-server-install-dir	(concat user-var-dir "lsp-java/jdtls/"))
+(setq lsp-java-workspace-dir		(concat user-var-dir "lsp-java/workspace/"))
+(setq lsp-server-install-dir		(concat user-var-dir "lsp/server/"))
+(setq lsp-session-file			(concat user-var-dir "lsp/session.el"))
+(setq lsp-session-file 			(concat user-var-dir ".lsp-session-v1"))
+(setq multisession-directory            (concat user-var-dir "multisession/"))
+(setq nsm-settings-file                 (concat user-var-dir "network-security.data"))
+(setq org-preview-latex-image-directory (concat user-var-dir "ltximg/"))
+(setq org-roam-db-location 		(concat user-var-dir "org-roam.db"))
+(setq project-list-file			(concat user-var-dir "projects"))
+(setq racket-repl-history-directory     (concat user-var-dir "racket-mode"))
+(setq savehist-file			(concat user-var-dir "savehist"))
+(setq speed-type-gb-dir			(concat user-var-dir "speed-type/"))
+(setq tramp-persistency-file-name	(concat user-var-dir "tramp/persistency.el"))
+(setq transient-history-file		(concat user-var-dir "transient/history.el"))
+(setq transient-levels-file		(concat user-etc-dir "transient/levels.el"))
+(setq transient-values-file		(concat user-etc-dir "transient/values.el"))
+(setq url-cache-directory		(concat user-var-dir "url/cache/"))
+(setq url-configuration-directory	(concat user-var-dir "url/configuration/"))
+
 (load custom-file t)
 
 ;;; Package Configuration
@@ -217,7 +243,6 @@
 ;;; Programming
 ;;;; General
 (show-paren-mode 1)
-(global-tree-sitter-mode)
 (setq show-paren-delay 0)
 (setq show-paren-style 'mixed)
 (setq show-paren-context-when-offscreen t)
@@ -229,7 +254,6 @@
 (setq lsp-keymap-prefix "C-c l")
 (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
 (setq read-process-output-max (* 1024 1024))
-(setq lsp-keep-workspace-alive nil)
 
 ;;;; Comint
 (setq shell-command-prompt-show-cwd t)
@@ -264,7 +288,6 @@
 ;;; Miscellaneous
 ;;;; General
 (setq user-full-name "Iñaki Cornejo")
-(setq source-directory "/home/pink/.cache/yay/emacs-git/src/emacs-git/src")
 
 ;;;; Better defaults
 (repeat-mode)
