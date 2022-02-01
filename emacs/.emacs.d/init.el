@@ -9,6 +9,16 @@
 ;; the tools I use and achieving autonomy through power,
 ;; knowledge and humility.
 
+;;;; Custom
+(setq custom-file (concat user-emacs-directory "etc/custom.el"))
+(load custom-file t)
+
+;;; Package Configuration
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "https://melpa.org/packages/") t)
+(package-install-selected-packages)
+
 ;;; No littering
 (require 'no-littering)
 
@@ -22,17 +32,6 @@
 (setq kept-new-versions 4)
 (setq kept-old-versions 2)
 (setq delete-old-versions t)
-
-;;;; Custom
-(setq custom-file (concat no-littering-etc-directory "custom.el"))
-(load custom-file t)
-
-;;; Package Configuration
-(require 'package)
-(add-to-list 'package-archives
-	     '("melpa" . "https://melpa.org/packages/") t)
-(setq package-native-compile t)
-(package-install-selected-packages)
 
 ;;; Functions
 (defun my/shell-toggle (arg)
