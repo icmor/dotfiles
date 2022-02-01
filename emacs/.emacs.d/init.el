@@ -57,7 +57,7 @@
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/") t)
-(setq package-native-compile t)
+;; (setq package-native-compile t)
 (package-install-selected-packages)
 
 ;;; Functions
@@ -243,6 +243,7 @@
 ;;; Programming
 ;;;; General
 (show-paren-mode 1)
+(global-tree-sitter-mode)
 (setq show-paren-delay 0)
 (setq show-paren-style 'mixed)
 (setq show-paren-context-when-offscreen t)
@@ -254,6 +255,7 @@
 (setq lsp-keymap-prefix "C-c l")
 (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
 (setq read-process-output-max (* 1024 1024))
+(setq lsp-keep-workspace-alive nil)
 
 ;;;; Comint
 (setq shell-command-prompt-show-cwd t)
