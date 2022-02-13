@@ -46,7 +46,6 @@ bindsym $mod+Return exec --no-startup-id emacsclient -ca "" -e '(vterm)'
 bindsym $mod+Shift+Return exec --no-startup-id alacritty
 bindsym $mod+F1 exec firefox
 bindsym $mod+F12 exec pkill -SIGRTMIN+9 i3blocks
-bindsym $mod+Shift+space exec pkill -SIGRTMIN+12 i3blocks
 
 #===Scripts===#
 bindsym Print exec --no-startup-id screenshot
