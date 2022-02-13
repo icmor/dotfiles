@@ -33,17 +33,16 @@ alias dir='dir --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-alias ll='ls -AlF'
+alias ll='ls -Alh'
 alias l='ls -CAF'
 
 # convenient aliases
 alias rm='gio trash'
 alias racket='racket -l sicp -i'
 alias python='python3'
-alias cleankey='xinput disable "AT Translated Set 2 keyboard";\
-      sleep 60; xinput enable "AT Translated Set 2 keyboard"'
-alias prime-run='__NV_PRIME_RENDER_OFFLOAD=1\
-     __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia'
+alias cleankey='xinput disable "AT Translated Set 2 keyboard"; sleep 60; xinput enable "AT Translated Set 2 keyboard"'
+alias prime-run='__NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia'
+alias tlp-perf="sudo tlp ac -- CPU_ENERGY_PERF_POLICY_ON_AC=performance MAX_LOST_WORK_SECS_ON_AC=0 CPU_SCALING_GOVERNOR_ON_AC=performance"
 
 # aliases to know
 alias video='xrandr --output HDMI-1-0 --auto \
@@ -54,8 +53,13 @@ alias bluetooth='\
       && bluetoothctl;\
       sudo systemctl stop bluetooth;\
       sudo rmmod btusb'
-alias -- update-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg\
+alias update-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg\
       && sudo mkinitcpio -p linux'
+
+# functions
+function mcd(){
+    mkdir $1 && cd $1
+}
 
 # emacs
 function vterm_printf(){

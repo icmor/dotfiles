@@ -124,9 +124,10 @@
 (add-hook 'org-mode-hook (lambda () (setq fill-column 100)))
 (setq org-startup-with-inline-images t)
 (setq org-image-actual-width 250)
+(setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
 (eval-after-load 'org
   (lambda () (setq org-format-latex-options
-		   (plist-put org-format-latex-options :scale 2.0))))
+		   (plist-put org-format-latex-options :scale 1.5))))
 
 ;;;; Agenda
 (eval-after-load 'org '(add-to-list 'org-modules 'org-habit t))
@@ -169,6 +170,7 @@
 ;;;; Babel
 (org-babel-do-load-languages 'org-babel-load-languages
                              '((emacs-lisp . t)
+			       (shell . t)
 			       (python . t)))
 (setq org-src-preserve-indentation t)
 (setq org-confirm-babel-evaluate nil)
