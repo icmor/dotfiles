@@ -67,21 +67,22 @@
   (if (and (eq major-mode 'shell-mode) (not arg))
       (previous-buffer)
     (shell (if (not arg) nil
-	    (format "*shell*<%d>" (prefix-numeric-value arg))))))
+	     (format "*shell*<%d>" (prefix-numeric-value arg))))))
 
-(defun my/vterm-toggle (arg)
-  "Toggle a vterm window"
+(defun my/shell-other-window (arg)
+  "Jump to a shell in other window"
   (interactive "P")
-  (if (and (eq major-mode 'vterm-mode) (not arg))
-      (previous-buffer)
-    (call-interactively #'vterm)))
+    (if (and (eq major-mode 'shell-mode) (not arg))
+      (winner-undo)
+      (shell (pop-to-buffer (concat "*shell*"
+				    (if (not arg) ""
+				      (format "<%d>" (prefix-numeric-value arg))))))))
 
 (defun my/org-sort (arg)
   (interactive "P")
   (org-map-entries
    (lambda () (org-sort-entries nil ?a))
    (concat "LEVEL=" (number-to-string (or arg 1)))))
-
 
 (defun dired-find-file-other-frame ()
   "In Dired, visit this file or directory in another frame."
@@ -93,12 +94,12 @@
 (setq gcmh-idle-delay 'auto
       gcmh-auto-idle-delay-factor 10
       gcmh-high-cons-threshold (* 16 1024 1024))
-(setq read-process-output-max (* 64 1024))
+(setq read-process-output-max (* 1024 1024))
 (setq auto-mode-case-fold nil)
 
 ;;; Global Bindings
-(global-set-key [f2] #'my/vterm-toggle)
-(global-set-key (kbd "C-<f2>") #'vterm-other-window)
+(global-set-key (kbd "<f2>") #'my/shell-toggle)
+(global-set-key (kbd "C-<f2>") #'my/shell-other-window)
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
 (global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
 (global-set-key (kbd "C-x C-<left>") #'windmove-swap-states-left)
@@ -106,6 +107,14 @@
 (global-set-key (kbd "C-x C-<up>") #'windmove-swap-states-up)
 (global-set-key (kbd "C-x C-<down>") #'windmove-swap-states-down)
 
+;;;; better defaults
+(global-set-key (kbd "C-x C-b") #'ibuffer)
+(global-set-key (kbd "M-z") #'zap-up-to-char)
+(global-set-key (kbd "C-x l") #'count-words)
+(global-set-key (kbd "C-x r m") #'bookmark-set-no-overwrite)
+(global-set-key (kbd "C-x r M") #'bookmark-set)
+(global-set-key (kbd "C-o") #'split-line)
+(global-set-key (kbd "C-M-o") #'open-line)
 
 ;;; Org-mode
 ;;;; General
@@ -199,17 +208,15 @@
 (global-set-key (kbd "M-o") 'avy-goto-char-timer)
 (setq avy-timeout-seconds 0.2)
 
-;;;; vterm
-(setq vterm-max-scrollback 10000)
-(eval-after-load 'vterm
-  '(progn
-     (define-key vterm-mode-map (kbd "C-u") #'vterm--self-insert)
-     (define-key vterm-mode-map (kbd "C-SPC") #'vterm-copy-mode)
-     (define-key vterm-copy-mode-map (kbd "M-w") #'vterm-copy-mode-done)
-     (define-key vterm-mode-map (kbd "C-M-v") nil)
-     (define-key vterm-mode-map (kbd "C-S-M-v") nil)
-     (define-key vterm-mode-map [f2] nil)
-     (define-key vterm-mode-map [f9] nil)))
+;;;; Comint
+(setq shell-command-prompt-show-cwd t)
+(setq comint-prompt-read-only t)
+
+;;;; shell
+(add-hook 'shell-mode-hook
+	  (lambda () (local-set-key (kbd "C-c r") #'bash-completion-refresh)))
+(setq ansi-color-for-comint-mode t)
+(bash-completion-setup)
 
 ;;;; Mail
 (setq user-mail-address "cornejodlm@ciencias.unam.mx")
@@ -237,31 +244,27 @@
 	 :encryption tls)))
 
 ;;;; Calc
-(setq calc-prefer-frac t)
+(setq calc-prefer-frac nil)
 
 ;;;; EWW
 (setq eww-search-prefix "https://www.google.com/search?q=")
 
 ;;; Programming
 ;;;; General
-(show-paren-mode 1)
 (global-tree-sitter-mode)
+(show-paren-mode)
 (setq show-paren-delay 0)
 (setq show-paren-style 'mixed)
 (setq show-paren-context-when-offscreen t)
 (setq outline-minor-mode-cycle t)
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
 (add-hook 'prog-mode-hook #'auto-fill-mode)
+(add-hook 'prog-mode-hook #'subword-mode)
 
 ;;;; LSP
 (setq lsp-keymap-prefix "C-c l")
 (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
-(setq read-process-output-max (* 1024 1024))
 (setq lsp-keep-workspace-alive nil)
-
-;;;; Comint
-(setq shell-command-prompt-show-cwd t)
-(setq comint-prompt-read-only t)
 
 ;;;; Man
 (add-to-list 'display-buffer-alist
@@ -275,6 +278,8 @@
 (add-hook 'markdown-mode-hook 'read-only-mode)
 (add-hook 'rst-mode-hook 'visual-line-mode)
 (add-hook 'rst-mode-hook 'read-only-mode)
+(add-hook 'conf-mode-hook 'visual-line-mode)
+(add-hook 'conf-mode-hook 'read-only-mode)
 
 ;;;; Python
 (setq python-indent-offset 4)
@@ -297,13 +302,6 @@
 (repeat-mode)
 (setq view-read-only t)
 (global-so-long-mode)
-(global-set-key (kbd "C-x C-b") #'ibuffer)
-(global-set-key (kbd "M-z") #'zap-up-to-char)
-(global-set-key (kbd "C-x l") #'count-words)
-(global-set-key (kbd "C-x r m") #'bookmark-set-no-overwrite)
-(global-set-key (kbd "C-x r M") #'bookmark-set)
-(global-set-key (kbd "C-o") #'split-line)
-(global-set-key (kbd "C-M-o") #'open-line)
 
 ;;;; Visual
 (add-to-list 'default-frame-alist
@@ -316,14 +314,12 @@
 (setq minions-mode-line-lighter "λ")
 (set-face-attribute 'mode-line-active nil :inherit 'mode-line)
 (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
-(add-hook 'pdf-view-mode-hook #'hide-mode-line-mode)
-(add-hook 'proced-mode-hook #'hide-mode-line-mode)
 
 ;;;; Completion
+(setq completions-detailed t)
 (setq read-buffer-completion-ignore-case t)
 (setq completions-format 'one-column)
 (setq dabbrev-check-all-buffers nil)
-(setq completions-detailed t)
 
 ;;;; Bookmarks
 (setq bookmark-save-flag 1)
@@ -333,7 +329,7 @@
 (winner-mode)
 
 ;;;; History
-(savehist-mode 1)
+(savehist-mode)
 (setq history-length 1000)
 (setq history-delete-duplicates t)
 

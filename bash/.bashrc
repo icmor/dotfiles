@@ -14,12 +14,12 @@ PATH="$PATH:/usr/lib/jvm/default/bin:~/.local/bin"
 HISTCONTROL=erasedups
 HISTSIZE=-1
 HISTFILESIZE=-1
-export PROMPT_DIRTRIM=2
-export EDITOR="emacsclient -ca ''"
+PROMPT_DIRTRIM=2
+export EDITOR="vim"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 case "$TERM" in
-    *color*)
+    *color*|alacritty)
 	PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 	;;
     *)
@@ -62,18 +62,9 @@ function mcd(){
 }
 
 # emacs
-function vterm_printf(){
-         printf "\e]%s\e\\" "$1"
-}
-
-vterm_prompt_end(){
-    vterm_printf "51;A$(whoami)@$(cat /etc/hostname):$(pwd)"
-}
-
-if [[ "$INSIDE_EMACS" = 'vterm' ]]; then
-    PS1=$PS1'\[$(vterm_prompt_end)\]'
-    function clear(){
-        vterm_printf "51;Evterm-clear-scrollback";
-        tput clear;
-    }
+if [[ "${INSIDE_EMACS}" == *"comint"* ]]; then
+    SYSTEMD_PAGER=cat
+    export MANPAGER=cat
+    export PAGER=cat
+    export TERM=dumb-color
 fi
