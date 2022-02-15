@@ -73,7 +73,7 @@
   "Jump to a shell in other window"
   (interactive "P")
     (if (and (eq major-mode 'shell-mode) (not arg))
-      (winner-undo)
+      (delete-window)
       (shell (pop-to-buffer (concat "*shell*"
 				    (if (not arg) ""
 				      (format "<%d>" (prefix-numeric-value arg))))))))
@@ -163,17 +163,21 @@
 	 "* %?\n")
 	("j" "Journal" plain (file+olp+datetree "life/journal.org.gpg")
 	 "%?")
-	("u" "Quotes" plain (file "roam/quotes.txt")
+	("u" "Quotes" plain (file "art/quotes.txt")
 	 "%?\n%")))
 
 ;;;; Org-roam
-(setq org-roam-directory (file-truename "~/roam"))
+(setq org-roam-directory (file-truename "~/org/roam"))
 (setq org-roam-node-display-template "${title}")
 (global-set-key (kbd "C-c n f") #'org-roam-node-find)
 (global-set-key (kbd "C-c n l") #'org-roam-buffer-toggle)
 (global-set-key (kbd "C-c n i") #'org-roam-node-insert)
 (global-set-key (kbd "C-c n c") #'org-roam-capture)
 (global-set-key (kbd "C-c n g") #'org-roam-graph)
+(setq org-roam-capture-templates
+      '(("d" "default" plain "%?" :target
+	 (file+head "${slug}.org" "#+title: ${title}")
+	 :unnarrowed t)))
 ;; (org-roam-db-autosync-enable)
 
 ;;;; Babel
@@ -360,5 +364,5 @@
 (setq disabled-command-function nil)
 (setq initial-scratch-message
       (concat
-       (replace-regexp-in-string "^" ";; " (cookie "~/org/roam/quotes.txt"))
+       (replace-regexp-in-string "^" ";; " (cookie "~/org/art/quotes.txt"))
        "\n\n"))
