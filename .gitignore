@@ -2,12 +2,6 @@ vim/.vim/*
 !vim/.vim/undo
 !vim/.vim/swapfiles
 
-emacs/.emacs.d/eln-cache
-emacs/.emacs.d/elpa
 emacs/.emacs.d/etc/*
 emacs/.emacs.d/var/*
-emacs/.emacs.d/eglot-eclipse-jdt-cache
 !emacs/.emacs.d/etc/custom.el
-
-offlineimap/.offlineimap/
-!offlineimap/.offlineimap/.offlineimap.py
