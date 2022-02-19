@@ -115,6 +115,8 @@
 
 ;;;; better defaults
 (global-set-key (kbd "C-x C-b") #'ibuffer)
+(global-set-key (kbd "C-x k") #'kill-this-buffer)
+(global-set-key (kbd "C-x K") #'kill-buffer)
 (global-set-key (kbd "M-z") #'zap-up-to-char)
 (global-set-key (kbd "C-x l") #'count-words)
 (global-set-key (kbd "C-x r m") #'bookmark-set-no-overwrite)
@@ -272,13 +274,12 @@
 (setq show-paren-context-when-offscreen t)
 (setq outline-minor-mode-cycle t)
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
-(add-hook 'prog-mode-hook #'auto-fill-mode)
 (add-hook 'prog-mode-hook #'subword-mode)
 
 ;;;; LSP
-(setq lsp-keymap-prefix "C-c l")
-(add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
-(setq lsp-keep-workspace-alive nil)
+;; (setq lsp-keymap-prefix "C-c l")
+;; (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+;; (setq lsp-keep-workspace-alive nil)
 
 ;;;; Man
 (add-to-list 'display-buffer-alist
@@ -306,7 +307,7 @@
 	(other . "gnu")))
 
 ;;;; Java
-(add-hook 'java-mode-hook #'lsp-deferred)
+;; (add-hook 'java-mode-hook #'lsp-deferred)
 
 ;;; Miscellaneous
 ;;;; General
