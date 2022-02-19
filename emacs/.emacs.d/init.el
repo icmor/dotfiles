@@ -38,6 +38,7 @@
 (setq lsp-session-file 			(concat user-var-dir ".lsp-session-v1"))
 (setq multisession-directory            (concat user-var-dir "multisession/"))
 (setq nsm-settings-file                 (concat user-var-dir "network-security.data"))
+(setq org-id-locations-file             (concat user-var-dir "org-id-locations"))
 (setq org-preview-latex-image-directory (concat user-var-dir "ltximg/"))
 (setq org-roam-db-location 		(concat user-var-dir "org-roam.db"))
 (setq project-list-file			(concat user-var-dir "projects"))
@@ -89,6 +90,10 @@
   "In Dired, visit this file or directory in another frame."
   (interactive)
   (dired--find-file #'find-file-other-frame (dired-get-file-for-visit)))
+
+(defun advise-once (symbol where function &optional props)
+  (advice-add symbol :after (lambda (&rest _) (advice-remove symbol function)))
+  (advice-add symbol where function props))
 
 ;;;; Doom Hacks
 (gcmh-mode)
@@ -168,18 +173,20 @@
 	 "%?\n%")))
 
 ;;;; Org-roam
-(setq org-roam-directory (file-truename "~/org/roam"))
+(setq org-roam-directory (file-truename "~/roam"))
 (setq org-roam-node-display-template "${title}")
 (global-set-key (kbd "C-c n f") #'org-roam-node-find)
 (global-set-key (kbd "C-c n l") #'org-roam-buffer-toggle)
 (global-set-key (kbd "C-c n i") #'org-roam-node-insert)
+(global-set-key (kbd "C-c n a") #'org-roam-alias-add)
 (global-set-key (kbd "C-c n c") #'org-roam-capture)
 (global-set-key (kbd "C-c n g") #'org-roam-graph)
 (setq org-roam-capture-templates
       '(("d" "default" plain "%?" :target
 	 (file+head "${slug}.org" "#+title: ${title}")
 	 :unnarrowed t)))
-;; (org-roam-db-autosync-enable)
+(advise-once #'org-roam-node-find :after #'org-roam-db-autosync-enable)
+(advise-once #'org-roam-node-capture :after #'org-roam-db-autosync-enable)
 
 ;;;; Babel
 (org-babel-do-load-languages 'org-babel-load-languages
