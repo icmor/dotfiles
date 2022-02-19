@@ -74,9 +74,10 @@
   (interactive "P")
     (if (and (eq major-mode 'shell-mode) (not arg))
       (delete-window)
-      (shell (pop-to-buffer (concat "*shell*"
-				    (if (not arg) ""
-				      (format "<%d>" (prefix-numeric-value arg))))))))
+      (shell (pop-to-buffer
+	      (concat "*shell*"
+		      (if (not arg) ""
+			(format "<%d>" (prefix-numeric-value arg))))))))
 
 (defun my/org-sort (arg)
   (interactive "P")
@@ -219,6 +220,8 @@
 ;;;; shell
 (add-hook 'shell-mode-hook
 	  (lambda () (local-set-key (kbd "C-c r") #'bash-completion-refresh)))
+(add-hook 'shell-mode-hook
+	  (lambda () (local-set-key (kbd "C-c C-r") #'bash-completion-refresh)))
 (setq ansi-color-for-comint-mode t)
 (bash-completion-setup)
 

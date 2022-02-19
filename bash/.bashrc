@@ -58,8 +58,7 @@ function mcd(){
 
 # emacs
 if [[ "${INSIDE_EMACS}" == *"comint"* ]]; then
-    SYSTEMD_PAGER=cat
-    export MANPAGER=cat
+    unset COLUMNS
     export PAGER=cat
     export TERM=dumb-color
 fi
