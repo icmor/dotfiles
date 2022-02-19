@@ -21,7 +21,6 @@ exec --no-startup-id dunst
 exec --no-startup-id nm-applet
 exec --no-startup-id dropbox
 exec --no-startup-id lxqt-policykit-agent
-exec --no-startup-id udiskie
 exec --no-startup-id picom \
      		     --no-fading-openclose \
      		     --inactive-opacity=0.9 \
@@ -52,7 +51,6 @@ mode "launcher" {
     bindsym d exec --no-startup-id discord; mode "default"
     bindsym s exec --no-startup-id spotify; mode "default"
     bindsym c exec --no-startup-id calibre; mode "default"
-    bindsym k exec --no-startup-id keepassxc; mode "default"
     bindsym v exec --no-startup-id vlc; mode "default"
 
     bindsym $mod+f exec firefox; mode "default"
@@ -61,7 +59,6 @@ mode "launcher" {
     bindsym $mod+d exec --no-startup-id discord; mode "default"
     bindsym $mod+s exec --no-startup-id spotify; mode "default"
     bindsym $mod+c exec --no-startup-id calibre; mode "default"
-    bindsym $mod+k exec --no-startup-id keepassxc; mode "default"
     bindsym $mod+v exec --no-startup-id vlc; mode "default"
 
     bindsym Escape mode "default"
@@ -143,9 +140,9 @@ bindsym $mod+Shift+n split h
 
 bindsym $mod+f fullscreen toggle
 
-bindsym $mod+a layout tabbed
+bindsym $mod+a layout stacking
 bindsym $mod+s layout toggle split
-bindsym $mod+d layout stacking
+bindsym $mod+d layout tabbed
 
 floating_modifier $mod
 bindsym $mod+Shift+p floating toggle
