@@ -11,7 +11,7 @@ fi
 
 if [ "$status"  = "Discharging" ]; then
 	if [ "$capacity" -le 9 ];then
-		systemctl suspend
+		i3-msg "exec systemctl suspend"
 	elif [ "$capacity" -le 15 ]; then
 		color="#CC0000"
 		if [ "$flag" = "False" ]; then
