@@ -1,13 +1,12 @@
 #!/bin/bash
 
-
-kill -9 $(pgrep xidlehook)
-if [ $? -ne 0 ]; then
-    i3-msg exec -q xidle
+id=$(pgrep xidlehook)
+if [ -z "$id" ]; then
+    i3-msg "exec --no-startup-id xidle"
 else
+    kill -9 "$id"
     coffee="☕"
     color="#B8860B"
 fi
-
 
 printf '{"full_text":"%s", "color":"%s"}\n' "$coffee" "$color"
