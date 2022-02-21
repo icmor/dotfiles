@@ -52,8 +52,12 @@ alias bluetooth='\
       sudo rmmod btusb'
 
 # functions
-function mcd(){
+mcd(){
     mkdir "$1" && cd "$1"
+}
+
+psgrep (){
+    ps aux | grep --color=auto "$1" | grep --color=auto -v grep
 }
 
 # emacs
