@@ -35,6 +35,7 @@
 (setq org-roam-db-location 		(concat user-var-dir "org-roam.db"))
 (setq project-list-file			(concat user-var-dir "projects"))
 (setq racket-repl-history-directory     (concat user-var-dir "racket-mode"))
+(setq rfc-mode-directory 		(concat user-var-dir "rfc"))
 (setq savehist-file			(concat user-var-dir "savehist"))
 (setq speed-type-gb-dir			(concat user-var-dir "speed-type/"))
 (setq tramp-persistency-file-name	(concat user-var-dir "tramp/persistency.el"))
@@ -294,6 +295,21 @@
 (add-hook 'java-mode-hook #'subword-mode)
 (setenv "CLASSPATH" ":/home/pink/dotfiles/emacs/.emacs.d/var/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar")
 
+;;;; Man
+(add-to-list 'display-buffer-alist
+     '("\\`\\*Man .*\\*\\'" .
+       (display-buffer-reuse-mode-window
+        (inhibit-same-window . nil)
+        (mode . Man-mode))))
+
+;;;; RFC
+(add-to-list 'display-buffer-alist
+     '("\\`\\*rfc.*\\*\\'" .
+       (display-buffer-reuse-mode-window
+        (inhibit-same-window . nil)
+        (mode . rfc-mode))))
+(with-eval-after-load 'rfc-mode
+  (define-key rfc-mode-map (kbd "m") #'rfc-mode-browse))
 
 ;;; Miscellaneous
 ;;;; General
