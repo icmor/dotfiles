@@ -27,15 +27,7 @@
 ;;;; Litter
 (setq bookmark-default-file		(concat user-var-dir "bookmark-default.el"))
 (setq custom-file			(concat user-etc-dir "custom.el"))
-(setq dap-breakpoints-file		(concat user-var-dir "dap/breakpoints.el"))
-(setq dap-java-test-runner		(concat user-var-dir "lsp-java/jdtls/test-runner/junit-platform-console-standalone.jar"))
-(setq dap-utils-extension-path		(concat user-var-dir "dap/extensions/"))
 (setq eshell-directory-name		(concat user-var-dir "eshell/"))
-(setq lsp-java-server-install-dir	(concat user-var-dir "lsp-java/jdtls/"))
-(setq lsp-java-workspace-dir		(concat user-var-dir "lsp-java/workspace/"))
-(setq lsp-server-install-dir		(concat user-var-dir "lsp/server/"))
-(setq lsp-session-file			(concat user-var-dir "lsp/session.el"))
-(setq lsp-session-file 			(concat user-var-dir ".lsp-session-v1"))
 (setq multisession-directory            (concat user-var-dir "multisession/"))
 (setq nsm-settings-file                 (concat user-var-dir "network-security.data"))
 (setq org-id-locations-file             (concat user-var-dir "org-id-locations"))
@@ -274,19 +266,10 @@
 (setq show-paren-context-when-offscreen t)
 (setq outline-minor-mode-cycle t)
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
-(add-hook 'prog-mode-hook #'subword-mode)
 
-;;;; LSP
-;; (setq lsp-keymap-prefix "C-c l")
-;; (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
-;; (setq lsp-keep-workspace-alive nil)
-
-;;;; Man
-(add-to-list 'display-buffer-alist
-     '("\\`\\*Man .*\\*\\'" .
-       (display-buffer-reuse-mode-window
-        (inhibit-same-window . nil)
-        (mode . Man-mode))))
+;;;; Eglot
+(setq eglot-events-buffer-size 0)
+(setq eglot-autoshutdown t)
 
 ;;;; Markdown & RST
 (add-hook 'markdown-mode-hook 'visual-line-mode)
@@ -307,7 +290,10 @@
 	(other . "gnu")))
 
 ;;;; Java
-;; (add-hook 'java-mode-hook #'lsp-deferred)
+(add-hook 'java-mode-hook #'eglot-ensure)
+(add-hook 'java-mode-hook #'subword-mode)
+(setenv "CLASSPATH" ":/home/pink/dotfiles/emacs/.emacs.d/var/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar")
+
 
 ;;; Miscellaneous
 ;;;; General
