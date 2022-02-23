@@ -10,7 +10,6 @@ shopt -s histappend
 set -b
 
 # variables
-PATH="$PATH:/usr/lib/jvm/default/bin:~/.local/bin"
 HISTCONTROL=erasedups
 HISTSIZE=-1
 HISTFILESIZE=-1
