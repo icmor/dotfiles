@@ -217,6 +217,7 @@
 
 ;;;; Comint
 (setq shell-command-prompt-show-cwd t)
+(setq shell-command-switch "-ic")	; interactive shells read .bashrc
 (setq comint-prompt-read-only t)
 
 ;;;; shell
@@ -272,13 +273,12 @@
 (setq eglot-events-buffer-size 0)
 (setq eglot-autoshutdown t)
 
-;;;; Markdown & RST
+;;;; Markdown
 (add-hook 'markdown-mode-hook 'visual-line-mode)
-(add-hook 'markdown-mode-hook 'read-only-mode)
+(setq markdown-fontify-code-blocks-natively t)
+
 (add-hook 'rst-mode-hook 'visual-line-mode)
-(add-hook 'rst-mode-hook 'read-only-mode)
 (add-hook 'conf-mode-hook 'visual-line-mode)
-(add-hook 'conf-mode-hook 'read-only-mode)
 
 ;;;; Python
 (setq python-indent-offset 4)
