@@ -13,10 +13,6 @@ set undofile
 set directory=~/.vim/swapfiles//
 set viminfo+=n~/.vim/viminfo
 
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-
 if $TERM == 'linux'
 	set background=dark
 	colorscheme pablo
