@@ -23,7 +23,7 @@ exec --no-startup-id lxqt-policykit-agent
 exec --no-startup-id picom \
      		     --no-fading-openclose \
      		     --inactive-opacity=0.9 \
-     		     --shadow-exclude "name = 'cpt_frame_window'"
+     		     --shadow-exclude "class_g = 'zoom'"
 exec --no-startup-id redshift -t 6500K:2500K -l $location
 exec --no-startup-id xidlehook \
      		     --detect-sleep \

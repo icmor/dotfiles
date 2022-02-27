@@ -12,6 +12,7 @@
      markdown-mode
      minions
      olivetti
+     org-contrib
      org-roam
      org-tree-slide
      pdf-tools

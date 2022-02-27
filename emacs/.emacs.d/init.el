@@ -108,7 +108,7 @@
 
 ;;;; better defaults
 (global-set-key (kbd "C-x C-b") #'ibuffer)
-(global-set-key (kbd "C-x k") #'kill-this-buffer)
+(global-set-key (kbd "C-x k") #'kill-current-buffer)
 (global-set-key (kbd "C-x K") #'kill-buffer)
 (global-set-key (kbd "M-z") #'zap-up-to-char)
 (global-set-key (kbd "C-x l") #'count-words)
@@ -121,6 +121,8 @@
 ;;;; General
 (setq org-directory "~/org/")
 (setq org-agenda-files '("~/org/gtd/"))
+(setq org-modules '(ol-man ol-info org-habit))
+
 (setq org-refile-targets '((nil . (:maxlevel . 3))
 			   (org-agenda-files . (:level . 1))))
 (setq org-log-into-drawer t)
@@ -140,7 +142,6 @@
 		   (plist-put org-format-latex-options :scale 1.5))))
 
 ;;;; Agenda
-(eval-after-load 'org '(add-to-list 'org-modules 'org-habit t))
 (global-set-key (kbd "C-c a") #'org-agenda-list)
 (global-set-key (kbd "C-c c") #'org-capture)
 
@@ -281,7 +282,7 @@
 (add-hook 'conf-mode-hook 'visual-line-mode)
 
 ;;;; Python
-(setq python-indent-offset 4)
+(setq python-indent 4)
 
 ;;;; C
 (setq c-default-style
