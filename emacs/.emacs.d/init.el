@@ -9,13 +9,13 @@
 ;; the tools I use and achieving autonomy through power,
 ;; knowledge and humility.
 
-;;; No littering
-;;;; General
+;;; no littering
+;;;; general
 (setq user-var-dir (concat user-emacs-directory "var/"))
 (setq user-etc-dir (concat user-emacs-directory "etc/"))
 (setq source-directory "/home/pink/.cache/yay/emacs-git/src/emacs-git/src")
 
-;;;; Backups and Auto-save files
+;;;; backups and auto-save files
 (setq auto-save-list-file-prefix (concat user-var-dir "auto-save-list/.saves-"))
 (setq backup-directory-alist `((".*" . ,(concat user-var-dir "backup"))))
 (setq tramp-backup-directory-alist backup-directory-alist)
@@ -24,7 +24,7 @@
 (setq kept-old-versions 2)
 (setq delete-old-versions t)
 
-;;;; Litter
+;;;; litter
 (setq bookmark-default-file		(concat user-var-dir "bookmark-default.el"))
 (setq custom-file			(concat user-etc-dir "custom.el"))
 (setq eshell-directory-name		(concat user-var-dir "eshell/"))
@@ -47,14 +47,14 @@
 
 (load custom-file t)
 
-;;; Package Configuration
+;;; package configuration
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/") t)
 ;; (setq package-native-compile t)
 (package-install-selected-packages)
 
-;;; Functions
+;;; functions
 (defun my/shell-toggle (arg)
   "Toggle a shell window"
   (interactive "P")
@@ -95,7 +95,7 @@
   (advice-add symbol :after (lambda (&rest _) (advice-remove symbol function)))
   (advice-add symbol where function props))
 
-;;;; Doom Hacks
+;;;; doom hacks
 (gcmh-mode)
 (setq gcmh-idle-delay 'auto
       gcmh-auto-idle-delay-factor 10
@@ -103,7 +103,7 @@
 (setq read-process-output-max (* 1024 1024))
 (setq auto-mode-case-fold nil)
 
-;;; Global Bindings
+;;; global bindings
 (global-set-key (kbd "<f2>") #'my/shell-toggle)
 (global-set-key (kbd "C-<f2>") #'my/shell-other-window)
 (global-set-key (kbd "<f1>") #'my/vterm-toggle)
@@ -126,8 +126,8 @@
 (global-set-key (kbd "C-o") #'split-line)
 (global-set-key (kbd "C-M-o") #'open-line)
 
-;;; Org-mode
-;;;; General
+;;; org-mode
+;;;; general
 (setq org-directory "~/org/")
 (setq org-agenda-files '("~/org/gtd/"))
 (setq org-modules '(ol-man ol-info org-habit))
@@ -139,7 +139,7 @@
 (setq org-capture-bookmark nil)
 (setq org-list-allow-alphabetical t)
 
-;;;; Visual
+;;;; visual
 (add-hook 'org-mode-hook 'visual-line-mode)
 (setq org-adapt-indentation nil)
 (add-hook 'org-mode-hook (lambda () (setq fill-column 100)))
@@ -150,11 +150,11 @@
   (lambda () (setq org-format-latex-options
 		   (plist-put org-format-latex-options :scale 1.5))))
 
-;;;; Agenda
+;;;; agenda
 (global-set-key (kbd "C-c a") #'org-agenda-list)
 (global-set-key (kbd "C-c c") #'org-capture)
 
-;;;; Capture
+;;;; capture
 (setq org-capture-templates
       '(("t" "Tasks" entry (file+headline "gtd/gtd.org" "Tasks")
          "* TODO %?\n")
@@ -177,7 +177,7 @@
 	("u" "Quotes" plain (file "art/quotes.txt")
 	 "%?\n%")))
 
-;;;; Org-roam
+;;;; org-roam
 (setq org-roam-directory (file-truename "~/roam"))
 (setq org-roam-node-display-template "${title}")
 (global-set-key (kbd "C-c n f") #'org-roam-node-find)
@@ -193,7 +193,7 @@
 (advise-once #'org-roam-node-find :after #'org-roam-db-autosync-enable)
 (advise-once #'org-roam-node-capture :after #'org-roam-db-autosync-enable)
 
-;;;; Babel
+;;;; babel
 (org-babel-do-load-languages 'org-babel-load-languages
                              '((emacs-lisp . t)
 			       (shell . t)
@@ -201,11 +201,11 @@
 (setq org-src-preserve-indentation t)
 (setq org-confirm-babel-evaluate nil)
 
-;;; Essentials
-;;;; Security
+;;; essentials
+;;;; security
 (setq auth-sources '("~/.authinfo.gpg"))
 
-;;;; Dired
+;;;; dired
 (setq dired-dwim-target t)
 (setq dired-free-space nil)
 (setq dired-hide-details-hide-symlink-targets nil)
@@ -216,12 +216,12 @@
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "C-M-o") #'dired-find-file-other-frame))
 
-;;;; Which-Key
+;;;; which-key
 (setq which-key-idle-delay 0.5)
 (setq which-key-idle-secondary-delay 0.05)
 (which-key-mode)
 
-;;;; Avy
+;;;; avy
 (global-set-key (kbd "M-o") 'avy-goto-char-timer)
 (setq avy-timeout-seconds 0.2)
 
@@ -236,7 +236,6 @@
 (setq bash-completion-use-separate-processes t)
 (bash-completion-setup)
 
-;;;; Mail
 ;;;; vterm
 (setq vterm-max-scrollback 10000)
 (eval-after-load 'vterm
@@ -247,6 +246,7 @@
      (define-key vterm-mode-map [f2] nil)
      (define-key vterm-mode-map [f1] nil)))
 
+;;;; mail
 (setq user-mail-address "cornejodlm@ciencias.unam.mx")
 (require 'smtpmail)
 (setq message-send-mail-function 'smtpmail-send-it)
@@ -255,15 +255,15 @@
 (setq smtpmail-smtp-service 587)
 (setq starttls-use-gnutls t)
 
-;;;; Magit
+;;;; magit
 (global-set-key (kbd "C-x g") #'magit)
 (global-set-key (kbd "C-x M-g") #'magit-file-dispatch)
 
-;;;; Pdf-Tools
+;;;; pdf-tools
 (pdf-loader-install)
 (setq pdf-view-continuous nil)
 
-;;;; IRC
+;;;; irc
 (setq rcirc-default-nick "icmor")
 (setq rcirc-default-user-name "icmor")
 (setq rcirc-server-alist
@@ -271,14 +271,14 @@
 	 :port 6697
 	 :encryption tls)))
 
-;;;; Calc
+;;;; calc
 (setq calc-prefer-frac nil)
 
-;;;; EWW
+;;;; eww
 (setq eww-search-prefix "https://www.google.com/search?q=")
 
-;;; Programming
-;;;; General
+;;; programming
+;;;; general
 (global-tree-sitter-mode)
 (show-paren-mode)
 (setq show-paren-delay 0)
@@ -287,40 +287,40 @@
 (setq outline-minor-mode-cycle t)
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
 
-;;;; Eglot
+;;;; eglot
 (setq eglot-events-buffer-size 0)
 (setq eglot-autoshutdown t)
 
-;;;; Markdown
+;;;; markdown
 (add-hook 'markdown-mode-hook 'visual-line-mode)
 (setq markdown-fontify-code-blocks-natively t)
 
 (add-hook 'rst-mode-hook 'visual-line-mode)
 (add-hook 'conf-mode-hook 'visual-line-mode)
 
-;;;; Python
+;;;; python
 (setq python-indent 4)
 
-;;;; C
+;;;; c
 (setq c-default-style
       '((java-mode . "java")
 	(awk-mode . "awk")
 	(c-mode . "k&r")
 	(other . "gnu")))
 
-;;;; Java
+;;;; java
 (add-hook 'java-mode-hook #'eglot-ensure)
 (add-hook 'java-mode-hook #'subword-mode)
 (setenv "CLASSPATH" ":/home/pink/dotfiles/emacs/.emacs.d/var/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar")
 
-;;;; Man
+;;;; man
 (add-to-list 'display-buffer-alist
      '("\\`\\*Man .*\\*\\'" .
        (display-buffer-reuse-mode-window
         (inhibit-same-window . nil)
         (mode . Man-mode))))
 
-;;;; RFC
+;;;; rfc
 (add-to-list 'display-buffer-alist
      '("\\`\\*rfc.*\\*\\'" .
        (display-buffer-reuse-mode-window
@@ -329,16 +329,16 @@
 (with-eval-after-load 'rfc-mode
   (define-key rfc-mode-map (kbd "m") #'rfc-mode-browse))
 
-;;; Miscellaneous
-;;;; General
+;;; miscellaneous
+;;;; general
 (setq user-full-name "Iñaki Cornejo")
 
-;;;; Better defaults
+;;;; better defaults
 (repeat-mode)
 (setq view-read-only t)
 (global-so-long-mode)
 
-;;;; Visual
+;;;; visual
 (add-to-list 'default-frame-alist
 	     '(font . "Source Code Pro-14"))
 (load-theme 'modus-vivendi t)
@@ -350,28 +350,28 @@
 (set-face-attribute 'mode-line-active nil :inherit 'mode-line)
 (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
 
-;;;; Completion
+;;;; completion
 (setq completions-detailed t)
 (setq read-buffer-completion-ignore-case t)
 (setq completions-format 'one-column)
 (setq dabbrev-check-all-buffers nil)
 
-;;;; Bookmarks
+;;;; bookmarks
 (setq bookmark-save-flag 1)
 (setq bookmark-search-size 8)
 
-;;;; Window Management
+;;;; window management
 (winner-mode)
 
-;;;; History
+;;;; history
 (savehist-mode)
 (setq history-length 1000)
 (setq history-delete-duplicates t)
 
-;;;; Documents
+;;;; documents
 (setq doc-view-resolution 400)
 
-;;;; Text
+;;;; text
 (add-hook 'org-mode-hook #'ws-butler-mode)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
 (setq sentence-end-double-space nil)
@@ -385,14 +385,14 @@
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 
-;;;; Files
+;;;; files
 (setq auto-save-default nil)
 (setq backup-by-copying t)
 (setq create-lockfiles nil)
 (setq vc-follow-symlinks nil)
 (setq delete-by-moving-to-trash t)
 
-;;;; Etc
+;;;; etc
 (setq use-short-answers t)
 (setq find-file-suppress-same-file-warnings t)
 (setq native-comp-async-report-warnings-errors 'silent)
