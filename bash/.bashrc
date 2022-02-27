@@ -65,4 +65,12 @@ if [[ "${INSIDE_EMACS}" == *"comint"* ]]; then
     unset COLUMNS
     export PAGER=cat
     export TERM=dumb-color
+elif [[ "$INSIDE_EMACS" = 'vterm' ]]; then
+    function vterm_printf(){
+         printf "\e]%s\e\\" "$1"
+    }
+    function vterm_prompt_end(){
+	vterm_printf "51;A$(whoami)@$(cat /etc/hostname):$(pwd)"
+    }
+    PS1=$PS1'\[$(vterm_prompt_end)\]'
 fi

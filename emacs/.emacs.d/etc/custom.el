@@ -22,6 +22,7 @@
      transpose-frame
      tree-sitter
      tree-sitter-langs
+     vterm
      which-key
      ws-butler)))
 (custom-set-faces

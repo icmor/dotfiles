@@ -61,7 +61,7 @@
   (if (and (eq major-mode 'shell-mode) (not arg))
       (previous-buffer)
     (shell (if (not arg) nil
-	     (format "*shell*<%d>" (prefix-numeric-value arg))))))
+	     (format "*s%d*" (prefix-numeric-value arg))))))
 
 (defun my/shell-other-window (arg)
   "Jump to a shell in other window"
@@ -69,9 +69,16 @@
     (if (and (eq major-mode 'shell-mode) (not arg))
       (delete-window)
       (shell (pop-to-buffer
-	      (concat "*shell*"
-		      (if (not arg) ""
-			(format "<%d>" (prefix-numeric-value arg))))))))
+	      (if (not arg) "*shell*"
+		(format "*s%d*" (prefix-numeric-value arg)))))))
+
+(defun my/vterm-toggle (arg)
+  "Toggle a vterm window"
+  (interactive "P")
+  (if (and (eq major-mode 'vterm-mode)
+	   (not arg))
+      (previous-buffer)
+    (call-interactively #'vterm)))
 
 (defun my/org-sort (arg)
   (interactive "P")
@@ -99,6 +106,8 @@
 ;;; Global Bindings
 (global-set-key (kbd "<f2>") #'my/shell-toggle)
 (global-set-key (kbd "C-<f2>") #'my/shell-other-window)
+(global-set-key (kbd "<f1>") #'my/vterm-toggle)
+(global-set-key (kbd "C-<f1>") #'vterm-other-window)
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
 (global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
 (global-set-key (kbd "C-x C-<left>") #'windmove-swap-states-left)
@@ -216,20 +225,28 @@
 (global-set-key (kbd "M-o") 'avy-goto-char-timer)
 (setq avy-timeout-seconds 0.2)
 
-;;;; Comint
-(setq shell-command-prompt-show-cwd t)
-(setq shell-command-switch "-ic")	; interactive shells read .bashrc
+;;;; comint
 (setq comint-prompt-read-only t)
 
 ;;;; shell
-(add-hook 'shell-mode-hook
-	  (lambda () (local-set-key (kbd "C-c r") #'bash-completion-refresh)))
-(add-hook 'shell-mode-hook
-	  (lambda () (local-set-key (kbd "C-c C-r") #'bash-completion-refresh)))
+(setq shell-command-prompt-show-cwd t)
 (setq ansi-color-for-comint-mode t)
+(define-key shell-mode-map (kbd "C-c r") #'bash-completion-refresh)
+(define-key shell-mode-map (kbd "C-c C-r") #'bash-completion-refresh)
+(setq bash-completion-use-separate-processes t)
 (bash-completion-setup)
 
 ;;;; Mail
+;;;; vterm
+(setq vterm-max-scrollback 10000)
+(eval-after-load 'vterm
+  '(progn
+     (define-key vterm-mode-map (kbd "C-u") #'vterm--self-insert)
+     (define-key vterm-mode-map (kbd "C-M-v") nil)
+     (define-key vterm-mode-map (kbd "C-S-M-v") nil)
+     (define-key vterm-mode-map [f2] nil)
+     (define-key vterm-mode-map [f1] nil)))
+
 (setq user-mail-address "cornejodlm@ciencias.unam.mx")
 (require 'smtpmail)
 (setq message-send-mail-function 'smtpmail-send-it)
