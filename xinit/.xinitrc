@@ -10,7 +10,6 @@ fi
 export PATH="$PATH:$HOME/.local/bin"
 export XAUTHORITY=~/.Xauthority
 export NO_AT_BRIDGE=1
-export MOZ_X11_EGL=1
 export MOZ_USE_XINPUT2=1
 
 xset -dpms

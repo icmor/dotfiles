@@ -51,7 +51,7 @@
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/") t)
-;; (setq package-native-compile t)
+(setq package-native-compile t)
 (package-install-selected-packages)
 
 ;;; functions
@@ -104,10 +104,8 @@
 (setq auto-mode-case-fold nil)
 
 ;;; global bindings
-(global-set-key (kbd "<f2>") #'my/shell-toggle)
-(global-set-key (kbd "C-<f2>") #'my/shell-other-window)
-(global-set-key (kbd "<f1>") #'my/vterm-toggle)
-(global-set-key (kbd "C-<f1>") #'vterm-other-window)
+(global-set-key (kbd "<f2>") #'my/vterm-toggle)
+(global-set-key (kbd "C-<f2>") #'vterm-other-window)
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
 (global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
 (global-set-key (kbd "C-x C-<left>") #'windmove-swap-states-left)
@@ -116,6 +114,7 @@
 (global-set-key (kbd "C-x C-<down>") #'windmove-swap-states-down)
 
 ;;;; better defaults
+(global-unset-key (kbd "C-z"))
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "C-x k") #'kill-current-buffer)
 (global-set-key (kbd "C-x K") #'kill-buffer)
@@ -148,7 +147,7 @@
 (setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
 (eval-after-load 'org
   (lambda () (setq org-format-latex-options
-		   (plist-put org-format-latex-options :scale 1.5))))
+		   (plist-put org-format-latex-options :scale 2.0))))
 
 ;;;; agenda
 (global-set-key (kbd "C-c a") #'org-agenda-list)
@@ -211,7 +210,7 @@
 (setq dired-hide-details-hide-symlink-targets nil)
 (setq wdired-allow-to-change-permissions t)
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
-(setq dired-listing-switches "-Alh")
+(setq dired-listing-switches "-lhA")
 (setq image-dired-thumbnail-storage 'standard-x-large)
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "C-M-o") #'dired-find-file-other-frame))
@@ -225,26 +224,37 @@
 (global-set-key (kbd "M-o") 'avy-goto-char-timer)
 (setq avy-timeout-seconds 0.2)
 
+;;;; ace-window
+;; (global-set-key (kbd "C-c o") #'ace-window)
+;; (setq aw-scope 'frame)
+;; (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+
 ;;;; comint
+(add-hook 'comint-mode-hook #'electric-pair-local-mode)
 (setq comint-prompt-read-only t)
 
 ;;;; shell
 (setq shell-command-prompt-show-cwd t)
 (setq ansi-color-for-comint-mode t)
-(define-key shell-mode-map (kbd "C-c r") #'bash-completion-refresh)
-(define-key shell-mode-map (kbd "C-c C-r") #'bash-completion-refresh)
-(setq bash-completion-use-separate-processes t)
-(bash-completion-setup)
+;; (define-key shell-mode-map (kbd "C-c r") #'bash-completion-refresh)
+;; (define-key shell-mode-map (kbd "C-c C-r") #'bash-completion-refresh)
+;; (setq bash-completion-use-separate-processes t)
+;; (bash-completion-setup)
 
 ;;;; vterm
 (setq vterm-max-scrollback 10000)
+(add-hook 'vterm-mode-hook #'hide-mode-line-mode)
 (eval-after-load 'vterm
   '(progn
-     (define-key vterm-mode-map (kbd "C-u") #'vterm--self-insert)
+     (define-key vterm-mode-map [f2] nil)
      (define-key vterm-mode-map (kbd "C-M-v") nil)
      (define-key vterm-mode-map (kbd "C-S-M-v") nil)
-     (define-key vterm-mode-map [f2] nil)
-     (define-key vterm-mode-map [f1] nil)))
+     (define-key vterm-mode-map (kbd "C-u") #'vterm--self-insert)
+     (define-key vterm-mode-map (kbd "C-{") #'vterm--self-insert)
+     (define-key vterm-mode-map (kbd "C-SPC") #'vterm-copy-mode)
+     (define-key vterm-copy-mode-map (kbd "C-c C-c") #'vterm-copy-mode-done)
+     (define-key vterm-copy-mode-map (kbd "C-w") #'vterm-copy-mode-done)
+     (define-key vterm-copy-mode-map (kbd "M-w") #'vterm-copy-mode-done)))
 
 ;;;; mail
 (setq user-mail-address "cornejodlm@ciencias.unam.mx")
@@ -303,15 +313,15 @@
 
 ;;;; c
 (setq c-default-style
-      '((java-mode . "java")
+      '((java-mode . "linux")
 	(awk-mode . "awk")
-	(c-mode . "k&r")
+	(c-mode . "linux")
 	(other . "gnu")))
 
 ;;;; java
 (add-hook 'java-mode-hook #'eglot-ensure)
 (add-hook 'java-mode-hook #'subword-mode)
-(setenv "CLASSPATH" ":/home/pink/dotfiles/emacs/.emacs.d/var/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar")
+(add-to-list 'exec-path (file-truename "~/.emacs.d/var/jdtls/bin") t)
 
 ;;;; man
 (add-to-list 'display-buffer-alist

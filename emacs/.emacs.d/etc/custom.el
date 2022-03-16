@@ -4,17 +4,16 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(avy
-     bash-completion
+   '(ace-window
+     avy
      eglot
      gcmh
+     hide-mode-line
      magit
      markdown-mode
      minions
-     olivetti
      org-contrib
      org-roam
-     org-tree-slide
      pdf-tools
      racket-mode
      rfc-mode

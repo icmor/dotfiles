@@ -40,20 +40,18 @@ exec --no-startup-id xidlehook \
 bindsym $mod+shift+space exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+e exec pcmanfm
 bindsym $mod+m exec --no-startup-id emacsclient -nca ""
-bindsym $mod+Return exec --no-startup-id emacsclient -ca "" -e '(shell)'
+bindsym $mod+Return exec --no-startup-id emacsclient -ca "" -e '(vterm)'
 bindsym $mod+Shift+Return exec --no-startup-id alacritty
 
 mode "launcher" {
-    bindsym f exec firefox; mode "default"
-    bindsym n exec --no-startup-id alacritty --class floating -e iwctl; mode "default"
+    bindsym f exec firefox-developer-edition; mode "default"
     bindsym z exec zoom; mode "default"
     bindsym d exec --no-startup-id discord; mode "default"
     bindsym s exec --no-startup-id spotify; mode "default"
     bindsym c exec --no-startup-id calibre; mode "default"
     bindsym v exec --no-startup-id vlc; mode "default"
 
-    bindsym $mod+f exec firefox; mode "default"
-    bindsym $mod+n exec --no-startup-id alacritty --class floating -e iwctl; mode "default"
+    bindsym $mod+f exec firefox-developer-edition; mode "default"
     bindsym $mod+z exec zoom; mode "default"
     bindsym $mod+d exec --no-startup-id discord; mode "default"
     bindsym $mod+s exec --no-startup-id spotify; mode "default"
@@ -108,9 +106,6 @@ assign [class="zoom"] → $ws4
 assign [class="telegram-desktop"] → $ws4
 assign [class="Slack"] → $ws4
 for_window [class="Spotify"] move to workspace $ws5
-for_window [instance="floating"] floating enabled
-for_window [instance="floating"] resize set 1080 720
-for_window [instance="floating"] move position center
 
 #===WM Shortcuts===#
 bindsym $mod+1 workspace $ws1
