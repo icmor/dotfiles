@@ -52,6 +52,24 @@ alias bluetooth='\
       sudo rmmod btusb'
 
 # functions
+docker_latest(){
+	sudo docker ps | head -2 | tail -1 | cut -d' ' -f 1
+}
+
+docker_connect(){
+	sudo docker exec -it "$(docker_latest)" bash
+}
+
+pdf_grayscale(){
+    gs \
+   -sDEVICE=pdfwrite \
+   -sProcessColorModel=DeviceGray \
+   -sColorConversionStrategy=Gray \
+   -dOverrideICC \
+   -o $2 \
+   -f $1
+}
+
 mcd(){
     mkdir "$1" && cd "$1"
 }
