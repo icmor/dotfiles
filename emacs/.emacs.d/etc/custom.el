@@ -9,6 +9,7 @@
      eglot
      gcmh
      hide-mode-line
+     imenu-list
      magit
      markdown-mode
      minions

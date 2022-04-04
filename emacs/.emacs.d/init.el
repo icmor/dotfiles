@@ -106,6 +106,7 @@
 ;;; global bindings
 (global-set-key (kbd "<f2>") #'my/vterm-toggle)
 (global-set-key (kbd "C-<f2>") #'vterm-other-window)
+(global-set-key (kbd "S-<f11>") #'hide-mode-line-mode)
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
 (global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
 (global-set-key (kbd "C-x C-<left>") #'windmove-swap-states-left)
@@ -115,6 +116,7 @@
 
 ;;;; better defaults
 (global-unset-key (kbd "C-z"))
+(global-set-key (kbd "C-x f") #'find-file)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "C-x k") #'kill-current-buffer)
 (global-set-key (kbd "C-x K") #'kill-buffer)
@@ -145,9 +147,9 @@
 (setq org-startup-with-inline-images t)
 (setq org-image-actual-width 250)
 (setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
-(eval-after-load 'org
-  (lambda () (setq org-format-latex-options
-		   (plist-put org-format-latex-options :scale 2.0))))
+(with-eval-after-load 'org
+  (setq org-format-latex-options
+	(plist-put org-format-latex-options :scale 1.5)))
 
 ;;;; agenda
 (global-set-key (kbd "C-c a") #'org-agenda-list)
@@ -185,12 +187,15 @@
 (global-set-key (kbd "C-c n a") #'org-roam-alias-add)
 (global-set-key (kbd "C-c n c") #'org-roam-capture)
 (global-set-key (kbd "C-c n g") #'org-roam-graph)
+(global-set-key (kbd "C-c n d") (lambda () (interactive)
+				  (org-roam-db-autosync-mode -1)))
 (setq org-roam-capture-templates
       '(("d" "default" plain "%?" :target
 	 (file+head "${slug}.org" "#+title: ${title}")
 	 :unnarrowed t)))
-(advise-once #'org-roam-node-find :after #'org-roam-db-autosync-enable)
-(advise-once #'org-roam-node-capture :after #'org-roam-db-autosync-enable)
+
+(with-eval-after-load 'org-roam-mode
+  (org-roam-db-autosync-enable))
 
 ;;;; babel
 (org-babel-do-load-languages 'org-babel-load-languages
@@ -213,7 +218,8 @@
 (setq dired-listing-switches "-lhA")
 (setq image-dired-thumbnail-storage 'standard-x-large)
 (with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "C-M-o") #'dired-find-file-other-frame))
+  (define-key dired-mode-map (kbd "C-M-o") #'dired-find-file-other-frame)
+  (define-key dired-mode-map (kbd "C-c f") #'find-dired))
 
 ;;;; which-key
 (setq which-key-idle-delay 0.5)
@@ -230,7 +236,6 @@
 ;; (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
 ;;;; comint
-(add-hook 'comint-mode-hook #'electric-pair-local-mode)
 (setq comint-prompt-read-only t)
 
 ;;;; shell
@@ -244,17 +249,16 @@
 ;;;; vterm
 (setq vterm-max-scrollback 10000)
 (add-hook 'vterm-mode-hook #'hide-mode-line-mode)
-(eval-after-load 'vterm
-  '(progn
-     (define-key vterm-mode-map [f2] nil)
-     (define-key vterm-mode-map (kbd "C-M-v") nil)
-     (define-key vterm-mode-map (kbd "C-S-M-v") nil)
-     (define-key vterm-mode-map (kbd "C-u") #'vterm--self-insert)
-     (define-key vterm-mode-map (kbd "C-{") #'vterm--self-insert)
-     (define-key vterm-mode-map (kbd "C-SPC") #'vterm-copy-mode)
-     (define-key vterm-copy-mode-map (kbd "C-c C-c") #'vterm-copy-mode-done)
-     (define-key vterm-copy-mode-map (kbd "C-w") #'vterm-copy-mode-done)
-     (define-key vterm-copy-mode-map (kbd "M-w") #'vterm-copy-mode-done)))
+(with-eval-after-load 'vterm
+  (define-key vterm-mode-map [f2] nil)
+  (define-key vterm-mode-map (kbd "C-M-v") nil)
+  (define-key vterm-mode-map (kbd "C-S-M-v") nil)
+  (define-key vterm-mode-map (kbd "C-u") #'vterm--self-insert)
+  (define-key vterm-mode-map (kbd "C-{") #'vterm--self-insert)
+  (define-key vterm-mode-map (kbd "C-SPC") #'vterm-copy-mode)
+  (define-key vterm-copy-mode-map (kbd "C-c C-c") #'vterm-copy-mode-done)
+  (define-key vterm-copy-mode-map (kbd "C-w") #'vterm-copy-mode-done)
+  (define-key vterm-copy-mode-map (kbd "M-w") #'vterm-copy-mode-done))
 
 ;;;; mail
 (setq user-mail-address "cornejodlm@ciencias.unam.mx")
@@ -272,6 +276,7 @@
 ;;;; pdf-tools
 (pdf-loader-install)
 (setq pdf-view-continuous nil)
+(setq pdf-view-resize-factor 1.1)
 
 ;;;; irc
 (setq rcirc-default-nick "icmor")
@@ -310,6 +315,11 @@
 
 ;;;; python
 (setq python-indent 4)
+(with-eval-after-load 'python
+  (define-key python-mode-map (kbd "C-x p l")
+	      (lambda () (interactive)
+		(project-switch-project "/usr/lib/python3.10/"))))
+
 
 ;;;; c
 (setq c-default-style
@@ -318,10 +328,20 @@
 	(c-mode . "linux")
 	(other . "gnu")))
 
+(with-eval-after-load 'cc-mode
+  (define-key c-mode-map (kbd "C-x p l")
+	      (lambda () (interactive)
+		(project-switch-project "/usr/include/"))))
+
 ;;;; java
-(add-hook 'java-mode-hook #'eglot-ensure)
+(add-hook 'java-mode-hook (lambda () (if (not buffer-read-only) (eglot-ensure))))
 (add-hook 'java-mode-hook #'subword-mode)
 (add-to-list 'exec-path (file-truename "~/.emacs.d/var/jdtls/bin") t)
+(with-eval-after-load 'cc-mode
+  (define-key java-mode-map (kbd "C-x p l")
+	      (lambda () (interactive)
+		(project-switch-project "~/.local/opt/jdk11"))))
+
 
 ;;;; man
 (add-to-list 'display-buffer-alist
