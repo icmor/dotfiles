@@ -66,8 +66,8 @@ pdf_grayscale(){
    -sProcessColorModel=DeviceGray \
    -sColorConversionStrategy=Gray \
    -dOverrideICC \
-   -o $2 \
-   -f $1
+   -o "$2" \
+   -f "$1"
 }
 
 mcd(){
