@@ -4,8 +4,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(ace-window
-     avy
+   '(avy
+     bash-completion
      eglot
      gcmh
      hide-mode-line
@@ -18,7 +18,6 @@
      pdf-tools
      racket-mode
      rfc-mode
-     speed-type
      transpose-frame
      tree-sitter
      tree-sitter-langs

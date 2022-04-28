@@ -37,7 +37,6 @@
 (setq racket-repl-history-directory     (concat user-var-dir "racket-mode"))
 (setq rfc-mode-directory 		(concat user-var-dir "rfc"))
 (setq savehist-file			(concat user-var-dir "savehist"))
-(setq speed-type-gb-dir			(concat user-var-dir "speed-type/"))
 (setq tramp-persistency-file-name	(concat user-var-dir "tramp/persistency.el"))
 (setq transient-history-file		(concat user-var-dir "transient/history.el"))
 (setq transient-levels-file		(concat user-etc-dir "transient/levels.el"))
@@ -230,10 +229,6 @@
 (global-set-key (kbd "M-o") 'avy-goto-char-timer)
 (setq avy-timeout-seconds 0.2)
 
-;;;; ace-window
-;; (global-set-key (kbd "C-c o") #'ace-window)
-;; (setq aw-scope 'frame)
-;; (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
 ;;;; comint
 (setq comint-prompt-read-only t)
@@ -241,10 +236,7 @@
 ;;;; shell
 (setq shell-command-prompt-show-cwd t)
 (setq ansi-color-for-comint-mode t)
-;; (define-key shell-mode-map (kbd "C-c r") #'bash-completion-refresh)
-;; (define-key shell-mode-map (kbd "C-c C-r") #'bash-completion-refresh)
-;; (setq bash-completion-use-separate-processes t)
-;; (bash-completion-setup)
+(bash-completion-setup)
 
 ;;;; vterm
 (setq vterm-max-scrollback 10000)
@@ -410,10 +402,7 @@
 (setq-default fill-column 80)
 
 ;;;;; coding system
-(prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
 
 ;;;; files
 (setq auto-save-default nil)
@@ -425,10 +414,23 @@
 ;;;; etc
 (setq use-short-answers t)
 (setq find-file-suppress-same-file-warnings t)
-(setq native-comp-async-report-warnings-errors 'silent)
 (setq ring-bell-function 'ignore)
 (setq disabled-command-function nil)
 (setq initial-scratch-message
-      (concat
-       (replace-regexp-in-string "^" ";; " (cookie "~/org/art/quotes.txt"))
+      (concat (replace-regexp-in-string "^" ";; " (cookie "~/org/art/quotes.txt"))
        "\n\n"))
+
+;;; attic
+;; (setq native-comp-async-report-warnings-errors 'silent)
+;; (global-set-key (kbd "C-<next>") #'tab-next)
+;; (global-set-key (kbd "C-<prior>") #'tab-previous)
+
+;;;; ace-window
+;; (global-set-key (kbd "C-c o") #'ace-window)
+;; (setq aw-scope 'frame)
+;; (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+
+;;;; shell
+;; (define-key shell-mode-map (kbd "C-c r") #'bash-completion-refresh)
+;; (define-key shell-mode-map (kbd "C-c C-r") #'bash-completion-refresh)
+;; (setq bash-completion-use-separate-processes t)

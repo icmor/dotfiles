@@ -41,6 +41,8 @@ exec --no-startup-id xidlehook \
 bindsym $mod+shift+space exec --no-startup-id i3-dmenu-desktop
 bindsym $mod+e exec pcmanfm
 bindsym $mod+m exec --no-startup-id emacsclient -nca ""
+bindsym $mod+Shift+m exec --no-startup-id emacsclient -ca "" -e \
+	'(progn (org-agenda-list) (delete-other-windows))'
 bindsym $mod+Return exec --no-startup-id emacsclient -ca "" -e '(vterm)'
 bindsym $mod+Shift+Return exec --no-startup-id alacritty
 
