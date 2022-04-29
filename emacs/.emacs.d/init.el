@@ -50,7 +50,6 @@
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/") t)
-(setq package-native-compile t)
 (package-install-selected-packages)
 
 ;;; functions
@@ -413,6 +412,7 @@
 
 ;;;; etc
 (setq use-short-answers t)
+(setq native-comp-async-report-warnings-errors 'silent)
 (setq find-file-suppress-same-file-warnings t)
 (setq ring-bell-function 'ignore)
 (setq disabled-command-function nil)
@@ -421,7 +421,6 @@
        "\n\n"))
 
 ;;; attic
-;; (setq native-comp-async-report-warnings-errors 'silent)
 ;; (global-set-key (kbd "C-<next>") #'tab-next)
 ;; (global-set-key (kbd "C-<prior>") #'tab-previous)
 
