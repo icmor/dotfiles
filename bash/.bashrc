@@ -36,6 +36,7 @@ alias ll='ls -Alh'
 alias l='ls -CAF'
 
 # convenient aliases
+alias ed="emacs -nw"
 alias gt="gio trash"
 alias open="xdg-open"
 alias prime-run='__NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia'
@@ -70,12 +71,12 @@ pdf_grayscale(){
    -f "$1"
 }
 
-mcd(){
-    mkdir "$1" && cd "$1"
-}
-
 psgrep (){
     ps aux | grep --color=auto "$1" | grep --color=auto -v grep
+}
+
+gcd (){
+    cd "$(git rev-parse --show-toplevel)"
 }
 
 # emacs
