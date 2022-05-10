@@ -1,58 +1,67 @@
 ;;; -*- lexical-binding: t; -*-
+;;; packages
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "https://melpa.org/packages/") t)
 
-;;; init.el --- icmor's Emacs
-;;;; Commentary
-;; Got inspired to start a new Emacs journey based on the
-;; philosophy of Protesilaos Stavrou. Basically, put in
-;; the effort to discover Emacs the "Emacs Way". Sacrificing
-;; temporary convenience in exchange of really learning
-;; the tools I use and achieving autonomy through power,
-;; knowledge and humility.
+;;;; package list
+(setq package-selected-packages
+      '(
+	avy
+	bash-completion
+	;; eglot
+	gcmh
+	hide-mode-line
+	imenu-list
+	;; lsp-mode
+	;; lsp-java
+	magit
+	markdown-mode
+	minions
+	no-littering
+	org-contrib
+	org-roam
+	pdf-tools
+	racket-mode
+	rfc-mode
+	transpose-frame
+	tree-sitter
+	tree-sitter-langs
+	vterm
+	which-key
+	ws-butler
+	))
+(package-install-selected-packages)
+;; (setq package-native-compile t)
 
-;;; no littering
-;;;; general
-(setq user-var-dir (concat user-emacs-directory "var/"))
-(setq user-etc-dir (concat user-emacs-directory "etc/"))
-(setq source-directory "/home/pink/.cache/yay/emacs-git/src/emacs-git/src")
-
-;;;; backups and auto-save files
-(setq auto-save-list-file-prefix (concat user-var-dir "auto-save-list/.saves-"))
-(setq backup-directory-alist `((".*" . ,(concat user-var-dir "backup"))))
+;;;; litter
+(require 'no-littering)
+(setq custom-file (no-littering-expand-etc-file-name "custom.el"))
+(setq auto-save-list-file-prefix
+      (no-littering-expand-var-file-name "auto-save-list/.saves-"))
+(setq backup-directory-alist
+      `((".*" . ,(no-littering-expand-var-file-name "backup"))))
 (setq tramp-backup-directory-alist backup-directory-alist)
 (setq version-control t)
 (setq kept-new-versions 4)
 (setq kept-old-versions 2)
 (setq delete-old-versions t)
+;; (load custom-file t)
 
-;;;; litter
-(setq bookmark-default-file		(concat user-var-dir "bookmark-default.el"))
-(setq custom-file			(concat user-etc-dir "custom.el"))
-(setq eshell-directory-name		(concat user-var-dir "eshell/"))
-(setq multisession-directory            (concat user-var-dir "multisession/"))
-(setq nsm-settings-file                 (concat user-var-dir "network-security.data"))
-(setq org-id-locations-file             (concat user-var-dir "org-id-locations"))
-(setq org-preview-latex-image-directory (concat user-var-dir "ltximg/"))
-(setq org-roam-db-location 		(concat user-var-dir "org-roam.db"))
-(setq project-list-file			(concat user-var-dir "projects"))
-(setq racket-repl-history-directory     (concat user-var-dir "racket-mode"))
-(setq rfc-mode-directory 		(concat user-var-dir "rfc"))
-(setq savehist-file			(concat user-var-dir "savehist"))
-(setq tramp-persistency-file-name	(concat user-var-dir "tramp/persistency.el"))
-(setq transient-history-file		(concat user-var-dir "transient/history.el"))
-(setq transient-levels-file		(concat user-etc-dir "transient/levels.el"))
-(setq transient-values-file		(concat user-etc-dir "transient/values.el"))
-(setq url-cache-directory		(concat user-var-dir "url/cache/"))
-(setq url-configuration-directory	(concat user-var-dir "url/configuration/"))
+;;; general
+(setq find-function-C-source-directory
+      "/home/pink/.cache/yay/emacs-git/src/emacs-git/src")
+(setq native-comp-async-report-warnings-errors 'silent)
 
-(load custom-file t)
+;;;; doom hacks
+(gcmh-mode)
+(setq gcmh-idle-delay 'auto
+      gcmh-auto-idle-delay-factor 10
+      gcmh-high-cons-threshold (* 16 1024 1024))
+(setq read-process-output-max (* 1024 1024))
+(setq auto-mode-case-fold nil)
 
-;;; package configuration
-(require 'package)
-(add-to-list 'package-archives
-	     '("melpa" . "https://melpa.org/packages/") t)
-(package-install-selected-packages)
-
-;;; functions
+;;;; functions
 (defun my/shell-toggle (arg)
   "Toggle a shell window"
   (interactive "P")
@@ -78,6 +87,12 @@
       (previous-buffer)
     (call-interactively #'vterm)))
 
+(defun my/project-stdlibs ()
+  (interactive)
+  (let ((dir
+	 (cdr (assq major-mode (if (boundp 'stdlibs) stdlibs nil)))))
+    (if dir (project-switch-project dir))))
+
 (defun my/org-sort (arg)
   (interactive "P")
   (org-map-entries
@@ -89,31 +104,20 @@
   (interactive)
   (dired--find-file #'find-file-other-frame (dired-get-file-for-visit)))
 
-(defun advise-once (symbol where function &optional props)
-  (advice-add symbol :after (lambda (&rest _) (advice-remove symbol function)))
-  (advice-add symbol where function props))
+;;; bindings
+;;;; prefix maps
+(define-prefix-command 'km/roam)
+(global-set-key (kbd "C-c n") 'km/roam)
 
-;;;; doom hacks
-(gcmh-mode)
-(setq gcmh-idle-delay 'auto
-      gcmh-auto-idle-delay-factor 10
-      gcmh-high-cons-threshold (* 16 1024 1024))
-(setq read-process-output-max (* 1024 1024))
-(setq auto-mode-case-fold nil)
-
-;;; global bindings
+;;;; global
 (global-set-key (kbd "<f2>") #'my/vterm-toggle)
 (global-set-key (kbd "C-<f2>") #'vterm-other-window)
+(global-set-key (kbd "C-x p l") #'my/project-stdlibs)
+(global-set-key (kbd "M-o") 'avy-goto-char-timer)
 (global-set-key (kbd "S-<f11>") #'hide-mode-line-mode)
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
-(global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
-(global-set-key (kbd "C-x C-<left>") #'windmove-swap-states-left)
-(global-set-key (kbd "C-x C-<right>") #'windmove-swap-states-right)
-(global-set-key (kbd "C-x C-<up>") #'windmove-swap-states-up)
-(global-set-key (kbd "C-x C-<down>") #'windmove-swap-states-down)
 
 ;;;; better defaults
-(global-unset-key (kbd "C-z"))
 (global-set-key (kbd "C-x f") #'find-file)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "C-x k") #'kill-current-buffer)
@@ -124,22 +128,40 @@
 (global-set-key (kbd "C-x r M") #'bookmark-set)
 (global-set-key (kbd "C-o") #'split-line)
 (global-set-key (kbd "C-M-o") #'open-line)
+(global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
+(global-set-key (kbd "C-x C-<left>") #'windmove-swap-states-left)
+(global-set-key (kbd "C-x C-<right>") #'windmove-swap-states-right)
+(global-set-key (kbd "C-x C-<up>") #'windmove-swap-states-up)
+(global-set-key (kbd "C-x C-<down>") #'windmove-swap-states-down)
+
+;;;; org
+(global-set-key (kbd "C-c a") #'org-agenda-list)
+(global-set-key (kbd "C-c c") #'org-capture)
+
+;;; terminal vs gui
+(if (or (daemonp) (display-graphic-p))
+    (global-unset-key (kbd "C-z"))
+  (progn
+    (global-set-key (kbd "<f2>") #'my/shell-toggle)
+    (global-set-key (kbd "C-<f2>") #'my/shell-other-window)))
 
 ;;; org-mode
 ;;;; general
 (setq org-directory "~/org/")
 (setq org-agenda-files '("~/org/gtd/"))
+(setq org-preview-latex-image-directory
+      (no-littering-expand-var-file-name "ltximg/"))
 (setq org-modules '(ol-man ol-info org-habit))
-
-(setq org-refile-targets '((nil . (:maxlevel . 3))
-			   (org-agenda-files . (:level . 1))))
 (setq org-log-into-drawer t)
 (setq org-return-follows-link t)
 (setq org-capture-bookmark nil)
 (setq org-list-allow-alphabetical t)
+(setq org-refile-targets '((nil . (:maxlevel . 3))
+			   (org-agenda-files . (:level . 1))))
 
 ;;;; visual
-(add-hook 'org-mode-hook 'visual-line-mode)
+(add-hook 'org-mode-hook #'visual-line-mode)
+(add-hook 'org-mode-hook #'ws-butler-mode)
 (setq org-adapt-indentation nil)
 (add-hook 'org-mode-hook (lambda () (setq fill-column 100)))
 (setq org-startup-with-inline-images t)
@@ -148,10 +170,6 @@
 (with-eval-after-load 'org
   (setq org-format-latex-options
 	(plist-put org-format-latex-options :scale 1.5)))
-
-;;;; agenda
-(global-set-key (kbd "C-c a") #'org-agenda-list)
-(global-set-key (kbd "C-c c") #'org-capture)
 
 ;;;; capture
 (setq org-capture-templates
@@ -178,30 +196,20 @@
 
 ;;;; org-roam
 (setq org-roam-directory (file-truename "~/roam"))
-(setq org-roam-node-display-template "${title}")
-(global-set-key (kbd "C-c n f") #'org-roam-node-find)
-(global-set-key (kbd "C-c n l") #'org-roam-buffer-toggle)
-(global-set-key (kbd "C-c n i") #'org-roam-node-insert)
-(global-set-key (kbd "C-c n a") #'org-roam-alias-add)
-(global-set-key (kbd "C-c n c") #'org-roam-capture)
-(global-set-key (kbd "C-c n g") #'org-roam-graph)
-(global-set-key (kbd "C-c n d") (lambda () (interactive)
-				  (org-roam-db-autosync-mode -1)))
+(with-eval-after-load 'org-roam-mode
+  (org-roam-db-autosync-enable))
+(define-key km/roam (kbd "a") #'org-roam-alias-add)
+(define-key km/roam (kbd "c") #'org-roam-capture)
+(define-key km/roam (kbd "f") #'org-roam-node-find)
+(define-key km/roam (kbd "g") #'org-roam-graph)
+(define-key km/roam (kbd "i") #'org-roam-node-insert)
+(define-key km/roam (kbd "l") #'org-roam-buffer-toggle)
+
 (setq org-roam-capture-templates
       '(("d" "default" plain "%?" :target
 	 (file+head "${slug}.org" "#+title: ${title}")
 	 :unnarrowed t)))
-
-(with-eval-after-load 'org-roam-mode
-  (org-roam-db-autosync-enable))
-
-;;;; babel
-(org-babel-do-load-languages 'org-babel-load-languages
-                             '((emacs-lisp . t)
-			       (shell . t)
-			       (python . t)))
-(setq org-src-preserve-indentation t)
-(setq org-confirm-babel-evaluate nil)
+(setq org-roam-node-display-template "${title}")
 
 ;;; essentials
 ;;;; security
@@ -212,9 +220,9 @@
 (setq dired-free-space nil)
 (setq dired-hide-details-hide-symlink-targets nil)
 (setq wdired-allow-to-change-permissions t)
-(add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (setq dired-listing-switches "-lhA")
 (setq image-dired-thumbnail-storage 'standard-x-large)
+(add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "C-M-o") #'dired-find-file-other-frame)
   (define-key dired-mode-map (kbd "C-c f") #'find-dired))
@@ -225,9 +233,7 @@
 (which-key-mode)
 
 ;;;; avy
-(global-set-key (kbd "M-o") 'avy-goto-char-timer)
 (setq avy-timeout-seconds 0.2)
-
 
 ;;;; comint
 (setq comint-prompt-read-only t)
@@ -239,7 +245,6 @@
 
 ;;;; vterm
 (setq vterm-max-scrollback 10000)
-(add-hook 'vterm-mode-hook #'hide-mode-line-mode)
 (with-eval-after-load 'vterm
   (define-key vterm-mode-map [f2] nil)
   (define-key vterm-mode-map (kbd "C-M-v") nil)
@@ -251,15 +256,6 @@
   (define-key vterm-copy-mode-map (kbd "C-w") #'vterm-copy-mode-done)
   (define-key vterm-copy-mode-map (kbd "M-w") #'vterm-copy-mode-done))
 
-;;;; mail
-(setq user-mail-address "cornejodlm@ciencias.unam.mx")
-(require 'smtpmail)
-(setq message-send-mail-function 'smtpmail-send-it)
-(setq smtpmail-smtp-server "smtp.gmail.com")
-(setq smtpmail-stream-type 'starttls)
-(setq smtpmail-smtp-service 587)
-(setq starttls-use-gnutls t)
-
 ;;;; magit
 (global-set-key (kbd "C-x g") #'magit)
 (global-set-key (kbd "C-x M-g") #'magit-file-dispatch)
@@ -268,6 +264,17 @@
 (pdf-loader-install)
 (setq pdf-view-continuous nil)
 (setq pdf-view-resize-factor 1.1)
+
+;;;; mail
+(setq user-full-name "Iñaki Cornejo")
+(setq user-mail-address "cornejodlm@ciencias.unam.mx")
+(setq message-send-mail-function 'smtpmail-send-it)
+(with-eval-after-load 'message
+  (require 'smtpmail)
+  (setq smtpmail-smtp-server "smtp.gmail.com")
+  (setq smtpmail-stream-type 'starttls)
+  (setq smtpmail-smtp-service 587)
+  (setq starttls-use-gnutls t))
 
 ;;;; irc
 (setq rcirc-default-nick "icmor")
@@ -278,7 +285,7 @@
 	 :encryption tls)))
 
 ;;;; calc
-(setq calc-prefer-frac nil)
+;; (setq calc-prefer-frac t)
 
 ;;;; eww
 (setq eww-search-prefix "https://www.google.com/search?q=")
@@ -292,25 +299,19 @@
 (setq show-paren-context-when-offscreen t)
 (setq outline-minor-mode-cycle t)
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
+(add-hook 'prog-mode-hook #'ws-butler-mode)
+
+;;;; stdlibs
+(setq stdlibs '((c-mode . "/usr/include")
+		   (python-mode . "/usr/lib/python3.10/")
+		   (java-mode . "~/.local/opt/jdk11")))
 
 ;;;; eglot
-(setq eglot-events-buffer-size 0)
-(setq eglot-autoshutdown t)
+;; (setq eglot-events-buffer-size 0)
+;; (setq eglot-autoshutdown t)
 
-;;;; markdown
-(add-hook 'markdown-mode-hook 'visual-line-mode)
-(setq markdown-fontify-code-blocks-natively t)
-
-(add-hook 'rst-mode-hook 'visual-line-mode)
-(add-hook 'conf-mode-hook 'visual-line-mode)
-
-;;;; python
-(setq python-indent 4)
-(with-eval-after-load 'python
-  (define-key python-mode-map (kbd "C-x p l")
-	      (lambda () (interactive)
-		(project-switch-project "/usr/lib/python3.10/"))))
-
+;;;; elisp
+(add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
 
 ;;;; c
 (setq c-default-style
@@ -319,20 +320,19 @@
 	(c-mode . "linux")
 	(other . "gnu")))
 
-(with-eval-after-load 'cc-mode
-  (define-key c-mode-map (kbd "C-x p l")
-	      (lambda () (interactive)
-		(project-switch-project "/usr/include/"))))
+;;;; python
+(setq python-indent 4)
 
 ;;;; java
-(add-hook 'java-mode-hook (lambda () (if (not buffer-read-only) (eglot-ensure))))
+;; (add-hook 'java-mode-hook (lambda () (if (not buffer-read-only) (eglot-ensure))))
 (add-hook 'java-mode-hook #'subword-mode)
 (add-to-list 'exec-path (file-truename "~/.emacs.d/var/jdtls/bin") t)
-(with-eval-after-load 'cc-mode
-  (define-key java-mode-map (kbd "C-x p l")
-	      (lambda () (interactive)
-		(project-switch-project "~/.local/opt/jdk11"))))
 
+;;;; markdown
+(setq markdown-fontify-code-blocks-natively t)
+(add-hook 'markdown-mode-hook 'visual-line-mode)
+(add-hook 'rst-mode-hook 'visual-line-mode)
+(add-hook 'conf-mode-hook 'visual-line-mode)
 
 ;;;; man
 (add-to-list 'display-buffer-alist
@@ -351,13 +351,26 @@
   (define-key rfc-mode-map (kbd "m") #'rfc-mode-browse))
 
 ;;; miscellaneous
-;;;; general
-(setq user-full-name "Iñaki Cornejo")
-
 ;;;; better defaults
 (repeat-mode)
-(setq view-read-only t)
+(winner-mode)
 (global-so-long-mode)
+(setq view-read-only t)
+(setq completions-detailed t)
+(setq use-short-answers t)
+(setq find-file-suppress-same-file-warnings t)
+(setq ring-bell-function 'ignore)
+(setq disabled-command-function nil)
+(setq read-buffer-completion-ignore-case t)
+(setq completions-format 'one-column)
+(setq dabbrev-check-all-buffers nil)
+
+;;;; files
+(setq auto-save-default nil)
+(setq backup-by-copying t)
+(setq create-lockfiles nil)
+(setq vc-follow-symlinks nil)
+(setq delete-by-moving-to-trash t)
 
 ;;;; visual
 (add-to-list 'default-frame-alist
@@ -368,21 +381,10 @@
 (tooltip-mode -1)
 (minions-mode)
 (setq minions-mode-line-lighter "λ")
-(set-face-attribute 'mode-line-active nil :inherit 'mode-line)
-(set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
-
-;;;; completion
-(setq completions-detailed t)
-(setq read-buffer-completion-ignore-case t)
-(setq completions-format 'one-column)
-(setq dabbrev-check-all-buffers nil)
 
 ;;;; bookmarks
 (setq bookmark-save-flag 1)
 (setq bookmark-search-size 8)
-
-;;;; window management
-(winner-mode)
 
 ;;;; history
 (savehist-mode)
@@ -393,29 +395,13 @@
 (setq doc-view-resolution 400)
 
 ;;;; text
-(add-hook 'org-mode-hook #'ws-butler-mode)
-(add-hook 'prog-mode-hook #'ws-butler-mode)
 (setq sentence-end-double-space nil)
 (setq require-final-newline t)
 (setq save-interprogram-paste-before-kill t)
 (setq-default fill-column 80)
-
-;;;;; coding system
 (set-default-coding-systems 'utf-8)
 
-;;;; files
-(setq auto-save-default nil)
-(setq backup-by-copying t)
-(setq create-lockfiles nil)
-(setq vc-follow-symlinks nil)
-(setq delete-by-moving-to-trash t)
-
 ;;;; etc
-(setq use-short-answers t)
-(setq native-comp-async-report-warnings-errors 'silent)
-(setq find-file-suppress-same-file-warnings t)
-(setq ring-bell-function 'ignore)
-(setq disabled-command-function nil)
 (setq initial-scratch-message
       (concat (replace-regexp-in-string "^" ";; " (cookie "~/org/art/quotes.txt"))
        "\n\n"))
@@ -423,13 +409,5 @@
 ;;; attic
 ;; (global-set-key (kbd "C-<next>") #'tab-next)
 ;; (global-set-key (kbd "C-<prior>") #'tab-previous)
-
-;;;; ace-window
-;; (global-set-key (kbd "C-c o") #'ace-window)
-;; (setq aw-scope 'frame)
-;; (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-
-;;;; shell
-;; (define-key shell-mode-map (kbd "C-c r") #'bash-completion-refresh)
-;; (define-key shell-mode-map (kbd "C-c C-r") #'bash-completion-refresh)
-;; (setq bash-completion-use-separate-processes t)
+;; (set-face-attribute 'mode-line-active nil :inherit 'mode-line)
+;; (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
