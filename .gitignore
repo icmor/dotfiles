@@ -4,4 +4,3 @@ vim/.vim/*
 
 emacs/.emacs.d/etc/*
 emacs/.emacs.d/var/*
-!emacs/.emacs.d/etc/custom.el
