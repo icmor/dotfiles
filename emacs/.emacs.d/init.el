@@ -169,7 +169,7 @@
 (setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
 (with-eval-after-load 'org
   (setq org-format-latex-options
-	(plist-put org-format-latex-options :scale 1.5)))
+	(plist-put org-format-latex-options :scale 2.0)))
 
 ;;;; capture
 (setq org-capture-templates
@@ -233,7 +233,7 @@
 (which-key-mode)
 
 ;;;; avy
-(setq avy-timeout-seconds 0.2)
+(setq avy-timeout-seconds 0.3)
 
 ;;;; comint
 (setq comint-prompt-read-only t)
