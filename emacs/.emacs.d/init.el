@@ -1,20 +1,16 @@
 ;;; -*- lexical-binding: t; -*-
 ;;; packages
 (require 'package)
-(add-to-list 'package-archives
-	     '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 
 ;;;; package list
 (setq package-selected-packages
       '(
 	avy
 	bash-completion
-	;; eglot
 	gcmh
 	hide-mode-line
 	imenu-list
-	;; lsp-mode
-	;; lsp-java
 	magit
 	markdown-mode
 	minions
@@ -32,7 +28,6 @@
 	ws-butler
 	))
 (package-install-selected-packages)
-;; (setq package-native-compile t)
 
 ;;;; litter
 (require 'no-littering)
@@ -41,12 +36,13 @@
       (no-littering-expand-var-file-name "auto-save-list/.saves-"))
 (setq backup-directory-alist
       `((".*" . ,(no-littering-expand-var-file-name "backup"))))
+(setq org-preview-latex-image-directory
+      (no-littering-expand-var-file-name "ltximg/"))
 (setq tramp-backup-directory-alist backup-directory-alist)
 (setq version-control t)
 (setq kept-new-versions 4)
 (setq kept-old-versions 2)
 (setq delete-old-versions t)
-;; (load custom-file t)
 
 ;;; general
 (setq find-function-C-source-directory
@@ -147,10 +143,7 @@
 
 ;;; org-mode
 ;;;; general
-(setq org-directory "~/org/")
 (setq org-agenda-files '("~/org/gtd/"))
-(setq org-preview-latex-image-directory
-      (no-littering-expand-var-file-name "ltximg/"))
 (setq org-modules '(ol-man ol-info org-habit))
 (setq org-log-into-drawer t)
 (setq org-return-follows-link t)
@@ -252,7 +245,6 @@
   (define-key vterm-mode-map (kbd "C-u") #'vterm--self-insert)
   (define-key vterm-mode-map (kbd "C-{") #'vterm--self-insert)
   (define-key vterm-mode-map (kbd "C-SPC") #'vterm-copy-mode)
-  (define-key vterm-copy-mode-map (kbd "C-c C-c") #'vterm-copy-mode-done)
   (define-key vterm-copy-mode-map (kbd "C-w") #'vterm-copy-mode-done)
   (define-key vterm-copy-mode-map (kbd "M-w") #'vterm-copy-mode-done))
 
@@ -284,9 +276,6 @@
 	 :port 6697
 	 :encryption tls)))
 
-;;;; calc
-;; (setq calc-prefer-frac t)
-
 ;;;; eww
 (setq eww-search-prefix "https://www.google.com/search?q=")
 
@@ -306,10 +295,6 @@
 		   (python-mode . "/usr/lib/python3.10/")
 		   (java-mode . "~/.local/opt/jdk11")))
 
-;;;; eglot
-;; (setq eglot-events-buffer-size 0)
-;; (setq eglot-autoshutdown t)
-
 ;;;; elisp
 (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
 
@@ -324,9 +309,7 @@
 (setq python-indent 4)
 
 ;;;; java
-;; (add-hook 'java-mode-hook (lambda () (if (not buffer-read-only) (eglot-ensure))))
 (add-hook 'java-mode-hook #'subword-mode)
-(add-to-list 'exec-path (file-truename "~/.emacs.d/var/jdtls/bin") t)
 
 ;;;; markdown
 (setq markdown-fontify-code-blocks-natively t)
@@ -411,3 +394,10 @@
 ;; (global-set-key (kbd "C-<prior>") #'tab-previous)
 ;; (set-face-attribute 'mode-line-active nil :inherit 'mode-line)
 ;; (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
+;; (setq eglot-events-buffer-size 0)
+;; (setq eglot-autoshutdown t)
+;; (add-to-list 'exec-path (file-truename "~/.emacs.d/var/jdtls/bin") t)
+;; (add-hook 'java-mode-hook (lambda () (if (not buffer-read-only) (eglot-ensure))))
+;; (setq package-native-compile t)
+;; (load custom-file t)
+;; (setq calc-prefer-frac t)

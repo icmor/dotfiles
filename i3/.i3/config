@@ -16,8 +16,8 @@ set $location "19:-99" # cdmx
 
 #===Startup Programs===#
 exec --no-startup-id i3-msg 'workspace $ws2'
-exec --no-startup-id ~/.fehbg
 exec --no-startup-id emacs --bg-daemon
+exec --no-startup-id ~/.fehbg
 exec --no-startup-id dunst
 exec --no-startup-id dropbox
 exec --no-startup-id lxqt-policykit-agent
@@ -154,8 +154,8 @@ bindsym $mod+Shift+i focus child
 bindsym $mod+o scratchpad show
 bindsym $mod+Shift+o move scratchpad
 
-# bindsym $mod+Left workspace prev
-# bindsym $mod+Right workspace next
+bindsym $mod+Left workspace prev
+bindsym $mod+Right workspace next
 
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
