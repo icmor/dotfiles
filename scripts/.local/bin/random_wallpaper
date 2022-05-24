@@ -1,0 +1,12 @@
+#!/bin/bash
+
+while true
+do
+    file="$(find ~/Dropbox/images/wallpaper | shuf -n 1)"
+    width="$(file --brief "$file" | grep -Po '[[:digit:]]{3,4} *(?=x)' | head -1)"
+    height="$(file --brief "$file" | grep -Po '(?<=x) *[[:digit:]]{3,4}' | head -1)"
+    if [[ $width -gt $height ]]; then
+	feh --bg-scale --no-fehbg "$file"
+	break
+    fi
+done
