@@ -215,6 +215,7 @@
 (setq wdired-allow-to-change-permissions t)
 (setq dired-listing-switches "-lhA")
 (setq image-dired-thumbnail-storage 'standard-x-large)
+(setq image-use-external-converter t)
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (with-eval-after-load 'dired
   (define-key dired-mode-map (kbd "C-M-o") #'dired-find-file-other-frame)
@@ -352,7 +353,8 @@
 (setq auto-save-default nil)
 (setq backup-by-copying t)
 (setq create-lockfiles nil)
-(setq vc-follow-symlinks nil)
+(setq vc-follow-symlinks t)
+(setq find-file-visit-truename t)
 (setq delete-by-moving-to-trash t)
 
 ;;;; visual
