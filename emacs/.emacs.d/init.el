@@ -114,6 +114,7 @@
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
 
 ;;;; better defaults
+(global-unset-key (kbd "C-x C-z"))
 (global-set-key (kbd "C-x f") #'find-file)
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "C-x k") #'kill-current-buffer)
@@ -214,7 +215,7 @@
 (setq dired-hide-details-hide-symlink-targets nil)
 (setq wdired-allow-to-change-permissions t)
 (setq dired-listing-switches "-lhA")
-(setq image-dired-thumbnail-storage 'standard-x-large)
+(setq image-dired-thumbnail-storage 'standard-large)
 (setq image-use-external-converter t)
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (with-eval-after-load 'dired
