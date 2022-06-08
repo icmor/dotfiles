@@ -26,16 +26,7 @@ exec --no-startup-id picom \
      		     --inactive-opacity=0.9 \
      		     --shadow-exclude "class_g = 'zoom'"
 exec --no-startup-id redshift -t 6500K:2500K -l $location
-exec --no-startup-id xidlehook \
-     		     --detect-sleep \
-		     --not-when-fullscreen \
-		     --not-when-audio \
-		     --timer 240 \
-		     'brightnessctl --save; brightnessctl set 0%' \
-		     'brightnessctl --restore' \
-		     --timer 15 \
-		     'brightnessctl --restore; systemctl suspend' \
-		     ''
+exec --no-startup-id xidle
 
 #===Program shortcuts===#
 bindsym $mod+shift+space exec --no-startup-id i3-dmenu-desktop

@@ -4,9 +4,9 @@ xidlehook \
     --detect-sleep \
     --not-when-fullscreen \
     --not-when-audio \
-    --timer 240 \
+    --timer 270 \
     'brightnessctl --save; brightnessctl set 0%' \
     'brightnessctl --restore' \
-    --timer 15 \
+    --timer 30 \
     'brightnessctl --restore; systemctl suspend' \
     '' &

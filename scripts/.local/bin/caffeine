@@ -1,10 +1,11 @@
 #!/bin/bash
 
-id=$(pgrep xidlehook)
-if [ -z "$id" ]; then
+IDLE=$(pgrep xidlehook)
+
+if [ -z $IDLE ]; then
     i3-msg "exec --no-startup-id xidle"
 else
-    kill -9 "$id"
+    kill -9 $IDLE
     coffee="☕"
     color="#B8860B"
 fi
