@@ -191,7 +191,7 @@
 	("mq" "Quotes" plain (file "art/quotes.txt")
 	 "%?\n%")
 	("c" "Tasks" entry (file+headline "gtd/gtd.org" "Tasks")
-         "* TODO %?\n")
+         "* TODO %?\nSCHEDULED: <%(org-read-date nil nil \"+1d\")>\n")
 	("h" "Homework" entry (file+headline "gtd/gtd.org" "Homework")
          "* TODO %?\n")
 	("e" "Events" entry (file+headline "gtd/gtd.org" "Events")
