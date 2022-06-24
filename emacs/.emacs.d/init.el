@@ -306,9 +306,6 @@
 		(python-mode . "/usr/lib/python3.10/")
 		(java-mode . "~/.local/opt/jdk11")))
 
-;;;; elisp
-(add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
-
 ;;;; c
 (setq c-default-style
       '((java-mode . "linux")
@@ -413,3 +410,4 @@
 ;; (setq package-native-compile t)
 ;; (load custom-file t)
 ;; (setq calc-prefer-frac t)
+;; (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
