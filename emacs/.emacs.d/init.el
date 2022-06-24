@@ -69,11 +69,11 @@
 (defun my/shell-other-window (arg)
   "Jump to a shell in other window"
   (interactive "P")
-    (if (and (eq major-mode 'shell-mode) (not arg))
+  (if (and (eq major-mode 'shell-mode) (not arg))
       (delete-window)
-      (shell (pop-to-buffer
-	      (if (not arg) "*shell*"
-		(format "*s%d*" (prefix-numeric-value arg)))))))
+    (shell (pop-to-buffer
+	    (if (not arg) "*shell*"
+	      (format "*s%d*" (prefix-numeric-value arg)))))))
 
 (defun my/vterm-toggle (arg)
   "Toggle a vterm window"
@@ -142,7 +142,6 @@
     (global-set-key (kbd "<f2>") #'my/shell-toggle)
     (global-set-key (kbd "C-<f2>") #'my/shell-other-window)))
 
-;;; org-mode
 ;;;; general
 (setq org-agenda-files '("~/org/gtd/"))
 (setq org-modules '(ol-man ol-info org-habit))
@@ -187,7 +186,7 @@
 	("mf" "Film" entry (file+headline "lists/film.org" "films to watch")
 	 "* %?\n")
 	("md" "Doc" entry (file+headline "lists/film.org" "docs to watch")
-	"* %?\n")
+	 "* %?\n")
 	("mq" "Quotes" plain (file "art/quotes.txt")
 	 "%?\n%")
 	("c" "Tasks" entry (file+headline "gtd/gtd.org" "Tasks")
@@ -304,8 +303,8 @@
 
 ;;;; stdlibs
 (setq stdlibs '((c-mode . "/usr/include")
-		   (python-mode . "/usr/lib/python3.10/")
-		   (java-mode . "~/.local/opt/jdk11")))
+		(python-mode . "/usr/lib/python3.10/")
+		(java-mode . "~/.local/opt/jdk11")))
 
 ;;;; elisp
 (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
@@ -331,17 +330,17 @@
 
 ;;;; man
 (add-to-list 'display-buffer-alist
-     '("\\`\\*Man .*\\*\\'" .
-       (display-buffer-reuse-mode-window
-        (inhibit-same-window . nil)
-        (mode . Man-mode))))
+	     '("\\`\\*Man .*\\*\\'" .
+	       (display-buffer-reuse-mode-window
+		(inhibit-same-window . nil)
+		(mode . Man-mode))))
 
 ;;;; rfc
 (add-to-list 'display-buffer-alist
-     '("\\`\\*rfc.*\\*\\'" .
-       (display-buffer-reuse-mode-window
-        (inhibit-same-window . nil)
-        (mode . rfc-mode))))
+	     '("\\`\\*rfc.*\\*\\'" .
+	       (display-buffer-reuse-mode-window
+		(inhibit-same-window . nil)
+		(mode . rfc-mode))))
 (with-eval-after-load 'rfc-mode
   (define-key rfc-mode-map (kbd "m") #'rfc-mode-browse))
 
@@ -400,7 +399,7 @@
 ;;;; etc
 (setq initial-scratch-message
       (concat (replace-regexp-in-string "^" ";; " (cookie "~/org/art/quotes.txt"))
-       "\n\n"))
+	      "\n\n"))
 
 ;;; attic
 ;; (global-set-key (kbd "C-<next>") #'tab-next)
