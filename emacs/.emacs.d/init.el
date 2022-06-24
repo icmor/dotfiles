@@ -164,6 +164,39 @@
   (setq org-format-latex-options
 	(plist-put org-format-latex-options :scale 2.0)))
 
+;;;; calendar
+(with-eval-after-load 'calendar
+  (defvar holiday-mexican-holidays
+    '((holiday-fixed 1 1 "Año Nuevo")
+      (holiday-fixed 2 5 "Día de la Constitución")
+      (holiday-fixed 3 21 "Natalicio de Benito Juárez")
+      (holiday-fixed 5 1 "Día del Trabajador")
+      (holiday-fixed 5 5 "Aniversario de la Batalla de Puebla")
+      (holiday-fixed 9 16 "Aniversario de la Independencia")
+      (holiday-fixed 11 20 "Día de la Revolución Mexicana")
+      (holiday-fixed 12 25 "Navidad")))
+
+  (defvar holiday-mexican-festivities
+    '((holiday-fixed 1 6 "Día de los Reyes Magos")
+      (holiday-fixed 2 14 "Día de San Valentín")
+      (holiday-easter-etc -7 "Domingo de Ramos")
+      (holiday-easter-etc 0 "Día de Pascua")
+      (holiday-fixed 4 30 "Día del Niño")
+      (holiday-fixed 5 10 "Día de las Madres")
+      (holiday-fixed 5 15 "Día del Docente")
+      (holiday-fixed 5 23 "Día del Estudiante")
+      (holiday-float 6 0 3 "Día del Padre")
+      (holiday-fixed 10 31 "Halloween")
+      (holiday-fixed 11 2 "Día de Muertos")
+      (holiday-fixed 12 24 "Nochebuena")
+      (holiday-fixed 12 28 "Día de los Inocentes")
+      (holiday-fixed 12 31 "Vispera de Año Nuevo")))
+
+  (setq calendar-holidays (append holiday-solar-holidays
+				  holiday-mexican-holidays
+				  holiday-mexican-festivities)))
+(setq org-agenda-include-diary t)
+
 ;;;; capture
 (setq org-capture-templates
       '(("i" "Inbox")
