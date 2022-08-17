@@ -36,6 +36,7 @@ alias ll='ls -Alh'
 alias l='ls -CAF'
 
 # convenient aliases
+alias wm="sudo mount /dev/nvme0n1p3 /mnt"
 alias ed="emacs -nw"
 alias gt="gio trash"
 alias open="xdg-open"

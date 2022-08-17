@@ -36,6 +36,7 @@ bindsym $mod+Shift+m exec --no-startup-id emacsclient -ca "" -e \
 	'(progn (org-agenda-list) (delete-other-windows))'
 bindsym $mod+Return exec --no-startup-id emacsclient -ca "" -e '(vterm)'
 bindsym $mod+Shift+Return exec --no-startup-id alacritty
+bindsym $mod+Shift+w exec --no-startup-id random-wallpaper
 
 mode "launcher" {
     bindsym f exec firefox-developer-edition; mode "default"
