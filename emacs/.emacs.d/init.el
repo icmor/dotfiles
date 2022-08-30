@@ -57,6 +57,13 @@
 (setq read-process-output-max (* 1024 1024))
 (setq auto-mode-case-fold nil)
 
+;;;; terminal vs gui
+(if (or (daemonp) (display-graphic-p))
+    (global-unset-key (kbd "C-z"))
+  (progn
+    (global-set-key (kbd "<f2>") #'my/shell-toggle)
+    (global-set-key (kbd "C-<f2>") #'my/shell-other-window)))
+
 ;;;; functions
 (defun my/shell-toggle (arg)
   "Toggle a shell window"
@@ -131,16 +138,9 @@
 (global-set-key (kbd "C-x C-<up>") #'windmove-swap-states-up)
 (global-set-key (kbd "C-x C-<down>") #'windmove-swap-states-down)
 
-;;;; org
+;;; org
 (global-set-key (kbd "C-c a") #'org-agenda-list)
 (global-set-key (kbd "C-c c") #'org-capture)
-
-;;; terminal vs gui
-(if (or (daemonp) (display-graphic-p))
-    (global-unset-key (kbd "C-z"))
-  (progn
-    (global-set-key (kbd "<f2>") #'my/shell-toggle)
-    (global-set-key (kbd "C-<f2>") #'my/shell-other-window)))
 
 ;;;; general
 (setq org-agenda-files '("~/org/gtd/"))

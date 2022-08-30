@@ -1,4 +1,4 @@
 #!/bin/bash
 
 file="$(find ~/Dropbox/images/wallpaper | shuf -n 1)"
-feh --bg-fill --no-fehbg "$file"
+feh --bg-fill "$file"
