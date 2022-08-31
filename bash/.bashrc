@@ -42,6 +42,7 @@ alias gt="gio trash"
 alias open="xdg-open"
 alias prime-run='__NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia'
 alias tlp-perf="sudo tlp ac -- CPU_ENERGY_PERF_POLICY_ON_AC=performance MAX_LOST_WORK_SECS_ON_AC=0 CPU_SCALING_GOVERNOR_ON_AC=performance"
+alias wlan="iwctl station wlan0"
 alias video='\
       xrandr --output HDMI-1-0 --auto \
       && systemd-inhibit \
