@@ -2,58 +2,83 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("letters"
- (filename . "~/Dropbox/org/craft/letters.org")
+(("modelado"
+ (filename . "~/Dropbox/universidad/modelado/modelado.org")
  (front-context-string . "")
+ (rear-context-string)
+ (position . 1))
+("games"
+ (filename . "~/Dropbox/org/lists/games.org")
+ (front-context-string . "")
+ (rear-context-string)
+ (position . 1))
+("probabilidad"
+ (filename . "~/Dropbox/universidad/probabilidad/probabilidad.org")
+ (front-context-string)
+ (rear-context-string)
+ (position . 1))
+("lineal"
+ (filename . "~/Dropbox/universidad/lineal/lineal.org")
+ (front-context-string)
+ (rear-context-string)
+ (position . 1))
+("things"
+ (filename . "~/Dropbox/org/gtd/things.org")
+ (front-context-string)
+ (rear-context-string)
+ (position . 1))
+("algebra"
+ (filename . "~/Dropbox/universidad/s02/superior_ii/algebra.org")
+ (front-context-string)
+ (rear-context-string)
+ (position . 1))
+("roam"
+ (filename . "~/Dropbox/roam/")
+ (front-context-string)
+ (rear-context-string)
+ (position . 121))
+("letters"
+ (filename . "~/Dropbox/org/craft/letters.org")
+ (front-context-string)
  (rear-context-string)
  (position . 1))
 ("quotes"
  (filename . "~/Dropbox/org/art/quotes.txt")
- (front-context-string . "")
+ (front-context-string)
  (rear-context-string)
  (position . 1))
 ("matematicas"
- (filename . "~/universidad/matematicas_aplicadas_ii/matematicas.org")
- (front-context-string . "")
- (rear-context-string . "(s)\\).\n\n")
- (position . 20102))
-("graficas"
- (filename . "~/universidad/graficas_juegos/graficas.org")
- (front-context-string . "")
+ (filename . "~/universidad/matematicas_aplicadas_iii/matematicas.org")
+ (front-context-string)
  (rear-context-string)
- (position . 1))
+ (position . 20102))
 ("prose"
  (filename . "~/org/craft/prose.org")
- (front-context-string . "")
+ (front-context-string)
  (rear-context-string)
  (position . 1))
 ("poetry"
  (filename . "~/org/craft/poetry.org")
- (front-context-string . "")
+ (front-context-string)
  (rear-context-string)
  (position . 1))
 ("lyrics"
  (filename . "~/org/craft/lyrics.org")
- (front-context-string . "")
+ (front-context-string)
  (rear-context-string)
  (position . 1))
 ("songs"
  (filename . "~/org/lists/songs.org")
- (front-context-string . "")
+ (front-context-string)
  (rear-context-string)
  (position . 1))
 ("misc"
  (filename . "~/org/lists/misc.org")
- (front-context-string . "")
+ (front-context-string)
  (rear-context-string)
  (position . 1))
 ("film"
  (filename . "~/org/lists/film.org")
- (front-context-string . "")
- (rear-context-string)
- (position . 1))
-("purchase"
- (filename . "~/org/gtd/purchase.org")
  (front-context-string)
  (rear-context-string)
  (position . 1))
@@ -63,10 +88,10 @@
  (rear-context-string)
  (position . 1))
 ("org-refile-last-stored"
- (filename . "~/org/gtd/inbox.org")
- (front-context-string . "")
- (rear-context-string . "bilidad\n")
- (position . 962))
+ (filename . "~/Dropbox/org/gtd/things.org")
+ (front-context-string)
+ (rear-context-string)
+ (position . 4174))
 ("blocks"
  (filename . "~/.i3/i3blocks.conf")
  (front-context-string)
@@ -74,11 +99,6 @@
  (position . 1))
 ("i3"
  (filename . "~/.i3/config")
- (front-context-string)
- (rear-context-string)
- (position . 1))
-("notes"
- (filename . "~/org/roam/notes/")
  (front-context-string)
  (rear-context-string)
  (position . 1))

@@ -6,7 +6,6 @@
 ;;;; package list
 (setq package-selected-packages
       '(
-	async
 	avy
 	bash-completion
 	ess
@@ -51,10 +50,6 @@
 (setq find-function-C-source-directory
       "/home/pink/.cache/yay/emacs-git/src/emacs-git/src")
 (setq native-comp-async-report-warnings-errors 'silent)
-
-;;;; async
-(async-bytecomp-package-mode 1)
-(dired-async-mode 1)
 
 ;;;; doom hacks
 (gcmh-mode)
@@ -158,6 +153,8 @@
 (setq org-return-follows-link t)
 (setq org-capture-bookmark nil)
 (setq org-list-allow-alphabetical t)
+(setq org-habit-preceding-days 30)
+(setq org-hierarchical-todo-statistics nil)
 (setq org-tag-alist '(("homework" . ?h) ("exam" . ?x) ("event" . ?e)))
 (setq org-refile-targets '((nil . (:maxlevel . 3))
 			   (org-agenda-files . (:level . 1))))
@@ -304,6 +301,7 @@
   (define-key vterm-mode-map [f2] nil)
   (define-key vterm-mode-map (kbd "C-M-v") nil)
   (define-key vterm-mode-map (kbd "C-S-M-v") nil)
+  (define-key vterm-mode-map (kbd "<f11>") nil)
   (define-key vterm-mode-map (kbd "C-u") #'vterm--self-insert)
   (define-key vterm-mode-map (kbd "C-{") #'vterm--self-insert)
   (define-key vterm-mode-map (kbd "C-SPC") #'vterm-copy-mode)

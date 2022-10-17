@@ -14,6 +14,7 @@ HISTCONTROL=erasedups
 HISTSIZE=-1
 HISTFILESIZE=-1
 PROMPT_DIRTRIM=2
+WSL="/mnt/c/Users/pink"
 export EDITOR="vim"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
