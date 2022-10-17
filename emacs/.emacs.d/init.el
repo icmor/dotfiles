@@ -6,8 +6,10 @@
 ;;;; package list
 (setq package-selected-packages
       '(
+	async
 	avy
 	bash-completion
+	ess
 	gcmh
 	hide-mode-line
 	imenu-list
@@ -18,6 +20,7 @@
 	org-contrib
 	org-roam
 	pdf-tools
+	pyvenv
 	racket-mode
 	rfc-mode
 	transpose-frame
@@ -49,20 +52,17 @@
       "/home/pink/.cache/yay/emacs-git/src/emacs-git/src")
 (setq native-comp-async-report-warnings-errors 'silent)
 
+;;;; async
+(async-bytecomp-package-mode 1)
+(dired-async-mode 1)
+
 ;;;; doom hacks
 (gcmh-mode)
-(setq gcmh-idle-delay 'auto
-      gcmh-auto-idle-delay-factor 10
-      gcmh-high-cons-threshold (* 16 1024 1024))
+(setq gcmh-idle-delay 'auto)
+(setq gcmh-auto-idle-delay-factor 10)
+(setq gcmh-high-cons-threshold (* 16 1024 1024))
 (setq read-process-output-max (* 1024 1024))
 (setq auto-mode-case-fold nil)
-
-;;;; terminal vs gui
-(if (or (daemonp) (display-graphic-p))
-    (global-unset-key (kbd "C-z"))
-  (progn
-    (global-set-key (kbd "<f2>") #'my/shell-toggle)
-    (global-set-key (kbd "C-<f2>") #'my/shell-other-window)))
 
 ;;;; functions
 (defun my/shell-toggle (arg)
@@ -113,8 +113,6 @@
 (global-set-key (kbd "C-c n") 'km/roam)
 
 ;;;; global
-(global-set-key (kbd "<f2>") #'my/vterm-toggle)
-(global-set-key (kbd "C-<f2>") #'vterm-other-window)
 (global-set-key (kbd "C-x p l") #'my/project-stdlibs)
 (global-set-key (kbd "M-o") 'avy-goto-char-timer)
 (global-set-key (kbd "S-<f11>") #'hide-mode-line-mode)
@@ -138,6 +136,17 @@
 (global-set-key (kbd "C-x C-<up>") #'windmove-swap-states-up)
 (global-set-key (kbd "C-x C-<down>") #'windmove-swap-states-down)
 
+;;;; terminal vs gui
+(if (or (daemonp) (display-graphic-p))
+    (progn
+      (global-unset-key (kbd "C-z"))
+      (global-set-key (kbd "<f2>") #'my/vterm-toggle)
+      (global-set-key (kbd "C-<f2>") #'vterm-other-window))
+
+  (progn
+    (global-set-key (kbd "<f2>") #'my/shell-toggle)
+    (global-set-key (kbd "C-<f2>") #'my/shell-other-window)))
+
 ;;; org
 (global-set-key (kbd "C-c a") #'org-agenda-list)
 (global-set-key (kbd "C-c c") #'org-capture)
@@ -149,6 +158,7 @@
 (setq org-return-follows-link t)
 (setq org-capture-bookmark nil)
 (setq org-list-allow-alphabetical t)
+(setq org-tag-alist '(("homework" . ?h) ("exam" . ?x) ("event" . ?e)))
 (setq org-refile-targets '((nil . (:maxlevel . 3))
 			   (org-agenda-files . (:level . 1))))
 
@@ -202,14 +212,20 @@
       '(("i" "Inbox")
 	("ii" "Inbox" entry (file+headline "gtd/inbox.org" "Inbox")
 	 "* TODO %?\n")
-	("ie" "Events" entry (file+headline "gtd/inbox.org" "Events")
-	 "* TODO %?\n")
 	("iw" "Waiting" entry (file+headline "gtd/inbox.org" "Waiting")
 	 "* TODO %?\n")
 	("id" "Ideas" entry (file+headline "gtd/inbox.org" "Ideas")
 	 "* %?\n")
-	("ib" "Buy" entry (file+headline "gtd/purchase.org" "Things")
+	("ib" "Buy" entry (file+headline "gtd/things.org" "Things")
 	 "* %?\n")
+	("c" "Tasks" entry (file+headline "gtd/gtd.org" "Tasks")
+         "* TODO %?\n")
+	("h" "Homework" entry (file+headline "gtd/gtd.org" "Homework")
+         "* TODO %?\n")
+	("x" "Exams" entry (file+headline "gtd/gtd.org" "Exams")
+         "* TODO %?\n")
+	("e" "Events" entry (file+headline "gtd/gtd.org" "Events")
+         "* TODO %?\n")
 	("p" "Projects")
 	("pp" "Projects" entry (file+headline "gtd/projects.org" "Projects")
 	 "* %?\n")
@@ -222,14 +238,16 @@
 	 "* %?\n")
 	("mq" "Quotes" plain (file "art/quotes.txt")
 	 "%?\n%")
-	("c" "Tasks" entry (file+headline "gtd/gtd.org" "Tasks")
-         "* TODO %?\nSCHEDULED: <%(org-read-date nil nil \"+1d\")>\n")
-	("h" "Homework" entry (file+headline "gtd/gtd.org" "Homework")
-         "* TODO %?\n")
-	("e" "Events" entry (file+headline "gtd/gtd.org" "Events")
-         "* TODO %?\n")
 	("j" "Journal" plain (file+olp+datetree "life/journal.org.gpg")
 	 "%?")))
+
+;;;; babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (python . t)))
+
+(setq org-confirm-babel-evaluate nil)
 
 ;;;; org-roam
 (setq org-roam-directory (file-truename "~/roam"))
@@ -281,7 +299,7 @@
 (bash-completion-setup)
 
 ;;;; vterm
-(setq vterm-max-scrollback 10000)
+(setq vterm-max-scrollback 100000)
 (with-eval-after-load 'vterm
   (define-key vterm-mode-map [f2] nil)
   (define-key vterm-mode-map (kbd "C-M-v") nil)
@@ -348,6 +366,8 @@
 
 ;;;; python
 (setq python-indent 4)
+(with-eval-after-load 'python
+  (pyvenv-mode))
 
 ;;;; java
 (add-hook 'java-mode-hook #'subword-mode)
