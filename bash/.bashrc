@@ -48,12 +48,6 @@ alias video='\
       xrandr --output HDMI-1-0 --auto \
       && systemd-inhibit \
       --what=handle-lid-switch sleep 1d'
-alias bluetooth='\
-      sudo modprobe btusb\
-      && sudo systemctl start bluetooth\
-      && bluetoothctl;\
-      sudo systemctl stop bluetooth;\
-      sudo rmmod btusb'
 
 # functions
 docker_latest(){
