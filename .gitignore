@@ -1,6 +1,2 @@
-vim/.vim/*
-!vim/.vim/undo
-!vim/.vim/swapfiles
-
 emacs/.emacs.d/etc/*
 emacs/.emacs.d/var/*
