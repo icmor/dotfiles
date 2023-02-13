@@ -103,6 +103,10 @@
   (interactive)
   (dired--find-file #'find-file-other-frame (dired-get-file-for-visit)))
 
+(defun my/launch (command)
+  (interactive (list (read-shell-command "$ ")))
+  (start-process-shell-command command nil command))
+
 ;;; bindings
 ;;;; prefix maps
 (define-prefix-command 'km/roam)
@@ -110,6 +114,7 @@
 
 ;;;; global
 (global-set-key (kbd "C-x p l") #'my/project-stdlibs)
+(global-set-key (kbd "C-c SPC") #'my/launch)
 (global-set-key (kbd "M-o") 'avy-goto-char-timer)
 (global-set-key (kbd "S-<f11>") #'hide-mode-line-mode)
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
