@@ -14,7 +14,6 @@ HISTCONTROL=erasedups
 HISTSIZE=-1
 HISTFILESIZE=-1
 PROMPT_DIRTRIM=2
-WSL="/mnt/c/Users/pink"
 export EDITOR="vim"
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
@@ -37,9 +36,8 @@ alias ll='ls -Alh'
 alias l='ls -CAF'
 
 # convenient aliases
-alias wm="sudo mount /dev/nvme0n1p3 /mnt"
 alias ed="emacs -nw"
-alias gt="gio trash"
+alias trash="gio trash"
 alias open="xdg-open"
 alias prime-run='__NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia'
 alias tlp-perf="sudo tlp ac -- CPU_ENERGY_PERF_POLICY_ON_AC=performance MAX_LOST_WORK_SECS_ON_AC=0 CPU_SCALING_GOVERNOR_ON_AC=performance"
