@@ -268,7 +268,6 @@
 ;;;; dired
 (setq dired-dwim-target t)
 (setq dired-free-space nil)
-(setq dired-hide-details-hide-symlink-targets nil)
 (setq wdired-allow-to-change-permissions t)
 (setq dired-listing-switches "-lhA")
 (setq image-dired-thumbnail-storage 'standard-large)
@@ -461,3 +460,4 @@
 ;; (load custom-file t)
 ;; (setq calc-prefer-frac t)
 ;; (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
+;; (setq dired-hide-details-hide-symlink-targets nil)
