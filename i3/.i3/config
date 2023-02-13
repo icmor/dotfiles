@@ -25,7 +25,6 @@ exec --no-startup-id picom \
      		     --no-fading-openclose \
      		     --inactive-opacity=0.9 \
      		     --shadow-exclude "class_g = 'zoom'"
-exec --no-startup-id redshift -t 6500K:2500K -l $location
 exec --no-startup-id xidle
 
 #===Program shortcuts===#
@@ -39,19 +38,13 @@ bindsym $mod+Shift+Return exec --no-startup-id alacritty
 bindsym $mod+Shift+w exec --no-startup-id random-wallpaper
 
 mode "launcher" {
-    bindsym f exec firefox-developer-edition; mode "default"
-    bindsym z exec zoom; mode "default"
-    bindsym d exec --no-startup-id discord; mode "default"
-    bindsym s exec --no-startup-id spotify; mode "default"
     bindsym c exec --no-startup-id calibre; mode "default"
+    bindsym d exec --no-startup-id discord; mode "default"
+    bindsym f exec firefox-developer-edition; mode "default"
+    bindsym s exec --no-startup-id spotify-launcher; mode "default"
+    bindsym t exec --no-startup-id telegram-desktop; mode "default"
     bindsym v exec --no-startup-id vlc; mode "default"
-
-    bindsym $mod+f exec firefox-developer-edition; mode "default"
-    bindsym $mod+z exec zoom; mode "default"
-    bindsym $mod+d exec --no-startup-id discord; mode "default"
-    bindsym $mod+s exec --no-startup-id spotify; mode "default"
-    bindsym $mod+c exec --no-startup-id calibre; mode "default"
-    bindsym $mod+v exec --no-startup-id vlc; mode "default"
+    bindsym z exec zoom; mode "default"
 
     bindsym Escape mode "default"
     bindsym Return mode "default"
@@ -98,7 +91,7 @@ bindsym Shift+XF86KbdBrightnessDown \
 #===Window Actions===#
 assign [class="discord"] → $ws4
 assign [class="zoom"] → $ws4
-assign [class="telegram-desktop"] → $ws4
+assign [class="TelegramDesktop"] → $ws4
 assign [class="Slack"] → $ws4
 for_window [class="Spotify"] move to workspace $ws5
 
