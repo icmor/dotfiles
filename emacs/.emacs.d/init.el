@@ -10,6 +10,7 @@
 	bash-completion
 	ess
 	gcmh
+	haskell-mode
 	hide-mode-line
 	imenu-list
 	magit
@@ -364,6 +365,9 @@
 (setq python-indent 4)
 (with-eval-after-load 'python
   (pyvenv-mode))
+
+;;;; haskell
+(setq haskell-process-type 'stack-ghci)
 
 ;;;; java
 (add-hook 'java-mode-hook #'subword-mode)
