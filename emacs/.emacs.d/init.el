@@ -330,9 +330,11 @@
 (global-set-key (kbd "C-x M-g") #'magit-file-dispatch)
 
 ;;;; pdf-tools
-(pdf-loader-install)
 (setq pdf-view-continuous nil)
 (setq pdf-view-resize-factor 1.1)
+
+;;;; calc
+(setq calc-group-digits t)
 
 ;;;; mail
 (setq user-full-name "Iñaki Cornejo")
@@ -358,8 +360,6 @@
 
 ;;; programming
 ;;;; general
-(global-tree-sitter-mode)
-(show-paren-mode)
 (setq show-paren-delay 0)
 (setq show-paren-style 'mixed)
 (setq show-paren-context-when-offscreen t)
@@ -368,20 +368,29 @@
 (add-hook 'prog-mode-hook #'ws-butler-mode)
 (define-key my-km-prog (kbd "l") #'my-project-stdlibs)
 
+;;;; tree-sitter
+(when (treesit-ready-p 'python t)
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode)))
+(when (treesit-ready-p 'bash t)
+  (add-to-list 'major-mode-remap-alist '(sh-mode . bash-ts-mode)))
+(when (treesit-ready-p 'c t)
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode)))
+
 ;;;; stdlibs
-(setq stdlibs '((c-mode . "/usr/include")
-		(python-mode . "/usr/lib/python3.10/")
+(setq stdlibs '((c-ts-mode . "/usr/include")
+		(python-ts-mode . "/usr/lib/python3.10/")
 		(java-mode . "~/.local/opt/jdk11")))
 
 ;;;; c
 (setq c-default-style
       '((java-mode . "linux")
 	(awk-mode . "awk")
-	(c-mode . "linux")
+	(c-ts-mode . "linux")
 	(other . "gnu")))
 
 ;;;; python
 (setq python-indent 4)
+(setq python-check-command "/usr/bin/flake8")
 (with-eval-after-load 'python
   (pyvenv-mode))
 
@@ -435,6 +444,10 @@
 (setq vc-follow-symlinks t)
 (setq find-file-visit-truename t)
 (setq delete-by-moving-to-trash t)
+
+;;;; scrolling
+(pixel-scroll-precision-mode)
+(setq mouse-wheel-progressive-speed nil)
 
 ;;;; visual
 (add-to-list 'default-frame-alist
