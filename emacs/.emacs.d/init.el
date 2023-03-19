@@ -400,11 +400,15 @@
 ;;;; java
 (add-hook 'java-mode-hook #'subword-mode)
 
+;;;;; asm
+(setq asm-comment-char ?\#)
+
 ;;;; markdown
 (setq markdown-fontify-code-blocks-natively t)
+(setq markdown-command "pandoc --quiet -f gfm -s")
 (add-hook 'markdown-mode-hook 'visual-line-mode)
-(add-hook 'rst-mode-hook 'visual-line-mode)
-(add-hook 'conf-mode-hook 'visual-line-mode)
+(add-hook 'rst-mode-hook #'visual-line-mode)
+(add-hook 'conf-mode-hook #'visual-line-mode)
 
 ;;;; man
 (add-to-list 'display-buffer-alist
