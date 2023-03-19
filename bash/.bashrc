@@ -74,7 +74,7 @@ gcd (){
 }
 
 # emacs
-if [[ "${INSIDE_EMACS}" == *"comint"* ]]; then
+if [[ "$INSIDE_EMACS" == *"comint"* ]]; then
     unset COLUMNS
     export PAGER=cat
     export TERM=dumb-color
@@ -86,4 +86,6 @@ elif [[ "$INSIDE_EMACS" = 'vterm' ]]; then
 	vterm_printf "51;A$(whoami)@$(cat /etc/hostname):$(pwd)"
     }
     PS1=$PS1'\[$(vterm_prompt_end)\]'
+elif [[ -n "$EMACS_BASH_COMPLETE" ]]; then
+    unset HISTFILE
 fi
