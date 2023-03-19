@@ -288,16 +288,34 @@
 
 ;;;; comint
 (setq comint-prompt-read-only t)
+(add-hook 'comint-mode-hook #'electric-pair-local-mode)
 
 ;;;; shell
 (setq shell-command-prompt-show-cwd t)
 (setq ansi-color-for-comint-mode t)
 (bash-completion-setup)
+(defun my-shell-mode-hook ()
+  "Custom `shell-mode' behaviours."
+  ;; Kill the buffer when the shell process exits.
+  (let* ((proc (get-buffer-process (current-buffer)))
+         (sentinel (process-sentinel proc)))
+    (set-process-sentinel
+     proc
+     `(lambda (process signal)
+        ;; Call the original process sentinel first.
+        (funcall #',sentinel process signal)
+        ;; Kill the buffer on an exit signal.
+        (and (memq (process-status process) '(exit signal))
+             (buffer-live-p (process-buffer process))
+             (kill-buffer (process-buffer process)))))))
+
+(add-hook 'shell-mode-hook 'my-shell-mode-hook)
 
 ;;;; vterm
 (setq vterm-max-scrollback 100000)
 (with-eval-after-load 'vterm
-  (define-key vterm-mode-map [f2] nil)
+  (define-key vterm-mode-map [f1] nil)
+  (define-key vterm-mode-map (kbd "M-!") nil)
   (define-key vterm-mode-map (kbd "C-M-v") nil)
   (define-key vterm-mode-map (kbd "C-S-M-v") nil)
   (define-key vterm-mode-map (kbd "<f11>") nil)
