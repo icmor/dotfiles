@@ -33,7 +33,7 @@ bindsym $mod+e exec pcmanfm
 bindsym $mod+m exec --no-startup-id emacsclient -nca ""
 bindsym $mod+Shift+m exec --no-startup-id emacsclient -ca "" -e \
 	'(progn (org-agenda-list) (delete-other-windows))'
-bindsym $mod+Return exec --no-startup-id emacsclient -ca "" -e '(vterm)'
+bindsym $mod+Return exec --no-startup-id emacsclient -ca "" -e '(shell)'
 bindsym $mod+Shift+Return exec --no-startup-id alacritty
 bindsym $mod+Shift+w exec --no-startup-id random-wallpaper
 
