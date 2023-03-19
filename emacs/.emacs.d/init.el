@@ -8,7 +8,7 @@
       '(
 	avy
 	bash-completion
-	ess
+	;; ess
 	gcmh
 	haskell-mode
 	hide-mode-line
@@ -21,11 +21,9 @@
 	org-roam
 	pdf-tools
 	pyvenv
-	racket-mode
-	rfc-mode
+	;; racket-mode
+	;; rfc-mode
 	transpose-frame
-	tree-sitter
-	tree-sitter-langs
 	vterm
 	which-key
 	ws-butler
@@ -48,8 +46,6 @@
 (setq delete-old-versions t)
 
 ;;; general
-(setq find-function-C-source-directory
-      "/home/pink/.cache/yay/emacs-git/src/emacs-git/src")
 (setq native-comp-async-report-warnings-errors 'silent)
 
 ;;;; doom hacks
@@ -61,7 +57,7 @@
 (setq auto-mode-case-fold nil)
 
 ;;;; functions
-(defun my/shell-toggle (arg)
+(defun my-shell-toggle (arg)
   "Toggle a shell window"
   (interactive "P")
   (if (and (eq major-mode 'shell-mode) (not arg))
@@ -69,7 +65,7 @@
     (shell (if (not arg) nil
 	     (format "*s%d*" (prefix-numeric-value arg))))))
 
-(defun my/shell-other-window (arg)
+(defun my-shell-other-window (arg)
   "Jump to a shell in other window"
   (interactive "P")
   (if (and (eq major-mode 'shell-mode) (not arg))
@@ -78,7 +74,7 @@
 	    (if (not arg) "*shell*"
 	      (format "*s%d*" (prefix-numeric-value arg)))))))
 
-(defun my/vterm-toggle (arg)
+(defun my-vterm-toggle (arg)
   "Toggle a vterm window"
   (interactive "P")
   (if (and (eq major-mode 'vterm-mode)
@@ -86,13 +82,13 @@
       (previous-buffer)
     (call-interactively #'vterm)))
 
-(defun my/project-stdlibs ()
+(defun my-project-stdlibs ()
   (interactive)
   (let ((dir
 	 (cdr (assq major-mode (if (boundp 'stdlibs) stdlibs nil)))))
     (if dir (project-switch-project dir))))
 
-(defun my/org-sort (arg)
+(defun my-org-sort (arg)
   (interactive "P")
   (org-map-entries
    (lambda () (org-sort-entries nil ?a))
@@ -103,21 +99,24 @@
   (interactive)
   (dired--find-file #'find-file-other-frame (dired-get-file-for-visit)))
 
-(defun my/launch (command)
+(defun my-launch (command)
   (interactive (list (read-shell-command "$ ")))
   (start-process-shell-command command nil command))
 
 ;;; bindings
 ;;;; prefix maps
-(define-prefix-command 'km/roam)
-(global-set-key (kbd "C-c n") 'km/roam)
+(define-prefix-command #'my-km-roam)
+(global-set-key (kbd "C-c n") #'my-km-roam)
+(define-prefix-command #'my-km-prog)
+(global-set-key (kbd "C-c p") #'my-km-prog)
 
 ;;;; global
-(global-set-key (kbd "C-x p l") #'my/project-stdlibs)
-(global-set-key (kbd "C-c SPC") #'my/launch)
+(global-set-key (kbd "C-c SPC") #'my-launch)
 (global-set-key (kbd "M-o") 'avy-goto-char-timer)
 (global-set-key (kbd "S-<f11>") #'hide-mode-line-mode)
 (global-set-key (kbd "C-h C-m") #'man)	; same as C-h RET
+(global-set-key (kbd "<f2>") #'my-shell-toggle)
+(global-set-key (kbd "C-<f2>") #'my-shell-other-window)
 
 ;;;; better defaults
 (global-unset-key (kbd "C-x C-z"))
@@ -138,15 +137,11 @@
 (global-set-key (kbd "C-x C-<down>") #'windmove-swap-states-down)
 
 ;;;; terminal vs gui
-(if (or (daemonp) (display-graphic-p))
+(if (or (daemonp) window-system)
     (progn
-      (global-unset-key (kbd "C-z"))
-      (global-set-key (kbd "<f2>") #'my/vterm-toggle)
-      (global-set-key (kbd "C-<f2>") #'vterm-other-window))
-
-  (progn
-    (global-set-key (kbd "<f2>") #'my/shell-toggle)
-    (global-set-key (kbd "C-<f2>") #'my/shell-other-window)))
+      (global-set-key (kbd "<f1>") #'my-vterm-toggle)
+      (global-set-key (kbd "C-<f1>") #'vterm-other-window)
+      (pdf-loader-install)))
 
 ;;; org
 (global-set-key (kbd "C-c a") #'org-agenda-list)
@@ -254,12 +249,12 @@
 ;;;; org-roam
 (setq org-roam-directory (file-truename "~/roam"))
 (with-eval-after-load 'org-roam-mode (org-roam-db-autosync-enable))
-(define-key km/roam (kbd "a") #'org-roam-alias-add)
-(define-key km/roam (kbd "c") #'org-roam-capture)
-(define-key km/roam (kbd "f") #'org-roam-node-find)
-(define-key km/roam (kbd "g") #'org-roam-graph)
-(define-key km/roam (kbd "i") #'org-roam-node-insert)
-(define-key km/roam (kbd "l") #'org-roam-buffer-toggle)
+(define-key my-km-roam (kbd "a") #'org-roam-alias-add)
+(define-key my-km-roam (kbd "c") #'org-roam-capture)
+(define-key my-km-roam (kbd "f") #'org-roam-node-find)
+(define-key my-km-roam (kbd "g") #'org-roam-graph)
+(define-key my-km-roam (kbd "i") #'org-roam-node-insert)
+(define-key my-km-roam (kbd "l") #'org-roam-buffer-toggle)
 
 (setq org-roam-capture-templates
       '(("d" "default" plain "%?" :target
@@ -353,6 +348,7 @@
 (setq outline-minor-mode-cycle t)
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
+(define-key my-km-prog (kbd "l") #'my-project-stdlibs)
 
 ;;;; stdlibs
 (setq stdlibs '((c-mode . "/usr/include")
@@ -408,9 +404,9 @@
 (setq completions-detailed t)
 (setq use-short-answers t)
 (setq find-file-suppress-same-file-warnings t)
-(setq ring-bell-function 'ignore)
 (setq disabled-command-function nil)
 (setq read-buffer-completion-ignore-case t)
+(setq ring-bell-function 'ignore)
 (setq completions-format 'one-column)
 (setq dabbrev-check-all-buffers nil)
 
@@ -427,10 +423,10 @@
 	     '(font . "Source Code Pro-14"))
 (load-theme 'modus-vivendi t)
 (setq bookmark-set-fringe-mark nil)
+(setq minions-mode-line-lighter "λ")
 (blink-cursor-mode -1)
 (tooltip-mode -1)
 (minions-mode)
-(setq minions-mode-line-lighter "λ")
 
 ;;;; bookmarks
 (setq bookmark-save-flag 1)
@@ -470,3 +466,4 @@
 ;; (setq calc-prefer-frac t)
 ;; (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
 ;; (setq dired-hide-details-hide-symlink-targets nil)
+;; (show-paren-mode)
