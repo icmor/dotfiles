@@ -2,96 +2,88 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("modelado"
- (filename . "~/Dropbox/universidad/modelado/modelado.org")
- (front-context-string . "")
+(("writing"
+ (filename . "~/Dropbox/org/writing.org")
+ (front-context-string . "# -*- bu")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 25676 51232 443808 32000))
+("cheatsheet"
+ (filename . "~/Dropbox/roam/textbooks/math_cheatsheet.pdf")
+ (position . 1)
+ (last-modified 25672 24918 32720 269000)
+ (page . 1)
+ (slice)
+ (size . fit-width)
+ (origin 0.0 . 0.0)
+ (handler . pdf-view-bookmark-jump-handler))
+("org-refile-last-stored"
+ (filename . "~/Dropbox/org/gtd.org")
+ (front-context-string . "** TODO ")
+ (rear-context-string . "* Tasks\n")
+ (position . 9)
+ (last-modified 25672 15360 349380 59000))
+("self"
+ (filename . "~/Dropbox/writing/self.org")
+ (front-context-string . "# -*- bu")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 25660 53752 902792 522000))
+("projects"
+ (filename . "~/Dropbox/org/projects.org")
+ (front-context-string . "* Now\n**")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 25660 52904 188403 713000))
+("songs"
+ (filename . "~/Dropbox/org/songs.org")
+ (front-context-string . "* songs\n")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 25660 52898 116367 318000))
+("bash"
+ (filename . "~/dotfiles/bash/.bashrc")
+ (front-context-string . "#\n# ~/.b")
  (rear-context-string)
  (position . 1))
-("games"
- (filename . "~/Dropbox/org/lists/games.org")
- (front-context-string . "")
+("matematicas"
+ (filename . "~/Dropbox/universidad/matematicas_aplicadas_iii/matematicas.org")
+ (front-context-string . "#+title:")
  (rear-context-string)
  (position . 1))
-("probabilidad"
- (filename . "~/Dropbox/universidad/probabilidad/probabilidad.org")
- (front-context-string)
+("arquitectura"
+ (filename . "~/Dropbox/universidad/arquitectura/arquitectura.org")
+ (front-context-string . "#+title:")
+ (rear-context-string)
+ (position . 1))
+("automatas"
+ (filename . "~/universidad/automatas/automatas.org")
+ (front-context-string . "#+title:")
  (rear-context-string)
  (position . 1))
 ("lineal"
- (filename . "~/Dropbox/universidad/lineal/lineal.org")
+ (filename . "~/universidad/lineal/lineal.org")
  (front-context-string)
  (rear-context-string)
  (position . 1))
 ("things"
- (filename . "~/Dropbox/org/gtd/things.org")
+ (filename . "~/org/things.org")
  (front-context-string)
  (rear-context-string)
- (position . 1))
-("algebra"
- (filename . "~/Dropbox/universidad/s02/superior_ii/algebra.org")
- (front-context-string)
- (rear-context-string)
- (position . 1))
-("roam"
- (filename . "~/Dropbox/roam/")
- (front-context-string)
- (rear-context-string)
- (position . 121))
+ (position . 1)
+ (last-modified 25664 13847 219392 427000))
 ("letters"
- (filename . "~/Dropbox/org/craft/letters.org")
+ (filename . "~/org/writing/letters.org")
  (front-context-string)
  (rear-context-string)
- (position . 1))
-("quotes"
- (filename . "~/Dropbox/org/art/quotes.txt")
- (front-context-string)
- (rear-context-string)
- (position . 1))
-("matematicas"
- (filename . "~/universidad/matematicas_aplicadas_iii/matematicas.org")
- (front-context-string)
- (rear-context-string)
- (position . 20102))
-("prose"
- (filename . "~/org/craft/prose.org")
- (front-context-string)
- (rear-context-string)
- (position . 1))
-("poetry"
- (filename . "~/org/craft/poetry.org")
- (front-context-string)
- (rear-context-string)
- (position . 1))
-("lyrics"
- (filename . "~/org/craft/lyrics.org")
- (front-context-string)
- (rear-context-string)
- (position . 1))
-("songs"
- (filename . "~/org/lists/songs.org")
- (front-context-string)
- (rear-context-string)
- (position . 1))
+ (position . 1)
+ (last-modified 25660 29556 727193 413000))
 ("misc"
- (filename . "~/org/lists/misc.org")
+ (filename . "~/org/misc.org")
  (front-context-string)
  (rear-context-string)
- (position . 1))
-("film"
- (filename . "~/org/lists/film.org")
- (front-context-string)
- (rear-context-string)
- (position . 1))
-("self"
- (filename . "~/org/life/self.org")
- (front-context-string)
- (rear-context-string)
- (position . 1))
-("org-refile-last-stored"
- (filename . "~/Dropbox/org/gtd/things.org")
- (front-context-string)
- (rear-context-string)
- (position . 4174))
+ (position . 1)
+ (last-modified 25660 52883 803121 692000))
 ("blocks"
  (filename . "~/.i3/i3blocks.conf")
  (front-context-string)
@@ -102,31 +94,18 @@
  (front-context-string)
  (rear-context-string)
  (position . 1))
-("fun"
- (filename . "~/org/lists/fun.org")
- (front-context-string)
- (rear-context-string)
- (position . 1))
-("projects"
- (filename . "~/org/gtd/projects.org")
- (front-context-string)
- (rear-context-string)
- (position . 1))
 ("inbox"
- (filename . "~/org/gtd/inbox.org")
+ (filename . "~/org/inbox.org")
  (front-context-string)
  (rear-context-string)
- (position . 1))
-("habit"
- (filename . "~/org/gtd/habit.org")
- (front-context-string)
- (rear-context-string)
- (position . 1))
+ (position . 1)
+ (last-modified 25660 31942 543506 60000))
 ("gtd"
- (filename . "~/org/gtd/gtd.org")
+ (filename . "~/org/gtd.org")
  (front-context-string)
  (rear-context-string)
- (position . 1))
+ (position . 1)
+ (last-modified 25660 46371 660404 408000))
 ("emacs"
  (filename . "~/.emacs.d/init.el")
  (front-context-string)

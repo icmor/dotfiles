@@ -10,6 +10,7 @@ shopt -s histappend
 set -b
 
 # variables
+BTSPEAKER=F4:4E:FD:8A:8F:5D
 HISTCONTROL=erasedups
 HISTSIZE=-1
 HISTFILESIZE=-1

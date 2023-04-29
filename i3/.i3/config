@@ -34,6 +34,7 @@ bindsym $mod+m exec --no-startup-id emacsclient -nca ""
 bindsym $mod+Shift+m exec --no-startup-id emacsclient -ca "" -e \
 	'(progn (org-agenda-list) (delete-other-windows))'
 bindsym $mod+Return exec --no-startup-id emacsclient -ca "" -e '(shell)'
+# bindsym $mod+Shift+Return exec --no-startup-id emacsclient -ca "" -e '(vterm)'
 bindsym $mod+Shift+Return exec --no-startup-id alacritty
 bindsym $mod+Shift+w exec --no-startup-id random-wallpaper
 
@@ -80,13 +81,13 @@ bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 bindsym Shift+XF86MonBrightnessDown exec --no-startup-id  brightnessctl set 1
 
 bindsym XF86KbdBrightnessUp \
-	exec --no-startup-id brightnessctl --device="ite_8291::kbd_backlight" set +5%
+	exec --no-startup-id brightnessctl --device="rgb:kbd_backlight_125" set +5%
 bindsym Shift+XF86KbdBrightnessUp \
-	exec --no-startup-id brightnessctl --device="ite_8291::kbd_backlight" set 100%
+	exec --no-startup-id brightnessctl --device="rgb:kbd_backlight_125" set 100%
 bindsym XF86KbdBrightnessDown \
-	exec --no-startup-id brightnessctl --device="ite_8291::kbd_backlight" set 5%-
+	exec --no-startup-id brightnessctl --device="rgb:kbd_backlight_125" set 5%-
 bindsym Shift+XF86KbdBrightnessDown \
-	exec --no-startup-id brightnessctl --device="ite_8291::kbd_backlight" set 1%
+	exec --no-startup-id brightnessctl --device="rgb:kbd_backlight_125" set 1%
 
 #===Window Actions===#
 assign [class="discord"] → $ws4
@@ -146,10 +147,13 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
 #===Visual===#
+default_border pixel 1
+default_floating_border pixel 1
+
 set $bg-color		 #0e1111
-set $inactive-bg-color   #232b2b
+set $inactive-bg-color   #778899
 set $text-color          #cccccc
-set $inactive-text-color #626569
+set $inactive-text-color #000000
 set $urgent-bg-color     #D0D0D0
 
 #                       border              background         text                 indicator

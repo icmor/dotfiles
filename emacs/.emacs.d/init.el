@@ -8,6 +8,7 @@
       '(
 	avy
 	bash-completion
+	dumb-jump
 	;; ess
 	gcmh
 	haskell-mode
@@ -82,11 +83,18 @@
       (previous-buffer)
     (call-interactively #'vterm)))
 
-(defun my-project-stdlibs ()
+(defun my-project-find-library ()
   (interactive)
   (let ((dir
-	 (cdr (assq major-mode (if (boundp 'stdlibs) stdlibs nil)))))
+	 (cdr (assq major-mode (if (boundp 'my-libs) my-libs nil)))))
     (if dir (project-switch-project dir))))
+
+(defun my-project-refresh ()
+  (interactive)
+  (progn
+    (project-forget-zombie-projects)
+    (project-remember-projects-under "~/Dropbox" t)
+    (project-remember-projects-under "~/dotfiles/")))
 
 (defun my-org-sort (arg)
   (interactive "P")
@@ -107,8 +115,6 @@
 ;;;; prefix maps
 (define-prefix-command #'my-km-roam)
 (global-set-key (kbd "C-c n") #'my-km-roam)
-(define-prefix-command #'my-km-prog)
-(global-set-key (kbd "C-c p") #'my-km-prog)
 
 ;;;; global
 (global-set-key (kbd "C-c SPC") #'my-launch)
@@ -148,11 +154,15 @@
 (global-set-key (kbd "C-c c") #'org-capture)
 
 ;;;; general
-(setq org-agenda-files '("~/org/gtd/"))
+(setq org-agenda-files '("~/org/gtd.org"
+			 "~/org/inbox.org"
+			 "~/org/things.org"))
+(setq org-clock-sound "/opt/zoom/sip/ring_pstn.wav")
 (setq org-modules '(ol-man ol-info org-habit))
-(setq org-log-into-drawer t)
+(setq org-log-repeat nil)
 (setq org-return-follows-link t)
 (setq org-capture-bookmark nil)
+(setq org-archive-default-command nil)
 (setq org-list-allow-alphabetical t)
 (setq org-habit-preceding-days 30)
 (setq org-hierarchical-todo-statistics nil)
@@ -207,42 +217,30 @@
 ;;;; capture
 (setq org-capture-templates
       '(("i" "Inbox")
-	("ii" "Inbox" entry (file+headline "gtd/inbox.org" "Inbox")
-	 "* TODO %?\n")
-	("iw" "Waiting" entry (file+headline "gtd/inbox.org" "Waiting")
-	 "* TODO %?\n")
-	("id" "Ideas" entry (file+headline "gtd/inbox.org" "Ideas")
+	("ii" "Inbox" entry (file+headline "inbox.org" "Inbox")
 	 "* %?\n")
-	("c" "Tasks" entry (file+headline "gtd/gtd.org" "Tasks")
+	("iw" "Waiting" entry (file+headline "inbox.org" "Waiting")
+	 "* %?\n")
+	("id" "Ideas" entry (file+headline "inbox.org" "Ideas")
+	 "* %?\n")
+	("c" "Tasks" entry (file+headline "gtd.org" "Tasks")
          "* TODO %?\n")
-	("h" "Homework" entry (file+headline "gtd/gtd.org" "Homework")
-         "* TODO %?\n")
-	("x" "Exams" entry (file+headline "gtd/gtd.org" "Exams")
-         "* TODO %?\n")
-	("e" "Events" entry (file+headline "gtd/gtd.org" "Events")
-         "* TODO %?\n")
-	("t" "Buy" entry (file+headline "gtd/things.org" "Purchase")
-	 "* %?\n")
-	("p" "Projects")
-	("pp" "Projects" entry (file+headline "gtd/projects.org" "Projects")
-	 "* %?\n")
-	("pc" "Coding" entry (file+headline "gtd/projects.org" "Coding")
-	 "* %?\n")
-	("m" "Media")
-	("mf" "Film" entry (file+headline "lists/film.org" "films to watch")
-	 "* %?\n")
-	("md" "Doc" entry (file+headline "lists/film.org" "docs to watch")
-	 "* %?\n")
-	("mq" "Quotes" plain (file "art/quotes.txt")
-	 "%?\n%")
-	("j" "Journal" plain (file+olp+datetree "life/journal.org.gpg")
-	 "%?")))
+	("h" "Homework" entry (file+headline "gtd.org" "Homework")
+         "* %?\n")
+	("x" "Exams" entry (file+headline "gtd.org" "Exams")
+         "* %?\n")
+	("e" "Events" entry (file+headline "gtd.org" "Events")
+         "* %?\n")
+	("t" "Buy" entry (file+headline "things.org" "Purchase")
+	 "* TODO %?\n")))
 
 ;;;; babel
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
-   (python . t)))
+   (dot . t)
+   (python . t)
+   (C . t)))
 
 (setq org-confirm-babel-evaluate nil)
 
@@ -255,6 +253,7 @@
 (define-key my-km-roam (kbd "g") #'org-roam-graph)
 (define-key my-km-roam (kbd "i") #'org-roam-node-insert)
 (define-key my-km-roam (kbd "l") #'org-roam-buffer-toggle)
+(define-key my-km-roam (kbd "n") #'org-roam-db-sync)
 
 (setq org-roam-capture-templates
       '(("d" "default" plain "%?" :target
@@ -293,23 +292,27 @@
 ;;;; shell
 (setq shell-command-prompt-show-cwd t)
 (setq ansi-color-for-comint-mode t)
+(setq comint-input-ring-size 10000)
 (bash-completion-setup)
-(defun my-shell-mode-hook ()
-  "Custom `shell-mode' behaviours."
-  ;; Kill the buffer when the shell process exits.
-  (let* ((proc (get-buffer-process (current-buffer)))
-         (sentinel (process-sentinel proc)))
-    (set-process-sentinel
-     proc
-     `(lambda (process signal)
-        ;; Call the original process sentinel first.
-        (funcall #',sentinel process signal)
-        ;; Kill the buffer on an exit signal.
-        (and (memq (process-status process) '(exit signal))
-             (buffer-live-p (process-buffer process))
-             (kill-buffer (process-buffer process)))))))
-
-(add-hook 'shell-mode-hook 'my-shell-mode-hook)
+(add-hook 'shell-mode-hook
+	  (defun my-shell-mode-hook ()
+	    (setq comint-input-ring-file-name "~/.bash_history")
+	    (comint-read-input-ring t)))
+(add-hook 'shell-mode-hook
+	  (defun my-shell-mode-hook ()
+	    "Custom `shell-mode' behaviours."
+	    ;; Kill the buffer when the shell process exits.
+	    (let* ((proc (get-buffer-process (current-buffer)))
+		   (sentinel (process-sentinel proc)))
+	      (set-process-sentinel
+	       proc
+	       `(lambda (process signal)
+		  ;; Call the original process sentinel first.
+		  (funcall #',sentinel process signal)
+		  ;; Kill the buffer on an exit signal.
+		  (and (memq (process-status process) '(exit signal))
+		       (buffer-live-p (process-buffer process))
+		       (kill-buffer (process-buffer process))))))))
 
 ;;;; vterm
 (setq vterm-max-scrollback 100000)
@@ -318,6 +321,7 @@
   (define-key vterm-mode-map (kbd "M-!") nil)
   (define-key vterm-mode-map (kbd "C-M-v") nil)
   (define-key vterm-mode-map (kbd "C-S-M-v") nil)
+  (define-key vterm-mode-map (kbd "<f2>") nil)
   (define-key vterm-mode-map (kbd "<f11>") nil)
   (define-key vterm-mode-map (kbd "C-u") #'vterm--self-insert)
   (define-key vterm-mode-map (kbd "C-{") #'vterm--self-insert)
@@ -338,7 +342,7 @@
 
 ;;;; mail
 (setq user-full-name "Iñaki Cornejo")
-(setq user-mail-address "cornejodlm@ciencias.unam.mx")
+(setq user-mail-address "icornejomora@gmail.com")
 (setq message-send-mail-function 'smtpmail-send-it)
 (with-eval-after-load 'message
   (require 'smtpmail)
@@ -366,7 +370,13 @@
 (setq outline-minor-mode-cycle t)
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
-(define-key my-km-prog (kbd "l") #'my-project-stdlibs)
+
+;;;; project
+(setq project-kill-buffers-display-buffer-list t)
+(setq my-libs '((c-ts-mode . "/usr/include/")
+		(python-ts-mode . "/usr/lib/python3.10/")))
+(define-key project-prefix-map (kbd "R") #'my-project-refresh)
+(define-key project-prefix-map (kbd "l") #'my-project-find-library)
 
 ;;;; tree-sitter
 (when (treesit-ready-p 'python t)
@@ -376,10 +386,9 @@
 (when (treesit-ready-p 'c t)
   (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode)))
 
-;;;; stdlibs
-(setq stdlibs '((c-ts-mode . "/usr/include")
-		(python-ts-mode . "/usr/lib/python3.10/")
-		(java-mode . "~/.local/opt/jdk11")))
+;;;; xref
+(setq xref-prompt-for-identifier nil)
+(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 
 ;;;; c
 (setq c-default-style
@@ -393,9 +402,17 @@
 (setq python-check-command "/usr/bin/flake8")
 (with-eval-after-load 'python
   (pyvenv-mode))
+(add-hook 'python-ts-mode-hook
+	  (lambda ()
+	    (setq-local compile-command
+			"flake8 --color=never *.py")))
 
 ;;;; haskell
 (setq haskell-process-type 'stack-ghci)
+(setq haskell-process-suggest-remove-import-lines t)
+(setq haskell-process-auto-import-loaded-modules t)
+(setq haskell-process-log t)
+(add-hook 'interactive-haskell-mode-hook #'electric-pair-local-mode)
 
 ;;;; java
 (add-hook 'java-mode-hook #'subword-mode)
@@ -482,10 +499,11 @@
 (setq-default fill-column 80)
 (set-default-coding-systems 'utf-8)
 
-;;;; etc
+;;;; cookie
+(setq cookie-file "~/org/cookie.org")
 (setq initial-scratch-message
-      (concat (replace-regexp-in-string "^" ";; " (cookie "~/org/art/quotes.txt"))
-	      "\n\n"))
+      (concat (replace-regexp-in-string
+	       "^" ";; " (cookie cookie-file)) "\n\n"))
 
 ;;; attic
 ;; (global-set-key (kbd "C-<next>") #'tab-next)
