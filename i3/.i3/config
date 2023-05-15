@@ -95,6 +95,8 @@ assign [class="zoom"] → $ws4
 assign [class="TelegramDesktop"] → $ws4
 assign [class="Slack"] → $ws4
 for_window [class="Spotify"] move to workspace $ws5
+for_window [class="bluetoothctl"] floating enable
+for_window [class="Pavucontrol"] floating enable
 
 #===WM Shortcuts===#
 bindsym $mod+1 workspace $ws1
