@@ -336,6 +336,8 @@
 ;;;; pdf-tools
 (setq pdf-view-continuous nil)
 (setq pdf-view-resize-factor 1.1)
+(with-eval-after-load 'pdf-tools
+    (define-key pdf-view-mode-map  (kbd "M") #'pdf-view-midnight-minor-mode))
 
 ;;;; calc
 (setq calc-group-digits t)
