@@ -10,7 +10,7 @@ if [ "$status" = "Charging" ] || [ "$capacity" -gt 15 ]; then
 fi
 
 if [ "$status"  = "Discharging" ]; then
-	if [ "$capacity" -le 9 ];then
+	if [ "$capacity" -le 9 ]; then
 		i3-msg "exec systemctl suspend"
 	elif [ "$capacity" -le 15 ]; then
 		color="#CC0000"

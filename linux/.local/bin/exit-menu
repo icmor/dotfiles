@@ -1,9 +1,9 @@
 #!/bin/bash
 
-action=$(echo -e 'logout\nsuspend\nshutdown\nreboot' | dmenu -i -p "Power Menu")
+action=$(echo -e 'logout\nsuspend\nshutdown\nreboot' | fuzzel -d)
 
-case "$action" in
-    "logout") i3-msg exit
+case $action in
+    "logout") swaymsg exit
 	      ;;
     "suspend") systemctl suspend
 	       ;;
