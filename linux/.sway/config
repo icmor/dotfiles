@@ -23,8 +23,9 @@ floating_modifier $mod normal
 ### Startup
 exec dunst
 exec dropbox
-exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec ~/.local/bin/inactive-transparency
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
 exec swaymsg 'workspace $ws2'
 
 ### Output
@@ -59,7 +60,7 @@ input type:touchpad {
 # programs
 bindsym $mod+Shift+Return exec $term
 bindsym $mod+Shift+Space exec $menu
-bindsym $mod+e exec pcmanfm
+bindsym $mod+e exec thunar
 bindsym $mod+m exec emacsclient -nca ""
 bindsym $mod+Shift+m exec emacsclient -ca "" -e \
 	'(progn (org-agenda-list) (delete-other-windows))'
@@ -67,12 +68,12 @@ bindsym $mod+Return exec emacsclient -ca "" -e '(shell)'
 
 mode "launcher" {
     bindsym c exec calibre; mode "default"
-    bindsym d exec discord; mode "default"
     bindsym f exec firefox-developer-edition; mode "default"
     bindsym s exec spotify-launcher; mode "default"
     bindsym t exec telegram-desktop; mode "default"
     bindsym v exec vlc; mode "default"
     bindsym z exec zoom; mode "default"
+    bindsym d exec gtk-launch discord; mode "default"
 
     bindsym Escape mode "default"
     bindsym Return mode "default"
@@ -115,11 +116,10 @@ bindsym Shift+XF86KbdBrightnessDown \
 	exec brightnessctl --device="rgb:kbd_backlight_125" set 1%
 
 ### Rules
-assign [class="discord"] → $ws4
+assign [app_id="discord"] → $ws4
 assign [app_id="zoom"] → $ws4
 assign [app_id="org.telegram.desktop"] → $ws4
-assign [class="Slack"] → $ws4
-for_window [class="Spotify"] move to workspace $ws5
+assign [title="Spotify"] → $ws5
 for_window [app_id="bluetoothctl"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 
