@@ -7,9 +7,10 @@
 (setq package-selected-packages
       '(
 	avy
+	auctex
 	bash-completion
 	dumb-jump
-	;; ess
+	ess
 	gcmh
 	haskell-mode
 	hide-mode-line
@@ -22,8 +23,8 @@
 	org-roam
 	pdf-tools
 	pyvenv
-	;; racket-mode
-	;; rfc-mode
+	racket-mode
+	rfc-mode
 	transpose-frame
 	vterm
 	which-key
@@ -173,13 +174,20 @@
 (add-hook 'org-mode-hook #'visual-line-mode)
 (add-hook 'org-mode-hook #'ws-butler-mode)
 (setq org-adapt-indentation nil)
-(add-hook 'org-mode-hook (lambda () (setq fill-column 100)))
 (setq org-startup-with-inline-images t)
 (setq org-image-actual-width 250)
 (setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
+
+;;;; org + latex
 (with-eval-after-load 'org
   (setq org-format-latex-options
-	(plist-put org-format-latex-options :scale 2.0)))
+	(plist-put org-format-latex-options :scale 1.5))
+  (define-key org-mode-map (kbd "$") #'TeX-insert-dollar)
+  (define-key org-mode-map (kbd "C-c ~") #'LaTeX-math-mode)
+  (define-key org-mode-map (kbd "C-c [") #'LaTeX-environment))
+(autoload #'TeX-insert-dollar "tex")
+(autoload #'LaTeX-math-mode "latex")
+(autoload #'LaTeX-environment "latex")
 
 ;;;; calendar
 (with-eval-after-load 'calendar
@@ -333,6 +341,20 @@
 (global-set-key (kbd "C-x g") #'magit)
 (global-set-key (kbd "C-x M-g") #'magit-file-dispatch)
 
+;;;; latex
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq TeX-output-dir "auctex")
+(setq TeX-auto-default "auctex")
+(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+      TeX-source-correlate-start-server t)
+(add-hook 'TeX-after-compilation-finished-functions
+          #'TeX-revert-document-buffer)
+(setq TeX-electric-math '("\\(" . "\\)"))
+(setq LaTeX-default-environment "align*")
+(with-eval-after-load 'tex
+  (define-key TeX-mode-map (kbd "C-c [") #'LaTeX-environment))
+
 ;;;; pdf-tools
 (setq pdf-view-continuous nil)
 (setq pdf-view-resize-factor 1.1)
@@ -372,6 +394,7 @@
 (setq outline-minor-mode-cycle t)
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
 ;;;; project
 (setq project-kill-buffers-display-buffer-list t)
