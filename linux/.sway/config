@@ -32,12 +32,13 @@ exec swaymsg 'workspace $ws2'
 output * bg ~/Dropbox/images/wallpaper/outset_island.jpg fill
 
 ### Idle
-exec swaymsg inhibit_idle fullscreen
 exec swayidle -w \
          timeout 270 'brightnessctl --save; brightnessctl set 0%' \
 	 resume 'brightnessctl --restore' \
 	 timeout 300 'brightnessctl --restore; systemctl suspend' \
          before-sleep 'swaylock -f -i ~/Dropbox/images/wallpaper/arch.png'
+
+for_window [app_id="^.*"] inhibit_idle fullscreen
 
 ### Input configuration
 input * {
@@ -211,10 +212,13 @@ bar {
     status_command i3blocks -c ~/.sway/i3blocks.conf
 
     colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-	urgent_workspace   #000000 #FFFFFF #5c5c5c
+    	   statusline #ffffff
+           background #2d2d2d
+	   focused_workspace  #4c7899 #d3d3d3 #2d2d2d
+           active_workspace   #333333 #5f676a #ffffff
+	   inactive_workspace #323232 #2d2d2d #ffffff
+	   urgent_workspace   #000000 #ffffff #5c5c5c
+           binding_mode       #2f343a #8b0000 #ffffff
     }
 }
 
