@@ -109,6 +109,18 @@
   (interactive)
   (dired--find-file #'find-file-other-frame (dired-get-file-for-visit)))
 
+(defun my-preview-dwim (arg)
+  "Preview latex based on org-latex-preview"
+  (interactive "P")
+  (cond
+   ((equal arg '(64))
+    (preview-clearout-document))
+   ((equal arg '(16))
+    (preview-document))
+   ((equal arg '(4))
+    (preview-clearout-section))
+   ((preview-at-point))))
+
 (defun my-launch (command)
   (interactive (list (read-shell-command "$ ")))
   (start-process-shell-command command nil command))
@@ -263,6 +275,8 @@
 (define-key my-km-roam (kbd "i") #'org-roam-node-insert)
 (define-key my-km-roam (kbd "l") #'org-roam-buffer-toggle)
 (define-key my-km-roam (kbd "n") #'org-roam-db-sync)
+(define-key my-km-roam (kbd "p") #'(lambda () (interactive)
+				     (ido-find-file-in-dir "~/roam/textbooks")))
 
 (setq org-roam-capture-templates
       '(("d" "default" plain "%?" :target
@@ -342,11 +356,11 @@
 (global-set-key (kbd "C-x g") #'magit)
 (global-set-key (kbd "C-x M-g") #'magit-file-dispatch)
 
-;;;; latex
+;;;; auctex
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq TeX-output-dir "auctex")
-(setq TeX-auto-default "auctex")
+(setq TeX-auto-local "auctex")
 (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
       TeX-source-correlate-start-server t)
 (add-hook 'TeX-after-compilation-finished-functions
@@ -354,7 +368,8 @@
 (setq TeX-electric-math '("\\(" . "\\)"))
 (setq LaTeX-default-environment "align*")
 (with-eval-after-load 'tex
-  (define-key TeX-mode-map (kbd "C-c [") #'LaTeX-environment))
+  (define-key TeX-mode-map (kbd "C-c [") #'LaTeX-environment)
+  (define-key TeX-mode-map (kbd "C-c C-x C-l") #'my-preview-dwim))
 
 ;;;; pdf-tools
 (setq pdf-view-continuous nil)
