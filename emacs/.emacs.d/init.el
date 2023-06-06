@@ -22,6 +22,7 @@
 	org-contrib
 	org-roam
 	pdf-tools
+	proof-general
 	pyvenv
 	racket-mode
 	rfc-mode
@@ -451,6 +452,9 @@
 (add-hook 'markdown-mode-hook 'visual-line-mode)
 (add-hook 'rst-mode-hook #'visual-line-mode)
 (add-hook 'conf-mode-hook #'visual-line-mode)
+
+;;;; proof-general
+(setq proof-splash-enable nil)
 
 ;;;; man
 (add-to-list 'display-buffer-alist
