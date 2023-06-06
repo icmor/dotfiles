@@ -285,7 +285,8 @@
 (setq org-roam-node-display-template "${title}")
 
 ;;; essentials
-;;;; security
+;;;; auth-source
+(setq epg-pinentry-mode 'loopback)
 (setq auth-sources '("~/.authinfo.gpg"))
 
 ;;;; dired
