@@ -9,9 +9,12 @@
 shopt -s histappend
 set -b
 
-# variables
-BTSPEAKER=F4:4E:FD:8A:8F:5D
+# devices
+SPEAKER=F4:4E:FD:8A:8F:5D
+BUDS=24:11:53:95:F4:A8
 ETHERNET=r8169
+
+# variables
 HISTCONTROL=erasedups
 HISTSIZE=-1
 HISTFILESIZE=-1

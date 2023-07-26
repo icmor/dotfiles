@@ -306,6 +306,9 @@
 (setq which-key-idle-secondary-delay 0.05)
 (which-key-mode)
 
+;;;; outline-minor-mode
+(setq outline-minor-mode-cycle t)
+
 ;;;; avy
 (setq avy-timeout-seconds 0.3)
 
@@ -408,7 +411,6 @@
 (setq show-paren-delay 0)
 (setq show-paren-style 'mixed)
 (setq show-paren-context-when-offscreen t)
-(setq outline-minor-mode-cycle t)
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
@@ -441,13 +443,9 @@
 
 ;;;; python
 (setq python-indent 4)
-(setq python-check-command "/usr/bin/flake8")
+(setq python-check-command "flake8 --color=never")
 (with-eval-after-load 'python
   (pyvenv-mode))
-(add-hook 'python-ts-mode-hook
-	  (lambda ()
-	    (setq-local compile-command
-			"flake8 --color=never *.py")))
 
 ;;;; haskell
 (setq haskell-process-type 'stack-ghci)

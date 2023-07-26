@@ -5,7 +5,9 @@
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
 if [ "$(tty)" = "/dev/tty1" ]; then
+    MESA="/usr/share/glvnd/egl_vendor.d/50_mesa.json"
     export PATH=${PATH}:${HOME}/.local/bin
+    export __EGL_VENDOR_LIBRARY_FILENAMES=$MESA
     export LIBVA_DRIVER_NAME=iHD
     export NO_AT_BRIDGE=1
     export _JAVA_AWT_WM_NONREPARENTING=1
