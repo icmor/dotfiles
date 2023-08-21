@@ -4,7 +4,7 @@
 
 [[ $- != *i* ]] && return
 
-# shell options
+# shellopts
 [[ $DISPLAY ]] && shopt -s checkwinsize
 shopt -s histappend
 set -b
@@ -31,7 +31,7 @@ case "$TERM" in
 	;;
 esac
 
-# color aliases
+# aliases
 alias ls='ls --color=auto'
 alias dir='dir --color=auto'
 alias grep='grep --color=auto'
@@ -40,16 +40,15 @@ alias egrep='egrep --color=auto'
 alias ll='ls -Alh'
 alias l='ls -CAF'
 
-# convenient aliases
 alias bluetooth="sudo modprobe btusb && sudo systemctl start bluetooth && bluetoothctl && sudo systemctl stop bluetooth && sudo rmmod btusb"
 alias ed="emacs -nw"
 alias trash="gio trash"
 alias open="xdg-open"
-alias gsan="gcc -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment"
-alias prime_run='__NV_PRIME_RENDER_OFFLOAD=1 __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia'
-alias tlp_perf="sudo tlp ac -- CPU_ENERGY_PERF_POLICY_ON_AC=performance MAX_LOST_WORK_SECS_ON_AC=0 CPU_SCALING_GOVERNOR_ON_AC=performance"
 alias wlan="iwctl station wlan0"
-alias video='xrandr --output HDMI-1-0 --auto && systemd-inhibit --what=handle-lid-switch sleep 1d'
+
+alias gsan="gcc -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment"
+alias prime_run='DRI_PRIME=pci-0000_01_00_0 __VK_LAYER_NV_optimus=NVIDIA_only __GLX_VENDOR_LIBRARY_NAME=nvidia'
+alias tlp_perf="sudo tlp ac -- CPU_ENERGY_PERF_POLICY_ON_AC=performance MAX_LOST_WORK_SECS_ON_AC=0 CPU_SCALING_GOVERNOR_ON_AC=performance"
 
 # functions
 docker_latest(){
