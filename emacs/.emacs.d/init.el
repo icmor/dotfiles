@@ -451,6 +451,21 @@
 (with-eval-after-load 'python
   (pyvenv-mode))
 
+;;;; html
+(with-eval-after-load 'mhtml-mode
+  (add-to-list 'html-tag-alist
+	       '("html"
+		 (n "<head>
+" "<title>"
+(setq str
+      (read-string "Title: "))
+"</title>
+" "</head>
+" "<body>
+<h1>" str "</h1>
+" _ "
+" "</body>"))))
+
 ;;;; haskell
 (setq haskell-process-type 'stack-ghci)
 (setq haskell-process-suggest-remove-import-lines t)
