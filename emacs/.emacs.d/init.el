@@ -366,15 +366,18 @@
 (setq TeX-parse-self t)
 (setq TeX-output-dir "auctex")
 (setq TeX-auto-local "auctex")
-(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-      TeX-source-correlate-start-server t)
-(add-hook 'TeX-after-compilation-finished-functions
-          #'TeX-revert-document-buffer)
+(setq TeX-view-program-selection '((output-pdf "PDF Tools")))
+(setq TeX-source-correlate-start-server t)
 (setq TeX-electric-math '("\\(" . "\\)"))
 (setq LaTeX-default-environment "align*")
+(add-hook 'TeX-after-compilation-finished-functions
+          #'TeX-revert-document-buffer)
 (with-eval-after-load 'tex
   (define-key TeX-mode-map (kbd "C-c [") #'LaTeX-environment)
   (define-key TeX-mode-map (kbd "C-c C-x C-l") #'my-preview-dwim))
+(with-eval-after-load 'latex
+    (define-key LaTeX-mode-map (kbd "C-c C-e") #'latex-close-block))
+
 
 ;;;; pdf-tools
 (setq pdf-view-continuous nil)
