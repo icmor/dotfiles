@@ -49,6 +49,7 @@
 (setq delete-old-versions t)
 
 ;;; general
+(setq package-native-compile t)
 (setq native-comp-async-report-warnings-errors 'silent)
 
 ;;;; doom hacks
@@ -247,7 +248,7 @@
 	("c" "Tasks" entry (file+headline "gtd.org" "Tasks")
          "* TODO %?\n")
 	("h" "Homework" entry (file+headline "gtd.org" "Homework")
-         "* %?\n")
+         "* TODO %?\n")
 	("x" "Exams" entry (file+headline "gtd.org" "Exams")
          "* %?\n")
 	("e" "Events" entry (file+headline "gtd.org" "Events")
@@ -551,13 +552,6 @@
 ;;; attic
 ;; (global-set-key (kbd "C-<next>") #'tab-next)
 ;; (global-set-key (kbd "C-<prior>") #'tab-previous)
-;; (set-face-attribute 'mode-line-active nil :inherit 'mode-line)
-;; (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
-;; (setq eglot-events-buffer-size 0)
-;; (setq eglot-autoshutdown t)
-;; (add-to-list 'exec-path (file-truename "~/.emacs.d/var/jdtls/bin") t)
-;; (add-hook 'java-mode-hook (lambda () (if (not buffer-read-only) (eglot-ensure))))
-;; (setq package-native-compile t)
 ;; (load custom-file t)
 ;; (setq calc-prefer-frac t)
 ;; (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)
