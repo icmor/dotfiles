@@ -466,6 +466,11 @@
 " _ "
 " "</body>"))))
 
+;;;; css
+(with-eval-after-load 'css-mode
+  (define-key css-mode-map (kbd "C-c C-l") #'list-colors-display))
+
+
 ;;;; haskell
 (setq haskell-process-type 'stack-ghci)
 (setq haskell-process-suggest-remove-import-lines t)
