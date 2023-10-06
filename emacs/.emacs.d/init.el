@@ -384,6 +384,8 @@
 (setq pdf-view-resize-factor 1.1)
 (with-eval-after-load 'pdf-tools
     (define-key pdf-view-mode-map  (kbd "M") #'pdf-view-midnight-minor-mode))
+(add-hook 'pdf-annot-list-mode-hook #'pdf-annot-list-follow-minor-mode)
+
 
 ;;;; calc
 (setq calc-group-digits t)
