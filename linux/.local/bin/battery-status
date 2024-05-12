@@ -1,0 +1,28 @@
+#!/bin/bash
+
+status="$(cat /sys/class/power_supply/BAT0/status)"
+capacity="$(cat /sys/class/power_supply/BAT0/capacity)"
+warning="Battery Critically Low Plug in to AC or Suspend immediately"
+sound_file=/usr/share/sounds/freedesktop/stereo/dialog-warning.oga
+color="#FFFFFF"
+
+if [ "$status" = "Charging" ] || [ "$capacity" -gt 15 ]; then
+	flag="False"
+	if [ "$status" = "Charging" ]; then color="#00B500"; fi
+fi
+
+if [ "$status"  = "Discharging" ]; then
+	if [ "$capacity" -le 9 ]; then
+		systemctl suspend
+	elif [ "$capacity" -le 15 ]; then
+		color="#CC0000"
+		if [ "$flag" = "False" ]; then
+			notify-send -t 5000 -u critical "${warning}"
+			paplay --volume=200 "${sound_file}"
+			flag="True"
+		fi
+	fi
+fi
+
+printf '{"full_text":"%s", "color":"%s", "flag":"%s"}\n' [${capacity}%] $color $flag
+exit 0

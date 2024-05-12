@@ -1,0 +1,13 @@
+#!/bin/bash
+
+indicator="o"
+color="#808080"
+for state in $(cat /sys/bus/pci/devices/0000\:01\:00.*/power/runtime_status)
+do
+	if [ "$state" != "suspended" ]; then
+	    color="#00B500"
+	    indicator="●"
+	fi
+done
+
+printf '{"full_text":"%s", "color":"%s"}\n' $indicator $color

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+status="$(lsmod | grep btusb)"
+if [ $button = 1 ]; then
+    if [ -z "$status" ]; then
+	pkexec sh -c "modprobe btusb && systemctl start bluetooth"
+    fi
+    status="🛳"
+elif [ $button = 3 ]; then
+    pkexec sh -c "systemctl stop bluetooth && rmmod btusb"
+    status="🚢"
+elif [ -n "$status" ]; then
+    status="🛳"
+else
+    status="🚢"
+fi
+
+echo $status
+exit 0

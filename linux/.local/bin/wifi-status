@@ -1,0 +1,2 @@
+#!/bin/bash
+[[ "$(iw wlan0 link)" == "Not connected." ]] && echo ⛔

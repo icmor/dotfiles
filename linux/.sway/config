@@ -1,0 +1,216 @@
+### Variables
+set $mod Mod4
+set $left h
+set $down j
+set $up k
+set $right l
+
+set $ws1 "1:🦊"
+set $ws2 "2:🦬"
+set $ws3 "3:🐧"
+set $ws4 "4:📱"
+set $ws5 "5:🎵"
+
+### general
+font pango:Noto Sans 8
+focus_follows_mouse no
+hide_edge_borders both
+floating_modifier $mod normal
+include /etc/sway/config.d/*
+
+### startup
+exec dunst
+exec dropbox
+exec inactive-transparency
+exec gammastep -l 19:-99
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+output * bg ~/Dropbox/images/wallpaper/lain.jpg fill
+exec swaymsg 'workspace $ws2'
+
+### idle
+exec swayidle -w \
+         timeout 270 'brightnessctl --save; brightnessctl set 0%' \
+	 resume 'brightnessctl --restore' \
+	 timeout 300 'brightnessctl --restore; systemctl suspend' \
+         before-sleep 'swaylock -f -i ~/Dropbox/images/wallpaper/arch.png'
+
+for_window [app_id="^.*"] inhibit_idle fullscreen
+
+### input
+input * {
+    xkb_layout "us"
+    xkb_variant "altgr-intl"
+    xkb_options "ctrl:swapcaps"
+}
+
+input type:touchpad {
+    dwt enabled
+    tap enabled
+    natural_scroll enabled
+    middle_emulation enabled
+}
+
+### key bindings
+# programs
+bindsym $mod+Shift+Space exec fuzzel | xargs swaymsg exec --
+bindsym $mod+e exec thunar
+bindsym $mod+m exec emacsclient -nca ""
+bindsym $mod+Shift+m exec emacsclient -ca "" -e \
+	'(progn (org-agenda-list) (delete-other-windows))'
+bindsym $mod+Shift+Return exec emacsclient -ca "" -e '(vterm)'
+bindsym $mod+Return exec emacsclient -ca "" -e '(shell)'
+
+# utility
+bindsym $mod+q kill
+bindsym $mod+Shift+r reload
+
+# scripts
+bindsym $mod+Shift+q exec exit-menu
+bindsym $mod+Print exec screenshot
+bindsym $mod+Shift+Print exec screenshot --interactive
+
+# convenience
+bindsym XF86AudioRaiseVolume exec \
+	pactl set-sink-volume @DEFAULT_SINK@ +5% && pkill -SIGRTMIN+10 i3blocks
+bindsym Shift+XF86AudioRaiseVolume exec \
+	pactl set-sink-volume @DEFAULT_SINK@ 100% && pkill -SIGRTMIN+10 i3blocks
+bindsym XF86AudioLowerVolume exec \
+	pactl set-sink-volume @DEFAULT_SINK@ -5% && pkill -SIGRTMIN+10 i3blocks
+bindsym Shift+XF86AudioLowerVolume \
+	exec pactl set-sink-volume @DEFAULT_SINK@ 0% && pkill -SIGRTMIN+10 i3blocks
+bindsym XF86AudioMute exec \
+	pactl set-sink-mute @DEFAULT_SINK@ toggle && pkill -SIGRTMIN+10 i3blocks
+
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
+bindsym Shift+XF86MonBrightnessUp exec --no-startup-id brightnessctl set 100%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+bindsym Shift+XF86MonBrightnessDown exec --no-startup-id  brightnessctl set 1
+
+bindsym XF86KbdBrightnessUp \
+	exec brightnessctl --device="rgb:kbd_backlight" set +5%
+bindsym Shift+XF86KbdBrightnessUp \
+	exec brightnessctl --device="rgb:kbd_backlight" set 100%
+bindsym XF86KbdBrightnessDown \
+	exec brightnessctl --device="rgb:kbd_backlight" set 5%-
+bindsym Shift+XF86KbdBrightnessDown \
+	exec brightnessctl --device="rgb:kbd_backlight" set 1%
+
+### movement
+bindsym $mod+$left focus left
+bindsym $mod+$down focus down
+bindsym $mod+$up focus up
+bindsym $mod+$right focus right
+
+bindsym $mod+Shift+$left move left
+bindsym $mod+Shift+$down move down
+bindsym $mod+Shift+$up move up
+bindsym $mod+Shift+$right move right
+
+### workspaces
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+
+bindsym $mod+Left workspace prev
+bindsym $mod+Right workspace next
+
+### layout
+bindsym $mod+n splitv
+bindsym $mod+Shift+n splith
+
+bindsym $mod+a layout stacking
+bindsym $mod+s layout toggle split
+bindsym $mod+d layout tabbed
+bindsym $mod+f fullscreen
+
+bindsym $mod+p focus mode_toggle
+bindsym $mod+Shift+p floating toggle
+bindsym $mod+i focus parent
+bindsym $mod+Shift+i focus child
+
+### scratchpad
+bindsym $mod+o scratchpad show
+bindsym $mod+Shift+o move scratchpad
+
+### modes
+mode "launcher" {
+    bindsym c exec calibre; mode "default"
+    bindsym f exec firefox-developer-edition; mode "default"
+    bindsym s exec spotify-launcher; mode "default"
+    bindsym t exec telegram-desktop; mode "default"
+    bindsym v exec vlc; mode "default"
+    bindsym z exec zoom; mode "default"
+    bindsym d exec gtk-launch discord; mode "default"
+
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+}
+bindsym $mod+space mode "launcher"
+
+mode "resize" {
+     bindsym h resize grow left 10 px or 10 ppt
+     bindsym l resize grow right 10 px or 10 ppt
+     bindsym k resize grow up 10 px or 10 ppt
+     bindsym j resize grow down 10 px or 10 ppt
+
+     bindsym Shift+h resize shrink left 10 px or 10 ppt
+     bindsym Shift+l resize shrink right 10 px or 10 ppt
+     bindsym Shift+k resize shrink up 10 px or 10 ppt
+     bindsym Shift+j resize shrink down 10 px or 10 ppt
+
+     bindsym Return mode "default"
+     bindsym Escape mode "default"
+     bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+### rules
+assign [app_id="discord"] → $ws4
+assign [app_id="zoom"] → $ws4
+assign [app_id="org.telegram.desktop"] → $ws4
+assign [title="Spotify"] → $ws5
+for_window [app_id="bluetoothctl"] floating enable
+for_window [app_id="pavucontrol"] floating enable
+
+### visual
+default_border none
+default_floating_border none
+
+set $bg-color		 #0e1111
+set $inactive-bg-color   #778899
+set $text-color          #cccccc
+set $inactive-text-color #000000
+set $urgent-bg-color     #D0D0D0
+
+#                       border              background         text                 indicator
+client.focused          $bg-color           $bg-color          $text-color          #00ff00
+client.unfocused        $inactive-bg-color  $inactive-bg-color $inactive-text-color #00ff00
+client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-color #00ff00
+client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          #00ff00
+
+
+### status bar
+bar {
+    font pango:Noto Sans 14
+    position bottom
+    strip_workspace_numbers yes
+    status_command i3blocks -c ~/.sway/i3blocks.conf
+
+    colors {
+    	   statusline #ffffff
+           background #2d2d2d
+	   focused_workspace  #4c7899 #d3d3d3 #2d2d2d
+           active_workspace   #333333 #5f676a #ffffff
+	   inactive_workspace #323232 #2d2d2d #ffffff
+	   urgent_workspace   #000000 #ffffff #5c5c5c
+           binding_mode       #2f343a #8b0000 #ffffff
+    }
+}

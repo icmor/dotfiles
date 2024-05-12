@@ -1,0 +1,14 @@
+#!/bin/bash
+
+action=$(echo -e 'logout\nsuspend\nshutdown\nreboot' | fuzzel -d)
+
+case $action in
+    "logout") swaymsg exit
+	      ;;
+    "suspend") systemctl suspend
+	       ;;
+    "shutdown") systemctl poweroff
+		;;
+    "reboot") reboot
+	      ;;
+esac
