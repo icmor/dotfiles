@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file="$(ls ~/Pictures/ | fuzzel -d --no-fuzzy)"
+file="$(ls ~/Pictures/ | fuzzel -d --match-mode=exact)"
 
 [ -z "$file" ] && exit 0
 
