@@ -423,6 +423,18 @@
 (setq xref-prompt-for-identifier nil)
 (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 
+;;;; gud
+;; https://stackoverflow.com/a/24923325
+(defadvice gdb-inferior-filter
+    (around gdb-inferior-filter-without-stealing)
+  (with-current-buffer (gdb-get-buffer-create 'gdb-inferior-io)
+    (comint-output-filter proc string)))
+(ad-activate 'gdb-inferior-filter)
+(add-hook 'gdb-locals-mode-hook #'gdb-locals-values)
+(setq gdb-default-window-configuration-file "~/.config/gdb/gdbwindows.el")
+(setq gdb-debuginfod-enable-setting nil)
+(setq gdb-many-windows t)
+
 ;;;; c
 (setq c-default-style
       '((java-ts-mode . "linux")
