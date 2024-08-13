@@ -1,15 +1,13 @@
 #!/bin/bash
 
-status="$(lsmod | grep btusb)"
+blocked="$(rfkill list bluetooth | grep yes)"
 if [ $button = 1 ]; then
-    if [ -z "$status" ]; then
-	pkexec sh -c "modprobe btusb && systemctl start bluetooth"
-    fi
+    [[ -n "$blocked" ]] && rfkill unblock bluetooth
     status="🛳"
 elif [ $button = 3 ]; then
-    pkexec sh -c "systemctl stop bluetooth && rmmod btusb"
+    [[ -z "$blocked" ]] && rfkill block bluetooth
     status="🚢"
-elif [ -n "$status" ]; then
+elif [ -z "$blocked" ]; then
     status="🛳"
 else
     status="🚢"
