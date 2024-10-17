@@ -12,8 +12,23 @@ HISTFILESIZE=-1
 PROMPT_DIRTRIM=2
 export EDITOR="vim"
 export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"
-export MYPY_CACHE_DIR="${HOME}/.cache/mypy"
-export PYTHONPYCACHEPREFIX="${HOME}/.cache/pycache"
+
+# XDG
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_STATE_HOME="${HOME}/.local/state"
+
+export CUDA_CACHE_PATH="${XDG_CACHE_HOME}/nv"
+export GHCUP_USE_XDG_DIRS="true"
+export GOPATH="${XDG_DATA_HOME}/go"
+export HISTFILE="${XDG_STATE_HOME}"/bash/history
+export LESSHISTFILE="${XDG_STATE_HOME}"/less/history
+export MYPY_CACHE_DIR="${XDG_CACHE_HOME}/mypy"
+export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME}/pycache"
+export TEXMFVAR="${XDG_CACHE_HOME}"/texlive/texmf-var
+export XAUTHORITY="${XDG_RUNTIME_DIR}"/Xauthority
+
 
 case "$TERM" in
     *color*|alacritty)

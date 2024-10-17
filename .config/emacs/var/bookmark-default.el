@@ -3,11 +3,11 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("emacs"
- (filename . "~/dotfiles/emacs/.emacs.d/init.el")
+ (filename . "~/dotfiles/.config/emacs/init.el")
  (front-context-string . "")
  (rear-context-string)
  (position . 1)
- (last-modified 26142 43657 436897 984000))
+ (last-modified 26385 32748 851076 68000))
 ("self"
  (filename . "~/Dropbox/org/self.org")
  (front-context-string . "")
@@ -69,9 +69,9 @@
  (position . 1)
  (last-modified 26142 43536 1397 214000))
 ("sway"
- (filename . "~/dotfiles/linux/.sway/config")
+ (filename . "~/.config/sway/config")
  (front-context-string . "")
  (rear-context-string)
  (position . 1)
- (last-modified 25975 39228 307327 361000))
+ (last-modified 26385 32790 814919 526000))
 )

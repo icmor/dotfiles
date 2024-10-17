@@ -294,7 +294,7 @@
 (bash-completion-setup)
 (add-hook 'shell-mode-hook
 	  (defun my-shell-history-hook ()
-	    (setq comint-input-ring-file-name "~/.bash_history")
+	    (setq comint-input-ring-file-name "~/.local/state/bash/history")
 	    (comint-read-input-ring t)))
 (add-hook 'shell-mode-hook
 	  (defun my-shell-exit-hook ()

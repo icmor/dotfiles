@@ -202,7 +202,7 @@ bar {
     font pango:Noto Sans 14
     position bottom
     strip_workspace_numbers yes
-    status_command i3blocks -c ~/.sway/i3blocks.conf
+    status_command i3blocks -c ~/.config/sway/i3blocks.conf
 
     colors {
     	   statusline #ffffff
