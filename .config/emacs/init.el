@@ -60,35 +60,32 @@
 
 ;;;; functions
 (defun dired-find-file-other-frame ()
-  "In Dired, visit this file or directory in another frame"
+  "In Dired, visit this file or directory in another frame."
   (interactive)
   (dired--find-file #'find-file-other-frame (dired-get-file-for-visit)))
 
-(defun my-org-sort (level)
-  "Sort org headlines alphabetically at level (default 1)"
+(defun my-org-sort (&optional level)
+  "Sort org headlines alphabetically at LEVEL (default 1)."
   (interactive "P")
   (org-map-entries
    (lambda nil (org-sort-entries nil ?a))
    (concat "LEVEL=" (number-to-string (or level 1)))))
 
-(defun my-pdf-save-position ()
+(defun my-previous-window ()
+  "Jump to previous window."
   (interactive)
-  (message "Position saved")
-  (pdf-view-position-to-register ?x))
-
-(defun my-pdf-jump-to-position ()
-  (interactive)
-  (pdf-view-jump-to-register ?x))
+  (setq repeat-map 'other-window-repeat-map)
+  (other-window -1))
 
 (defun my-project-find-library ()
   "Call project-switch-project on language-specific directory"
   (interactive)
   (let ((dir
-	 (cdr (assq major-mode (if (boundp 'my-libs) my-libs nil)))))
+	 (cdr (assq major-mode (if (boundp 'project-libs) project-libs nil)))))
     (if dir (project-switch-project dir))))
 
 (defun my-project-refresh ()
-  "Populate project--list"
+  "Populate project--list."
   (interactive)
   (project-forget-zombie-projects)
   (project-remember-projects-under "~/dotfiles/")
@@ -96,7 +93,7 @@
   (project-remember-projects-under "~/Dropbox/universidad/" t))
 
 (defun my-preview-dwim (&optional arg)
-  "Preview latex in auctex buffers based on org-latex-preview"
+  "Preview latex in auctex buffers based on org-latex-preview."
   (interactive "P")
   (cond
    ((equal arg '(64))
@@ -107,13 +104,14 @@
     (preview-clearout-section))
    ((preview-at-point))))
 
+;; https://github.com/emacs-exwm/exwm/blob/master/exwm-config.el#L60
 (defun my-launch (command)
-  "Launch external programs - taken from EXWM"
+  "Launch external programs."
   (interactive (list (read-shell-command "$ ")))
   (start-process-shell-command command nil command))
 
 (defun my-shell-toggle (&optional arg)
-  "Toggle a shell window (with arg name it *s<arg>*)"
+  "Toggle a shell window (with ARG name it *s<arg>*)."
   (interactive "P")
   (if (and (eq major-mode 'shell-mode) (not arg))
       (previous-buffer)
@@ -121,7 +119,7 @@
 	     (format "*s%d*" (prefix-numeric-value arg))))))
 
 (defun my-shell-other-window (&optional arg)
-  "Jump to a shell in other window (close current shell window)"
+  "Jump to shell number ARG in other window (close current shell window)."
   (interactive "P")
   (if (and (eq major-mode 'shell-mode) (not arg))
       (delete-window)
@@ -130,7 +128,7 @@
 	      (format "*s%d*" (prefix-numeric-value arg)))))))
 
 (defun my-vterm-toggle (&optional arg)
-  "Toggle a vterm window"
+  "Toggle vterm window number ARG."
   (interactive "P")
   (if (and (eq major-mode 'vterm-mode)
 	   (not arg))
@@ -139,37 +137,36 @@
 
 ;;; bindings
 ;;;; global
-(global-set-key (kbd "C-x g") #'magit)
-(global-set-key (kbd "C-x M-g") #'magit-file-dispatch)
-(global-set-key (kbd "<f2>") #'my-shell-toggle)
-(global-set-key (kbd "C-<f2>") #'my-shell-other-window)
-(global-set-key (kbd "C-c SPC") #'my-launch)
-(global-set-key (kbd "C-c a") #'org-agenda-list)
-(global-set-key (kbd "C-c c") #'org-capture)
-(global-set-key (kbd "M-o") 'avy-goto-char-timer)
-(global-set-key (kbd "S-<f11>") #'hide-mode-line-mode)
+(keymap-global-set "C-x g" #'magit)
+(keymap-global-set "<f2>" #'my-shell-toggle)
+(keymap-global-set "C-<f2>" #'my-shell-other-window)
+(keymap-global-set "M-g l" #'imenu-list-smart-toggle)
+(keymap-global-set "C-c SPC" #'my-launch)
+(keymap-global-set "C-c a" #'org-agenda-list)
+(keymap-global-set "C-c c" #'org-capture)
 (if (or (daemonp) window-system)
-    (progn (global-set-key (kbd "<f1>") #'my-vterm-toggle)
-	   (global-set-key (kbd "C-<f1>") #'vterm-other-window)))
+    (progn (keymap-global-set "<f1>" #'my-vterm-toggle)
+	   (keymap-global-set "C-<f1>" #'vterm-other-window)))
 
 ;;;; better defaults
-(global-unset-key (kbd "C-x C-z"))
-(global-set-key (kbd "C-x f") #'find-file)
-(global-set-key (kbd "C-x C-b") #'ibuffer)
-(global-set-key (kbd "C-x k") #'kill-current-buffer)
-(global-set-key (kbd "C-x K") #'kill-buffer)
-(global-set-key (kbd "M-z") #'zap-up-to-char)
-(global-set-key (kbd "C-x l") #'count-words)
-(global-set-key (kbd "C-x r m") #'bookmark-set-no-overwrite)
-(global-set-key (kbd "C-x r M") #'bookmark-set)
-(global-set-key (kbd "C-o") #'split-line)
-(global-set-key (kbd "C-M-o") #'open-line)
-(global-set-key (kbd "C-h M-m") #'man)
-(global-set-key (kbd "C-x C-c") #'save-buffers-kill-emacs)
-(global-set-key (kbd "C-x C-<left>") #'windmove-swap-states-left)
-(global-set-key (kbd "C-x C-<right>") #'windmove-swap-states-right)
-(global-set-key (kbd "C-x C-<up>") #'windmove-swap-states-up)
-(global-set-key (kbd "C-x C-<down>") #'windmove-swap-states-down)
+(keymap-global-unset "C-x C-z")
+(keymap-global-set "C-x f" #'find-file)
+(keymap-global-set "C-x C-b" #'ibuffer)
+(keymap-global-set "C-x k" #'kill-current-buffer)
+(keymap-global-set "C-x K" #'kill-buffer)
+(keymap-global-set "C-x O" #'my-previous-window)
+(keymap-global-set "M-z" #'zap-up-to-char)
+(keymap-global-set "C-x l" #'count-words)
+(keymap-global-set "C-x r m" #'bookmark-set-no-overwrite)
+(keymap-global-set "C-x r M" #'bookmark-set)
+(keymap-global-set "C-o" #'split-line)
+(keymap-global-set "C-M-o" #'open-line)
+(keymap-global-set "C-h C-m" #'man)
+(keymap-global-set "C-x C-c" #'save-buffers-kill-emacs)
+(keymap-global-set "C-x C-<left>" #'windmove-swap-states-left)
+(keymap-global-set "C-x C-<right>" #'windmove-swap-states-right)
+(keymap-global-set "C-x C-<up>" #'windmove-swap-states-up)
+(keymap-global-set "C-x C-<down>" #'windmove-swap-states-down)
 
 ;;; org
 ;;;; general
@@ -193,6 +190,7 @@
 (add-hook 'org-mode-hook #'ws-butler-mode)
 
 ;;;; calendar
+;; https://github.com/sggutier/mexican-holidays
 (with-eval-after-load 'calendar
   (defvar holiday-mexican-holidays
     '((holiday-fixed 1 1 "Año Nuevo")
@@ -269,8 +267,8 @@
 (setq image-use-external-converter t)
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "C-M-o") #'dired-find-file-other-frame)
-  (define-key dired-mode-map (kbd "C-c f") #'find-dired))
+  (keymap-set dired-mode-map "C-M-o" #'dired-find-file-other-frame)
+  (keymap-set dired-mode-map "C-c f" #'find-dired))
 
 ;;;; which-key
 (setq which-key-idle-delay 0.5)
@@ -296,18 +294,17 @@
 	  (defun my-shell-history-hook ()
 	    (setq comint-input-ring-file-name "~/.local/state/bash/history")
 	    (comint-read-input-ring t)))
+
+;; https://emacs.stackexchange.com/a/48307
 (add-hook 'shell-mode-hook
 	  (defun my-shell-exit-hook ()
 	    "Custom `shell-mode' behaviours."
-	    ;; Kill the buffer when the shell process exits.
 	    (let* ((proc (get-buffer-process (current-buffer)))
 		   (sentinel (process-sentinel proc)))
 	      (set-process-sentinel
 	       proc
 	       `(lambda (process signal)
-		  ;; Call the original process sentinel first.
 		  (funcall #',sentinel process signal)
-		  ;; Kill the buffer on an exit signal.
 		  (and (memq (process-status process) '(exit signal))
 		       (buffer-live-p (process-buffer process))
 		       (kill-buffer (process-buffer process))))))))
@@ -315,16 +312,16 @@
 ;;;; vterm
 (setq vterm-max-scrollback 100000)
 (with-eval-after-load 'vterm
-  (define-key vterm-mode-map [f1] nil)
-  (define-key vterm-mode-map (kbd "M-!") nil)
-  (define-key vterm-mode-map (kbd "C-M-v") nil)
-  (define-key vterm-mode-map (kbd "C-S-M-v") nil)
-  (define-key vterm-mode-map (kbd "<f2>") nil)
-  (define-key vterm-mode-map (kbd "<f11>") nil)
-  (define-key vterm-mode-map (kbd "C-u") #'vterm--self-insert)
-  (define-key vterm-mode-map (kbd "C-SPC") #'vterm-copy-mode)
-  (define-key vterm-copy-mode-map (kbd "C-w") #'vterm-copy-mode-done)
-  (define-key vterm-copy-mode-map (kbd "M-w") #'vterm-copy-mode-done))
+  (keymap-set vterm-mode-map "<f1>" nil)
+  (keymap-set vterm-mode-map "M-!" nil)
+  (keymap-set vterm-mode-map "C-M-v" nil)
+  (keymap-set vterm-mode-map "C-M-S-v" nil)
+  (keymap-set vterm-mode-map "<f2>" nil)
+  (keymap-set vterm-mode-map "<f11>" nil)
+  (keymap-set vterm-mode-map "C-u" #'vterm--self-insert)
+  (keymap-set vterm-mode-map "C-SPC" #'vterm-copy-mode)
+  (keymap-set vterm-copy-mode-map "C-w" #'vterm-copy-mode-done)
+  (keymap-set vterm-copy-mode-map "M-w" #'vterm-copy-mode-done))
 
 ;;;; auctex
 (setq TeX-auto-save t)
@@ -342,8 +339,7 @@
 (add-hook 'TeX-after-compilation-finished-functions
           #'TeX-revert-document-buffer)
 (with-eval-after-load 'latex
-  (define-key TeX-mode-map (kbd "C-c C-x C-l") #'my-preview-dwim)
-  (define-key LaTeX-mode-map (kbd "C-c C-e") #'latex-close-block))
+  (keymap-set TeX-mode-map "C-c C-x C-l" #'my-preview-dwim))
 
 ;;;; pdf-tools
 (if  (or (daemonp) window-system) (pdf-loader-install))
@@ -352,17 +348,15 @@
 (add-hook 'pdf-view-mode-hook #'save-place-local-mode)
 (add-hook 'pdf-annot-list-mode-hook #'pdf-annot-list-follow-minor-mode)
 (with-eval-after-load 'pdf-tools
-  (define-key pdf-view-mode-map (kbd "D") #'pdf-annot-delete)
-  (define-key pdf-view-mode-map (kbd "M") #'pdf-view-midnight-minor-mode)
-  (define-key pdf-view-mode-map (kbd "S") #'save-buffer)
-  (define-key pdf-view-mode-map (kbd "T") #'pdf-annot-add-highlight-markup-annotation)
-  (define-key pdf-view-mode-map (kbd "L") #'pdf-annot-list-annotations)
-  (define-key pdf-view-mode-map (kbd "C-SPC") #'my-pdf-save-position)
-  (define-key pdf-view-mode-map (kbd "C-U C-SPC") #'my-pdf-jump-to-position)
-  (advice-add 'pdf-annot-list-annotations :before 'my-pdf-save-position)
-  (advice-add 'pdf-outline :before 'my-pdf-save-position))
+  (keymap-set pdf-view-mode-map "D" #'pdf-annot-delete)
+  (keymap-set pdf-view-mode-map "M" #'pdf-view-midnight-minor-mode)
+  (keymap-set pdf-view-mode-map "S" #'save-buffer)
+  (keymap-set pdf-view-mode-map "L" #'pdf-annot-list-annotations)
+  (keymap-set pdf-view-mode-map "T" #'pdf-annot-add-highlight-markup-annotation)
+  (keymap-set pdf-view-mode-map "<prior>" #'pdf-view-scroll-down-or-previous-page)
+  (keymap-set pdf-view-mode-map "<next>" #'pdf-view-scroll-up-or-next-page))
 (with-eval-after-load 'pdf-annot
-  (define-key pdf-annot-list-mode-map (kbd "RET") #'tablist-quit)
+  (keymap-set pdf-annot-list-mode-map "RET" #'tablist-quit)
   (add-to-list 'pdf-annot-default-annotation-properties
 	       '(highlight (color . "DarkSeaGreen1"))))
 
@@ -395,6 +389,7 @@
 (define-key project-prefix-map (kbd "l") #'my-project-find-library)
 
 ;;;; tree-sitter
+;; https://github.com/mickeynp/combobulate
 (setq treesit-language-source-alist
       '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
 	(c . ("https://github.com/tree-sitter/tree-sitter-c"))
@@ -454,7 +449,7 @@
 
 ;;;; racket
 (with-eval-after-load 'racket-mode
-  (define-key racket-repl-mode-map (kbd "C-c M-o")
+  (keymap-set racket-repl-mode-map "C-c M-o"
 	      #'racket-repl-clear-leaving-last-prompt))
 
 ;;;; html
@@ -474,7 +469,7 @@
 
 ;;;; css
 (with-eval-after-load 'css-mode
-  (define-key css-mode-map (kbd "C-c C-l") #'list-colors-display))
+  (keymap-set css-mode-map "C-c C-l" #'list-colors-display))
 
 ;;;; json
 (with-eval-after-load 'json
@@ -540,8 +535,8 @@
 (setq read-buffer-completion-ignore-case t)
 (setq read-file-name-completion-ignore-case t)
 (setq completion-styles '(basic partial-completion substring))
-(define-key minibuffer-mode-map (kbd "C-p") #'minibuffer-previous-completion)
-(define-key minibuffer-mode-map (kbd "C-n") #'minibuffer-next-completion)
+(keymap-set minibuffer-mode-map "C-p" #'minibuffer-previous-completion)
+(keymap-set minibuffer-mode-map "C-n" #'minibuffer-next-completion)
 
 ;;;; files
 (setq auto-save-default nil)
