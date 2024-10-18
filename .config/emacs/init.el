@@ -388,6 +388,14 @@
   (keymap-set ibuffer-mode-map "* n" #'ibuffer-mark-common-buffers)
   (keymap-set ibuffer-mode-map "* w" #'ibuffer-mark-eww-buffers))
 
+;;;; shr
+(setq shr-max-width nil)
+(defun shr-fill-text (text) text)
+(defun shr-fill-lines (start end) nil)
+(defun shr-fill-line () nil)
+(setq shr-use-fonts nil)
+(add-hook 'eww-mode-hook #'visual-line-mode)
+
 ;;;; calc
 (setq calc-group-digits t)
 
