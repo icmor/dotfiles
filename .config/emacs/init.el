@@ -181,6 +181,7 @@
 (keymap-global-set "C-x K" #'kill-buffer)
 (keymap-global-set "C-x o" #'other-window-alternating)
 (keymap-global-set "M-z" #'zap-up-to-char)
+(keymap-global-set "M-/" #'hippie-expand)
 (keymap-global-set "C-x l" #'count-words)
 (keymap-global-set "C-x r m" #'bookmark-set-no-overwrite)
 (keymap-global-set "C-x r M" #'bookmark-set)
@@ -428,19 +429,9 @@
 
 ;;; programming
 ;;;; general
-(setq my-libs
-      `((c-ts-mode . "/usr/include")
-	(c++-mode . "/usr/include")
-	(java-mode . "/usr/lib/jvm")
-	(python-ts-mode . ,(car (file-expand-wildcards "/usr/lib/python3.??")))))
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
-
-;;;; project
-(setq project-kill-buffers-display-buffer-list t)
-(define-key project-prefix-map (kbd "R") #'my-project-refresh)
-(define-key project-prefix-map (kbd "l") #'my-project-find-library)
 
 ;;;; tree-sitter
 ;; https://github.com/mickeynp/combobulate
@@ -456,7 +447,6 @@
 (dolist (grammar treesit-language-source-alist)
 	(unless (treesit-language-available-p (car grammar))
 	  (treesit-install-language-grammar (car grammar))))
-
 (dolist (mapping
          '((bash-mode . bash-ts-mode)
 	   (c-mode . c-ts-mode)
@@ -468,11 +458,29 @@
            (python-mode . python-ts-mode)))
   (add-to-list 'major-mode-remap-alist mapping))
 
+;;;; project
+(setq project-libs
+      `((c-ts-mode . "/usr/include")
+	(c++-mode . "/usr/include")
+	(java-mode . "/usr/lib/jvm")
+	(python-ts-mode . ,(car (file-expand-wildcards "/usr/lib/python3.??")))))
+(setq project-kill-buffers-display-buffer-list t)
+(keymap-set project-prefix-map "R" #'my-project-refresh)
+(keymap-set  project-prefix-map "l" #'my-project-find-library)
+
 ;;;; xref
 (setq xref-prompt-for-identifier nil)
 (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 
+;;;; imenu-list
+(setq imenu-list-focus-after-activation t)
+(with-eval-after-load 'imenu-list
+  (keymap-set imenu-list-major-mode-map "<tab>" #'hs-toggle-hiding))
+
 ;;;; gud
+(setq gdb-default-window-configuration-file "~/.config/gdb/gdbwindows.el")
+(setq gdb-debuginfod-enable-setting nil)
+(setq gdb-many-windows t)
 ;; https://stackoverflow.com/a/24923325
 (defadvice gdb-inferior-filter
     (around gdb-inferior-filter-without-stealing)
@@ -480,9 +488,6 @@
     (comint-output-filter proc string)))
 (ad-activate 'gdb-inferior-filter)
 (add-hook 'gdb-locals-mode-hook #'gdb-locals-values)
-(setq gdb-default-window-configuration-file "~/.config/gdb/gdbwindows.el")
-(setq gdb-debuginfod-enable-setting nil)
-(setq gdb-many-windows t)
 
 ;;;; devdocs
 (add-devdocs-to-mode 'c-ts-mode 'c-ts-mode "c")
@@ -493,21 +498,23 @@
 (add-hook 'devdocs-mode-hook #'visual-line-mode)
 
 ;;;; c
-(setq c-default-style
-      '((java-ts-mode . "linux")
-	(awk-mode . "awk")
-	(c-ts-mode . "linux")
-	(other . "gnu")))
-(add-hook 'c-mode-hook #'c-toggle-comment-style)
+(defun my-set-c-compile-command ()
+  (let* ((infile (file-relative-name buffer-file-name))
+	 (outfile (string-remove-suffix ".c" infile)))
+    (setq-local compile-command (concat "gcc -g " infile " -o " outfile))))
+(add-hook 'c-ts-mode-hook #'my-set-c-compile-command)
+(add-hook 'c-ts-mode-hook #'c-ts-mode-toggle-comment-style)
 
 ;;;; python
+(defun my-set-python-compile-command ()
+  (let* ((infile (file-relative-name buffer-file-name))
+	 (outfile (string-remove-suffix ".c" infile)))
+    (setq-local compile-command (concat "mypy --strict " infile))))
 (setq python-indent 4)
 (setq python-check-command "flake8 --color=never")
-(add-hook 'python-ts-mode-hook
-	  (lambda nil
-	    (setq-local compile-command (concat "mypy " buffer-file-name))))
-(with-eval-after-load 'python
-  (pyvenv-mode))
+(add-hook 'pyvenv-post-activate-hooks #'pyvenv-mode)
+(add-hook 'python-ts-mode-hook #'my-set-python-compile-command)
+(add-hook 'python-ts-mode-hook (lambda nil (setq forward-sexp-function nil)))
 
 ;;;; racket
 (with-eval-after-load 'racket-mode
@@ -538,11 +545,15 @@
   (setq js-indent-level 2))
 
 ;;;; haskell
-(setq haskell-process-type 'stack-ghci)
 (setq haskell-process-suggest-remove-import-lines t)
 (setq haskell-process-auto-import-loaded-modules t)
-(setq haskell-process-log t)
-(add-hook 'interactive-haskell-mode-hook #'electric-pair-local-mode)
+(setq haskell-interactive-popup-errors nil)
+(with-eval-after-load 'haskell
+  (keymap-set interactive-haskell-mode-map "C-c C-c" #'haskell-process-load-file))
+(with-eval-after-load 'haskell-interactive-mode
+  (keymap-set haskell-interactive-mode-map "C-c M-o" #'haskell-interactive-mode-clear))
+(add-hook 'haskell-mode-hook #'interactive-haskell-mode)
+(add-hook 'haskell-interactive-mode-hook #'electric-pair-local-mode)
 
 ;;;; java
 (add-hook 'java-mode-hook #'subword-mode)
@@ -574,19 +585,22 @@
 (setq find-file-suppress-same-file-warnings t)
 (setq disabled-command-function nil)
 (setq ring-bell-function 'ignore)
-(setq dabbrev-check-all-buffers nil)
 (global-so-long-mode)
 (repeat-mode)
 (winner-mode)
 
-;;;; minibuffer completion
+;;;; completion
 (setq completions-detailed t)
+(setq completion-auto-help 'visible)
 (setq completions-format 'one-column)
+(setq completion-ignore-case t)
 (setq read-buffer-completion-ignore-case t)
 (setq read-file-name-completion-ignore-case t)
 (setq completion-styles '(basic partial-completion substring))
 (keymap-set minibuffer-mode-map "C-p" #'minibuffer-previous-completion)
 (keymap-set minibuffer-mode-map "C-n" #'minibuffer-next-completion)
+(keymap-set completion-in-region-mode-map "C-p" #'minibuffer-previous-completion)
+(keymap-set completion-in-region-mode-map "C-n" #'minibuffer-next-completion)
 
 ;;;; files
 (setq auto-save-default nil)
