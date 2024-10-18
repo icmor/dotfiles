@@ -195,16 +195,22 @@
 
 ;;; org
 ;;;; general
+(setq org-use-speed-commands t)
+(setq org-startup-folded 'show2levels)
 (setq org-agenda-files '("~/org/gtd.org" "~/org/inbox.org" "~/org/things.org"))
 (setq org-modules '(ol-man ol-info))
 (setq org-log-repeat nil)
 (setq org-return-follows-link t)
+(setq org-cycle-include-plain-lists 'integrate)
 (setq org-capture-bookmark nil)
 (setq org-archive-default-command nil)
 (setq org-list-allow-alphabetical t)
 (setq org-hierarchical-todo-statistics nil)
 (setq org-refile-targets '((nil . (:maxlevel . 3))
 			   (org-agenda-files . (:level . 1))))
+(with-eval-after-load 'org
+  (keymap-set org-mode-map "M-{" #'backward-paragraph)
+  (keymap-set org-mode-map "M-}" #'forward-paragraph))
 
 ;;;; visual
 (setq org-adapt-indentation nil)
