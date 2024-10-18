@@ -5,14 +5,11 @@
 
 (setq package-selected-packages
       '(
-	avy
 	auctex
 	bash-completion
 	dumb-jump
-	ess
 	gcmh
 	haskell-mode
-	hide-mode-line
 	imenu-list
 	magit
 	markdown-mode
@@ -22,7 +19,6 @@
 	proof-general
 	pyvenv
 	racket-mode
-	rfc-mode
 	saveplace-pdf-view
 	transpose-frame
 	vterm
@@ -71,12 +67,6 @@
    (lambda nil (org-sort-entries nil ?a))
    (concat "LEVEL=" (number-to-string (or level 1)))))
 
-(defun my-previous-window ()
-  "Jump to previous window."
-  (interactive)
-  (setq repeat-map 'other-window-repeat-map)
-  (other-window -1))
-
 (defun my-project-find-library ()
   "Call project-switch-project on language-specific directory"
   (interactive)
@@ -103,12 +93,6 @@
    ((equal arg '(4))
     (preview-clearout-section))
    ((preview-at-point))))
-
-;; https://github.com/emacs-exwm/exwm/blob/master/exwm-config.el#L60
-(defun my-launch (command)
-  "Launch external programs."
-  (interactive (list (read-shell-command "$ ")))
-  (start-process-shell-command command nil command))
 
 (defun my-shell-toggle (&optional arg)
   "Toggle a shell window (with ARG name it *s<arg>*)."
@@ -141,7 +125,6 @@
 (keymap-global-set "<f2>" #'my-shell-toggle)
 (keymap-global-set "C-<f2>" #'my-shell-other-window)
 (keymap-global-set "M-g l" #'imenu-list-smart-toggle)
-(keymap-global-set "C-c SPC" #'my-launch)
 (keymap-global-set "C-c a" #'org-agenda-list)
 (keymap-global-set "C-c c" #'org-capture)
 (if (or (daemonp) window-system)
@@ -241,8 +224,7 @@
 	("e" "Events" entry (file+headline "gtd.org" "Events")
          "* %?\n")
 	("t" "Things" entry (file+headline "things.org" "Purchase")
-	 "* TODO %?\n")
-	("j" "Journal" plain (file+olp+datetree "journal.org"))))
+	 "* TODO %?\n")))
 
 ;;;; babel
 (setq org-confirm-babel-evaluate nil)
@@ -250,8 +232,7 @@
  'org-babel-load-languages
  '((emacs-lisp . t)
    (python . t)
-   (dot . t)
-   (C . t)))
+   (dot . t)))
 
 ;;; essentials
 ;;;; auth-source
@@ -267,8 +248,7 @@
 (setq image-use-external-converter t)
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (with-eval-after-load 'dired
-  (keymap-set dired-mode-map "C-M-o" #'dired-find-file-other-frame)
-  (keymap-set dired-mode-map "C-c f" #'find-dired))
+  (keymap-set dired-mode-map "C-M-o" #'dired-find-file-other-frame))
 
 ;;;; which-key
 (setq which-key-idle-delay 0.5)
@@ -277,9 +257,6 @@
 
 ;;;; outline-minor-mode
 (setq outline-minor-mode-cycle t)
-
-;;;; avy
-(setq avy-timeout-seconds 0.3)
 
 ;;;; comint
 (setq comint-prompt-read-only t)
@@ -384,7 +361,6 @@
 
 ;;;; project
 (setq project-kill-buffers-display-buffer-list t)
-(add-to-list 'project-switch-commands '(project-shell "Shell") t)
 (define-key project-prefix-map (kbd "R") #'my-project-refresh)
 (define-key project-prefix-map (kbd "l") #'my-project-find-library)
 
@@ -485,9 +461,6 @@
 ;;;; java
 (add-hook 'java-mode-hook #'subword-mode)
 
-;;;;; asm
-(setq asm-comment-char ?\#)
-
 ;;;; markdown
 (setq markdown-fontify-code-blocks-natively t)
 (setq markdown-command "pandoc --quiet -f gfm -s")
@@ -504,15 +477,6 @@
 	       (display-buffer-reuse-mode-window
 		(inhibit-same-window . nil)
 		(mode . Man-mode))))
-
-;;;; rfc
-(add-to-list 'display-buffer-alist
-	     '("\\`\\*rfc.*\\*\\'" .
-	       (display-buffer-reuse-mode-window
-		(inhibit-same-window . nil)
-		(mode . rfc-mode))))
-(with-eval-after-load 'rfc-mode
-  (define-key rfc-mode-map (kbd "m") #'rfc-mode-browse))
 
 ;;; miscellaneous
 ;;;; better defaults
