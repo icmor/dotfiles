@@ -11,6 +11,7 @@
 	dumb-jump
 	engrave-faces
 	gcmh
+	go-mode
 	haskell-mode
 	imenu-list
 	magit
@@ -22,6 +23,7 @@
 	pyvenv
 	racket-mode
 	saveplace-pdf-view
+	tmr
 	transpose-frame
 	vterm
 	which-key
