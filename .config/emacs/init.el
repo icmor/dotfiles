@@ -7,6 +7,7 @@
       '(
 	auctex
 	bash-completion
+	devdocs
 	dumb-jump
 	gcmh
 	haskell-mode
@@ -55,6 +56,14 @@
 (setq read-process-output-max (* 1024 1024))
 
 ;;;; functions
+(defun add-devdocs-to-mode (feature mode docs)
+  """Set local `docs' for `mode' after `feature' is loaded."""
+  (let ((hook (intern (concat (symbol-name mode) "-hook")))
+	(keymap (intern (concat (symbol-name mode) "-map"))))
+    (add-hook hook (lambda nil (setq-local devdocs-current-docs (list docs))))
+    (with-eval-after-load feature
+      (keymap-set (symbol-value keymap) "C-c C-d" #'devdocs-lookup))))
+
 (defun dired-find-file-other-frame ()
   "In Dired, visit this file or directory in another frame."
   (interactive)
@@ -405,6 +414,14 @@
 (setq gdb-default-window-configuration-file "~/.config/gdb/gdbwindows.el")
 (setq gdb-debuginfod-enable-setting nil)
 (setq gdb-many-windows t)
+
+;;;; devdocs
+(add-devdocs-to-mode 'c-ts-mode 'c-ts-mode "c")
+(add-devdocs-to-mode 'go-mode 'go-mode "go")
+(add-devdocs-to-mode 'haskell 'haskell-mode "haskell~9")
+(add-devdocs-to-mode 'python 'python-ts-mode "python~3.12")
+(add-devdocs-to-mode 'python 'inferior-python-mode "python~3.12")
+(add-hook 'devdocs-mode-hook #'visual-line-mode)
 
 ;;;; c
 (setq c-default-style
