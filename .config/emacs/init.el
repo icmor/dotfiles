@@ -70,6 +70,19 @@
   (interactive)
   (dired--find-file #'find-file-other-frame (dired-get-file-for-visit)))
 
+(defun ibuffer-mark-eww-buffers nil
+  """Mark all eww buffers in ibuffer."""
+  (interactive)
+  (ibuffer-mark-by-mode-regexp "eww"))
+
+(defun ibuffer-mark-common-buffers nil
+  """Mark commonly used buffers in ibuffer for ease of use."""
+    (interactive)
+    (ibuffer-update nil)
+    (ibuffer-mark-by-name-regexp "shell")
+    (ibuffer-mark-by-name-regexp "Org Agenda")
+    (ibuffer-mark-by-name-regexp "scratch"))
+
 (defun my-org-sort (&optional level)
   "Sort org headlines alphabetically at LEVEL (default 1)."
   (interactive "P")
@@ -369,6 +382,11 @@
   (keymap-set pdf-annot-list-mode-map "RET" #'tablist-quit)
   (add-to-list 'pdf-annot-default-annotation-properties
 	       '(highlight (color . "DarkSeaGreen1"))))
+
+;;;; ibuffer
+(with-eval-after-load 'ibuffer
+  (keymap-set ibuffer-mode-map "* n" #'ibuffer-mark-common-buffers)
+  (keymap-set ibuffer-mode-map "* w" #'ibuffer-mark-eww-buffers))
 
 ;;;; calc
 (setq calc-group-digits t)
