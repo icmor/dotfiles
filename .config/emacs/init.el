@@ -9,6 +9,7 @@
 	bash-completion
 	devdocs
 	dumb-jump
+	engrave-faces
 	gcmh
 	haskell-mode
 	imenu-list
@@ -177,9 +178,32 @@
 (setq org-adapt-indentation nil)
 (setq org-startup-with-inline-images t)
 (setq org-image-actual-width 250)
-(setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
 (add-hook 'org-mode-hook #'visual-line-mode)
 (add-hook 'org-mode-hook #'ws-butler-mode)
+
+;;;; org + latex
+(setq org-latex-src-block-backend 'engraved)
+(setq engrave-faces-latex-mathescape t)
+(setq org-latex-packages-alist
+      '(("margin=2.5cm" "geometry" nil)
+	("" "xcolor" nil)))
+(setq org-latex-hyperref-template "\\hypersetup{
+ pdfauthor={%a},
+ pdftitle={%t},
+ pdfkeywords={%k},
+ pdfsubject={%d},
+ pdfcreator={%c},
+ pdflang={%L},
+ colorlinks,
+ linkcolor=black,
+ filecolor={purple!80!black},
+ citecolor={blue!50!black},
+ urlcolor={blue!80!black}}
+")
+(with-eval-after-load 'org
+  (plist-put org-format-latex-options :scale 1.5))
+(with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-engraved-options '("mathescape")))
 
 ;;;; calendar
 ;; https://github.com/sggutier/mexican-holidays
