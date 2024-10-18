@@ -162,7 +162,6 @@
 (keymap-global-set "M-o" #'other-window-prefix)
 
 ;;;; global
-(keymap-global-set "C-x g" #'magit)
 (keymap-global-set "<f2>" #'my-shell-toggle)
 (keymap-global-set "C-<f2>" #'my-shell-other-window)
 (keymap-global-set "M-g l" #'imenu-list-smart-toggle)
@@ -309,6 +308,7 @@
 (setq dired-dwim-target t)
 (setq dired-free-space nil)
 (setq dired-listing-switches "-lhA")
+(setq dired-vc-rename-file t)
 (setq wdired-allow-to-change-permissions t)
 (setq image-dired-thumbnail-storage 'standard-large)
 (setq image-use-external-converter t)
@@ -375,12 +375,7 @@
 (setq preview-auto-cache-preamble t)
 (setq-default TeX-output-dir "auctex")
 (setq-default TeX-auto-local "auctex")
-(with-eval-after-load 'preview
-  (setq preview-scale-function
-	(lambda nil (* 1.25 (funcall (preview-scale-from-face))))))
-(add-hook 'TeX-mode-hook #'electric-pair-local-mode)
-(add-hook 'TeX-after-compilation-finished-functions
-          #'TeX-revert-document-buffer)
+(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
 (with-eval-after-load 'latex
   (keymap-set TeX-mode-map "C-c C-x C-l" #'my-preview-dwim))
 
@@ -582,9 +577,11 @@
 (setq show-paren-context-when-offscreen t)
 (setq view-read-only t)
 (setq use-short-answers t)
+(setq server-client-instructions nil)
 (setq find-file-suppress-same-file-warnings t)
 (setq disabled-command-function nil)
 (setq ring-bell-function 'ignore)
+(setq pgtk-use-im-context-on-new-connection nil)
 (global-so-long-mode)
 (repeat-mode)
 (winner-mode)
