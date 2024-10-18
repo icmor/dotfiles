@@ -85,6 +85,19 @@
     (ibuffer-mark-by-name-regexp "Org Agenda")
     (ibuffer-mark-by-name-regexp "scratch"))
 
+;; https://karthinks.com/software/emacs-window-management-almanac/
+(defalias 'other-window-alternating
+    (let ((direction 1))
+      (lambda (&optional arg)
+        "Call `other-window', switching directions each time."
+        (interactive)
+        (if (equal last-command 'other-window-alternating)
+            (other-window (* direction (or arg 1)))
+          (setq direction (- direction))
+          (other-window (* direction (or arg 1)))))))
+(put 'other-window-alternating 'repeat-map 'other-window-repeat-map)
+(keymap-set other-window-repeat-map "o" 'other-window-alternating)
+
 (defun my-org-sort (&optional level)
   "Sort org headlines alphabetically at LEVEL (default 1)."
   (interactive "P")
@@ -145,6 +158,9 @@
     (call-interactively #'vterm)))
 
 ;;; bindings
+;;;; prefix maps
+(keymap-global-set "M-o" #'other-window-prefix)
+
 ;;;; global
 (keymap-global-set "C-x g" #'magit)
 (keymap-global-set "<f2>" #'my-shell-toggle)
@@ -152,6 +168,7 @@
 (keymap-global-set "M-g l" #'imenu-list-smart-toggle)
 (keymap-global-set "C-c a" #'org-agenda-list)
 (keymap-global-set "C-c c" #'org-capture)
+(keymap-global-set "C-;" (lambda nil (interactive) (switch-to-buffer nil)))
 (if (or (daemonp) window-system)
     (progn (keymap-global-set "<f1>" #'my-vterm-toggle)
 	   (keymap-global-set "C-<f1>" #'vterm-other-window)))
@@ -162,7 +179,7 @@
 (keymap-global-set "C-x C-b" #'ibuffer)
 (keymap-global-set "C-x k" #'kill-current-buffer)
 (keymap-global-set "C-x K" #'kill-buffer)
-(keymap-global-set "C-x O" #'my-previous-window)
+(keymap-global-set "C-x o" #'other-window-alternating)
 (keymap-global-set "M-z" #'zap-up-to-char)
 (keymap-global-set "C-x l" #'count-words)
 (keymap-global-set "C-x r m" #'bookmark-set-no-overwrite)
