@@ -16,4 +16,10 @@ if [ "$(tty)" = "/dev/tty1" ]; then
     export XDG_CURRENT_DESKTOP=sway
     export XDG_SESSION_DESKTOP=sway
     exec sway --unsupported-gpu
+# misc
+export GPROFNG_SYSCONFDIR="/etc/" # fix binutils packaging error
+export EDITOR="vim"
+export ERROR_FLAGS="-Wall -Wextra -Wconversion -Wundef -Wformat=2 \
+-Wformat-truncation -Wdouble-promotion -Wshadow -fno-common"
+export SANITIZER_FLAGS="-fsanitize=address -fsanitize=undefined -fsanitize=leak"
 fi

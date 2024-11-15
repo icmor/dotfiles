@@ -10,8 +10,6 @@ HISTCONTROL=erasedups
 HISTSIZE=-1
 HISTFILESIZE=-1
 PROMPT_DIRTRIM=2
-export EDITOR="vim"
-export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"
 
 # XDG
 export XDG_CACHE_HOME="${HOME}/.cache"
@@ -31,7 +29,7 @@ export XAUTHORITY="${XDG_RUNTIME_DIR}"/Xauthority
 
 
 case "$TERM" in
-    *color*|alacritty)
+    *color*|foot)
 	PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
 	;;
     *)
@@ -49,21 +47,16 @@ alias ll='ls -Alh'
 alias l='ls -CAF'
 
 alias gcd="cd \$(git rev-parse --show-toplevel)"
+alias ed="emacs -nw"
 alias open="xdg-open"
 alias trash="gio trash"
 alias wlan="iwctl station wlan0"
 
-alias gsan="gcc -fsanitize=address -fsanitize=undefined"\
-" -fno-sanitize-recover=all -fsanitize=float-divide-by-zero"\
-" -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment"
-alias prime_run='DRI_PRIME=pci-0000_01_00_0 __VK_LAYER_NV_optimus=NVIDIA_only"\
-" __GLX_VENDOR_LIBRARY_NAME=nvidia'
-alias tlp_perf="sudo tlp ac -- CPU_ENERGY_PERF_POLICY_ON_AC=performance"\
-" MAX_LOST_WORK_SECS_ON_AC=0 CPU_SCALING_GOVERNOR_ON_AC=performance"
-alias vmware_run="pkexec sh -c 'systemctl start vmware-networks"\
-"&& modprobe -a vmw_vmci vmmon' && vmware 1>&2 2>&- &"
-alias vmware_stop="pkexec sh -c 'systemctl stop vmware-networks"\
-" && rmmod vmw_vsock_vmci_transport vmw_vmci vmmon'"
+alias nvidia_reset="sudo rmmod nvidia_drm && sudo modprobe nvidia_drm"
+alias vmware_start="pkexec sh -c 'systemctl start vmware-networks \
+&& modprobe -a vmw_vmci vmmon' && vmware 1>&2 2>&- &"
+alias vmware_stop="pkexec sh -c 'systemctl stop vmware-networks \
+&& rmmod vmw_vsock_vmci_transport vmw_vmci vmmon'"
 
 # functions
 function docker_latest {
