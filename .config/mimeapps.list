@@ -1,0 +1,25 @@
+[Added Associations]
+application/octet-stream=firefoxdeveloperedition.desktop;
+
+[Default Applications]
+text/english=emacsclient.desktop
+text/plain=emacsclient.desktop
+text/x-makefile=emacsclient.desktop
+text/x-c++hdr=emacsclient.desktop
+text/x-c++src=emacsclient.desktop
+text/x-chdr=emacsclient.desktop
+text/x-csrc=emacsclient.desktop
+text/x-java=emacsclient.desktop
+text/x-moc=emacsclient.desktop
+text/x-pascal=emacsclient.desktop
+text/x-tcl=emacsclient.desktop
+text/x-tex=emacsclient.desktop
+text/x-c=emacsclient.desktop
+text/x-c++=emacsclient.desktop
+text/html=firefoxdeveloperedition.desktop
+application/pdf=firefoxdeveloperedition.desktop
+application/xhtml+xml=firefoxdeveloperedition.desktop
+application/epub+zip=calibre-ebook-viewer.desktop
+image/jpeg=org.gnome.gThumb.desktop
+image/png=org.gnome.gThumb.desktop
+
