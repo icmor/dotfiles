@@ -24,8 +24,10 @@ exec dropbox
 exec inactive-transparency
 exec gammastep -l 19:-99
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-output * bg ~/Dropbox/images/wallpaper/lain.jpg fill
 exec swaymsg 'workspace $ws2'
+
+### outputs
+output * bg ~/Dropbox/images/wallpaper/porco.jpg fill
 
 ### idle
 exec swayidle -w \
@@ -206,10 +208,10 @@ bar {
 
     colors {
     	   statusline #ffffff
-           background #2d2d2d
+           background #000025
 	   focused_workspace  #4c7899 #d3d3d3 #2d2d2d
            active_workspace   #333333 #5f676a #ffffff
-	   inactive_workspace #323232 #2d2d2d #ffffff
+	   inactive_workspace #323232 #000025 #ffffff
 	   urgent_workspace   #000000 #ffffff #5c5c5c
            binding_mode       #2f343a #8b0000 #ffffff
     }
