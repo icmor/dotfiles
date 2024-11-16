@@ -7,11 +7,8 @@
       '(
 	auctex
 	bash-completion
-	devdocs
 	dumb-jump
-	engrave-faces
 	gcmh
-	go-mode
 	haskell-mode
 	imenu-list
 	magit
@@ -59,14 +56,6 @@
 (setq read-process-output-max (* 1024 1024))
 
 ;;;; functions
-(defun add-devdocs-to-mode (feature mode docs)
-  """Set local `docs' for `mode' after `feature' is loaded."""
-  (let ((hook (intern (concat (symbol-name mode) "-hook")))
-	(keymap (intern (concat (symbol-name mode) "-map"))))
-    (add-hook hook (lambda nil (setq-local devdocs-current-docs (list docs))))
-    (with-eval-after-load feature
-      (keymap-set (symbol-value keymap) "C-c C-d" #'devdocs-lookup))))
-
 (defun dired-find-file-other-frame ()
   "In Dired, visit this file or directory in another frame."
   (interactive)
@@ -188,6 +177,10 @@
 (keymap-global-set "C-M-o" #'open-line)
 (keymap-global-set "C-h C-m" #'man)
 (keymap-global-set "C-x C-c" #'save-buffers-kill-emacs)
+(keymap-global-set "<left>" #'windmove-left)
+(keymap-global-set "<right>" #'windmove-right)
+(keymap-global-set "<up>" #'windmove-up)
+(keymap-global-set "<down>" #'windmove-down)
 (keymap-global-set "C-x C-<left>" #'windmove-swap-states-left)
 (keymap-global-set "C-x C-<right>" #'windmove-swap-states-right)
 (keymap-global-set "C-x C-<up>" #'windmove-swap-states-up)
@@ -220,8 +213,6 @@
 (add-hook 'org-mode-hook #'ws-butler-mode)
 
 ;;;; org + latex
-(setq org-latex-src-block-backend 'engraved)
-(setq engrave-faces-latex-mathescape t)
 (setq org-latex-packages-alist
       '(("margin=2.5cm" "geometry" nil)
 	("" "xcolor" nil)))
@@ -240,8 +231,6 @@
 ")
 (with-eval-after-load 'org
   (plist-put org-format-latex-options :scale 1.5))
-(with-eval-after-load 'ox-latex
-  (add-to-list 'org-latex-engraved-options '("mathescape")))
 
 ;;;; calendar
 ;; https://github.com/sggutier/mexican-holidays
@@ -357,6 +346,8 @@
 		  (and (memq (process-status process) '(exit signal))
 		       (buffer-live-p (process-buffer process))
 		       (kill-buffer (process-buffer process))))))))
+(with-eval-after-load 'shell
+  (keymap-set shell-mode-map "M-." #'comint-insert-previous-argument))
 
 ;;;; vterm
 (setq vterm-max-scrollback 100000)
@@ -409,14 +400,6 @@
   (keymap-set ibuffer-mode-map "* n" #'ibuffer-mark-common-buffers)
   (keymap-set ibuffer-mode-map "* w" #'ibuffer-mark-eww-buffers))
 
-;;;; shr
-(setq shr-max-width nil)
-(defun shr-fill-text (text) text)
-(defun shr-fill-lines (start end) nil)
-(defun shr-fill-line () nil)
-(setq shr-use-fonts nil)
-(add-hook 'eww-mode-hook #'visual-line-mode)
-
 ;;;; calc
 (setq calc-group-digits t)
 
@@ -441,6 +424,7 @@
 	(c . ("https://github.com/tree-sitter/tree-sitter-c"))
 	(cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
 	(css . ("https://github.com/tree-sitter/tree-sitter-css"))
+	(go . ("https://github.com/tree-sitter/tree-sitter-go"))
 	(java . ("https://github.com/tree-sitter/tree-sitter-java"))
 	(javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
 	(json . ("https://github.com/tree-sitter/tree-sitter-json"))
@@ -453,6 +437,7 @@
 	   (c-mode . c-ts-mode)
 	   (c++-mode . c++-ts-mode)
            (css-mode . css-ts-mode)
+	   (go . go-ts-mode)
 	   (java . java-ts-mode)
 	   (javascript . js-ts-mode)
 	   (json . json-ts-mode)
@@ -490,19 +475,11 @@
 (ad-activate 'gdb-inferior-filter)
 (add-hook 'gdb-locals-mode-hook #'gdb-locals-values)
 
-;;;; devdocs
-(add-devdocs-to-mode 'c-ts-mode 'c-ts-mode "c")
-(add-devdocs-to-mode 'go-mode 'go-mode "go")
-(add-devdocs-to-mode 'haskell 'haskell-mode "haskell~9")
-(add-devdocs-to-mode 'python 'python-ts-mode "python~3.12")
-(add-devdocs-to-mode 'python 'inferior-python-mode "python~3.12")
-(add-hook 'devdocs-mode-hook #'visual-line-mode)
-
 ;;;; c
 (defun my-set-c-compile-command ()
-  (let* ((infile (file-relative-name buffer-file-name))
-	 (outfile (string-remove-suffix ".c" infile)))
-    (setq-local compile-command (concat "gcc -g " infile " -o " outfile))))
+  (let* ((file (file-relative-name buffer-file-name))
+    (setq-local compile-command
+		(concat "gcc -Wall -g -o " (file-name-base file) " " file)))))
 (add-hook 'c-ts-mode-hook #'my-set-c-compile-command)
 (add-hook 'c-ts-mode-hook #'c-ts-mode-toggle-comment-style)
 
