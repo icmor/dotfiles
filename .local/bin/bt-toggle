@@ -1,17 +1,17 @@
 #!/bin/bash
 
 blocked="$(rfkill list bluetooth | grep yes)"
+indicator="߷"
 if [ $button = 1 ]; then
     [[ -n "$blocked" ]] && rfkill unblock bluetooth
-    status="🛳"
+    color="00bfff"	# bluetooth on
 elif [ $button = 3 ]; then
     [[ -z "$blocked" ]] && rfkill block bluetooth
-    status="🚢"
+    color="696969"	# bluetooth off
 elif [ -z "$blocked" ]; then
-    status="🛳"
+    color="00bfff"	# bluetooth on
 else
-    status="🚢"
+    color="696969"	# bluetooth off
 fi
 
-echo $status
-exit 0
+printf '{"full_text":"%s", "color":"%s"}\n' $indicator $color
