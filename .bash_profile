@@ -8,6 +8,9 @@ export LIBVA_DRIVER_NAME=iHD
 export __GL_GSYNC_ALLOWED=0
 export __GL_VRR_ALLOWED=0
 export WLR_RENDERER=vulkan
+
+# gpu
+export __GLX_VENDOR_LIBRARY_NAME=mesa
 export GAMEMODERUNEXEC="env __NV_PRIME_RENDER_OFFLOAD=1 \
 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only"
 
@@ -29,11 +32,9 @@ export ERROR_FLAGS="-Wall -Wextra -Wconversion -Wundef -Wformat=2 \
 -Wformat-truncation -Wdouble-promotion -Wshadow -fno-common"
 export SANITIZER_FLAGS="-fsanitize=address -fsanitize=undefined -fsanitize=leak"
 
-
 TTY="$(tty)"
 if [ "$TTY" = "/dev/tty1" ]; then
     # intel
-    export __GLX_VENDOR_LIBRARY_NAME=mesa
     export __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/50_mesa.json
     exec sway --unsupported-gpu
 elif [ "$TTY" = "/dev/tty2" ]; then
