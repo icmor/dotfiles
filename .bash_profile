@@ -19,7 +19,7 @@ export QT_STYLE_OVERRIDE=adwaita-dark
 export GTK_THEME=Adwaita:dark
 
 # wayland
-export SDL_VIDEODRIVER=wayland
+export SDL_VIDEODRIVER=wayland,x11
 export XDG_CURRENT_DESKTOP=sway
 export XDG_SESSION_DESKTOP=sway
 export XDG_SESSION_TYPE=wayland
