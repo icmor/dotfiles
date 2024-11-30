@@ -38,6 +38,17 @@ exec swayidle -w \
          before-sleep 'swaylock -f -i ~/Dropbox/images/wallpaper/arch.png'
 
 for_window [app_id="^.*"] inhibit_idle fullscreen
+for_window [class="Ares"] inhibit_idle open
+for_window [title="^Cemu*"] inhibit_idle open
+for_window [title="^DuckStation*"] inhibit_idle open
+for_window [class="^Minecraft*"] inhibit_idle open
+for_window [title="^PCSX2*"] inhibit_idle ope
+for_window [title="^RPCS3*"] inhibit_idle open
+for_window [class="Ryujinx"] inhibit_idle open
+for_window [title="^Ship of Harkinian*"] inhibit_idle open
+for_window [class="^steam_app_*"] inhibit_idle open
+for_window [app_id="xemu"] inhibit_idle open
+
 
 ### input
 input * {
