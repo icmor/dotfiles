@@ -26,6 +26,7 @@ export XDG_SESSION_TYPE=wayland
 export _JAVA_AWT_WM_NONREPARENTING=1
 
 # misc
+export XDG_DATA_DIRS="${XDG_DATA_DIRS}:${HOME}/.var/app/com.valvesoftware.Steam/.local/share/"
 export GPROFNG_SYSCONFDIR="/etc/" # fix binutils packaging error
 export EDITOR="vim"
 export ERROR_FLAGS="-Wall -Wextra -Wconversion -Wundef -Wformat=2 \
