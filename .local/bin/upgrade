@@ -1,0 +1,5 @@
+#!/bin/bash
+
+yay -Syu --sudoloop --noconfirm
+flatpak update --user --noninteractive
+emacs --batch -f package-upgrade-all
