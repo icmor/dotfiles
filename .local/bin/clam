@@ -1,0 +1,3 @@
+systemctl start clamav-daemon clamav-freshclam fangfrisch
+clamdscan --multiscan --fdpass $HOME > $(mktemp --suffix=CLAM)
+systemctl stop clamav-daemon clamav-freshclam fangfrisch
