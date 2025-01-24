@@ -7,6 +7,7 @@
       '(
 	auctex
 	bash-completion
+	cdlatex
 	dumb-jump
 	gcmh
 	haskell-mode
@@ -71,6 +72,7 @@
     (interactive)
     (ibuffer-update nil)
     (ibuffer-mark-by-name-regexp "shell")
+    (ibuffer-mark-by-name-regexp "vterm")
     (ibuffer-mark-by-name-regexp "Org Agenda")
     (ibuffer-mark-by-name-regexp "scratch"))
 
@@ -191,7 +193,7 @@
 (setq org-use-speed-commands t)
 (setq org-startup-folded 'show2levels)
 (setq org-agenda-files '("~/org/gtd.org" "~/org/inbox.org" "~/org/things.org"))
-(setq org-modules '(ol-man ol-info))
+(setq org-modules '(ol-man ol-info ol-habit))
 (setq org-log-repeat nil)
 (setq org-return-follows-link t)
 (setq org-cycle-include-plain-lists 'integrate)
@@ -425,6 +427,7 @@
 	(cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
 	(css . ("https://github.com/tree-sitter/tree-sitter-css"))
 	(go . ("https://github.com/tree-sitter/tree-sitter-go"))
+	(gomod . ("https://github.com/camdencheek/tree-sitter-go-mod"))
 	(java . ("https://github.com/tree-sitter/tree-sitter-java"))
 	(javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
 	(json . ("https://github.com/tree-sitter/tree-sitter-json"))
@@ -437,7 +440,6 @@
 	   (c-mode . c-ts-mode)
 	   (c++-mode . c++-ts-mode)
            (css-mode . css-ts-mode)
-	   (go . go-ts-mode)
 	   (java . java-ts-mode)
 	   (javascript . js-ts-mode)
 	   (json . json-ts-mode)
@@ -477,11 +479,13 @@
 
 ;;;; c
 (defun my-set-c-compile-command ()
-  (let* ((file (file-relative-name buffer-file-name))
+  (let ((file (file-relative-name buffer-file-name)))
     (setq-local compile-command
-		(concat "gcc -Wall -g -o " (file-name-base file) " " file)))))
-(add-hook 'c-ts-mode-hook #'my-set-c-compile-command)
+		(concat "gcc -Wall -g -o " (file-name-base file) " " file))))
 (add-hook 'c-ts-mode-hook #'c-ts-mode-toggle-comment-style)
+(add-hook 'c-ts-mode-hook #'my-set-c-compile-command)
+(with-eval-after-load 'c-ts-mode
+  (keymap-set c-ts-mode-map "C-c C-c" #'compile))
 
 ;;;; python
 (defun my-set-python-compile-command ()
@@ -493,6 +497,13 @@
 (add-hook 'pyvenv-post-activate-hooks #'pyvenv-mode)
 (add-hook 'python-ts-mode-hook #'my-set-python-compile-command)
 (add-hook 'python-ts-mode-hook (lambda nil (setq forward-sexp-function nil)))
+;; disable new python 3.13 repl
+;; https://docs.python.org/3/using/cmdline.html#envvar-PYTHON_BASIC_REPL
+(setenv "PYTHON_BASIC_REPL" "1")
+
+;;;; go
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+(add-to-list 'auto-mode-alist '("/go\\.mod\\'" . go-mod-ts-mode))
 
 ;;;; racket
 (with-eval-after-load 'racket-mode
