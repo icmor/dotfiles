@@ -77,7 +77,7 @@ function pdf_grayscale {
 }
 
 function psgrep  {
-    ps aux | grep -v grep | grep --color=auto "$1"
+    ps aux | grep -v grep | grep --color=auto -i "$1"
 }
 
 # emacs
