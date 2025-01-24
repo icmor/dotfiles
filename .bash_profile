@@ -25,8 +25,13 @@ export XDG_SESSION_DESKTOP=sway
 export XDG_SESSION_TYPE=wayland
 export _JAVA_AWT_WM_NONREPARENTING=1
 
+# steam
+export DXVK_FRAME_RATE=60
+export XDG_DATA_DIRS="${XDG_DATA_DIRS}:\
+${HOME}/.var/app/com.valvesoftware.Steam/.local/share/"
+
+
 # misc
-export XDG_DATA_DIRS="${XDG_DATA_DIRS}:${HOME}/.var/app/com.valvesoftware.Steam/.local/share/"
 export GPROFNG_SYSCONFDIR="/etc/" # fix binutils packaging error
 export EDITOR="vim"
 export ERROR_FLAGS="-Wall -Wextra -Wconversion -Wundef -Wformat=2 \
@@ -36,8 +41,7 @@ export SANITIZER_FLAGS="-fsanitize=address -fsanitize=undefined -fsanitize=leak"
 TTY="$(tty)"
 if [ "$TTY" = "/dev/tty1" ]; then
     # intel
-    export __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/50_mesa.json
-    exec sway --unsupported-gpu
+    __EGL_VENDOR_LIBRARY_FILENAMES=/usr/share/glvnd/egl_vendor.d/50_mesa.json exec sway --unsupported-gpu
 elif [ "$TTY" = "/dev/tty2" ]; then
     # nvidia
     WLR_DRM_DEVICES=/dev/dri/card0 exec sway --unsupported-gpu
