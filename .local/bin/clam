@@ -1,3 +1,8 @@
+#!/bin/bash
+
 systemctl start clamav-daemon clamav-freshclam fangfrisch
-clamdscan --multiscan --fdpass $HOME > $(mktemp --suffix=CLAM)
+for f in $HOME/* $HOME/.*; do
+    clamdscan --multiscan --fdpass $f >> $HOME/clam_report.txt
+    echo "Finished scanning $f"
+done
 systemctl stop clamav-daemon clamav-freshclam fangfrisch
