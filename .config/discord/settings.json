@@ -7,5 +7,6 @@
     "width": 1920,
     "height": 1048
   },
-  "SKIP_HOST_UPDATE": true
+  "SKIP_HOST_UPDATE": true,
+  "chromiumSwitches": {}
 }
