@@ -403,6 +403,17 @@
   (keymap-set ibuffer-mode-map "* n" #'ibuffer-mark-common-buffers)
   (keymap-set ibuffer-mode-map "* w" #'ibuffer-mark-eww-buffers))
 
+;;;; proced
+(setq proced-auto-update-flag t)
+(setq proced-auto-update-interval 1)
+(setq proced-goal-attribute nil)
+(setq proced-enable-color-flag t)
+(with-eval-after-load 'proced
+  (add-to-list 'proced-format-alist
+	       '(custom user pid pcpu pmem rss state tree (args comm)))
+  (setq-default proced-filter 'all)
+  (setq-default proced-format 'custom))
+
 ;;;; calc
 (setq calc-group-digits t)
 
