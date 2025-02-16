@@ -1,5 +1,19 @@
 #!/bin/bash
 
-yay -Syu --sudoloop --noconfirm
-flatpak update --user --noninteractive
-emacs --batch -f package-upgrade-all
+# package managers
+if [ -n "$(which yay)" ]; then
+    yay -Syu --sudoloop --noconfirm
+elif [ -n "$(which pacman)" ]; then
+    pacman -Syu --noconfirm
+elif [ -n "$(which apt)" ]; then
+    sudo apt update
+    sudo apt upgrade -y
+fi
+
+# miscellaneous
+if [ -n "$(which flatpak)" ]; then
+    flatpak update --user --noninteractive
+fi
+if [ -n "$(which emacs)" ]; then
+    emacs --batch -f package-upgrade-all
+fi
