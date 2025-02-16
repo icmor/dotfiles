@@ -604,6 +604,13 @@
 (keymap-set completion-in-region-mode-map "C-p" #'minibuffer-previous-completion)
 (keymap-set completion-in-region-mode-map "C-n" #'minibuffer-next-completion)
 
+;;;; wsl
+(if (string-search "WSL2" (shell-command-to-string "uname -a"))
+     (setq
+      browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
+      browse-url-generic-args '("/c" "start" "")
+      browse-url-browser-function 'browse-url-generic))
+
 ;;;; files
 (setq auto-save-default nil)
 (setq backup-by-copying t)
