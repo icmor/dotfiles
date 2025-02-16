@@ -1,8 +1,7 @@
-;;; -*- lexical-binding: t; -*-
+;;; -*- lexical-binding: t; outline-minor-mode: t -*-
 ;;; packages
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-
 (setq package-selected-packages
       '(
 	auctex
@@ -27,9 +26,13 @@
 	which-key
 	ws-butler
 	))
-
 (package-install-selected-packages)
 (if (daemonp) (mapc #'require package-selected-packages))
+
+;;; general
+(setq package-native-compile t)
+(setq native-comp-async-report-warnings-errors 'silent)
+(add-to-list 'safe-local-variable-values ' (outline-minor-mode . t))
 
 ;;;; litter
 (setq auto-save-list-file-prefix
@@ -44,10 +47,6 @@
 (setq kept-new-versions 4)
 (setq kept-old-versions 2)
 (setq delete-old-versions t)
-
-;;; general
-(setq package-native-compile t)
-(setq native-comp-async-report-warnings-errors 'silent)
 
 ;;;; doom hacks
 (gcmh-mode)
@@ -150,7 +149,8 @@
 
 ;;; bindings
 ;;;; prefix maps
-(keymap-global-set "M-o" #'other-window-prefix)
+(keymap-global-set "C-x 4" #'other-window-prefix)
+(keymap-global-set "C-x 5" #'other-frame-prefix)
 
 ;;;; global
 (keymap-global-set "<f2>" #'my-shell-toggle)
@@ -165,6 +165,7 @@
 
 ;;;; better defaults
 (keymap-global-unset "C-x C-z")
+(keymap-global-set "M-o" #'other-window)
 (keymap-global-set "C-x f" #'find-file)
 (keymap-global-set "C-x C-b" #'ibuffer)
 (keymap-global-set "C-x k" #'kill-current-buffer)
@@ -193,7 +194,7 @@
 (setq org-use-speed-commands t)
 (setq org-startup-folded 'show2levels)
 (setq org-agenda-files '("~/org/gtd.org" "~/org/inbox.org" "~/org/things.org"))
-(setq org-modules '(ol-man ol-info ol-habit))
+(setq org-modules '(org-habit ol-man ol-info))
 (setq org-log-repeat nil)
 (setq org-return-follows-link t)
 (setq org-cycle-include-plain-lists 'integrate)
@@ -318,9 +319,6 @@
 (setq which-key-idle-secondary-delay 0.05)
 (which-key-mode)
 
-;;;; outline-minor-mode
-(setq outline-minor-mode-cycle t)
-
 ;;;; comint
 (setq comint-prompt-read-only t)
 (setq ansi-color-for-comint-mode t)
@@ -364,6 +362,9 @@
   (keymap-set vterm-mode-map "C-SPC" #'vterm-copy-mode)
   (keymap-set vterm-copy-mode-map "C-w" #'vterm-copy-mode-done)
   (keymap-set vterm-copy-mode-map "M-w" #'vterm-copy-mode-done))
+
+;;;; outline-minor-mode
+(setq outline-minor-mode-cycle t)
 
 ;;;; auctex
 (setq TeX-auto-save t)
@@ -530,8 +531,7 @@
   (keymap-set css-mode-map "C-c C-l" #'list-colors-display))
 
 ;;;; json
-(with-eval-after-load 'json
-  (setq js-indent-level 2))
+(with-eval-after-load 'json (setq js-indent-level 2))
 
 ;;;; haskell
 (setq haskell-process-suggest-remove-import-lines t)
