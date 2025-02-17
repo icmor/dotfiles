@@ -85,8 +85,7 @@
             (other-window (* direction (or arg 1)))
           (setq direction (- direction))
           (other-window (* direction (or arg 1)))))))
-(put 'other-window-alternating 'repeat-map 'other-window-repeat-map)
-(keymap-set other-window-repeat-map "o" 'other-window-alternating)
+(put 'other-window 'repeat-map nil)
 
 (defun my-org-sort (&optional level)
   "Sort org headlines alphabetically at LEVEL (default 1)."
@@ -165,12 +164,11 @@
 
 ;;;; better defaults
 (keymap-global-unset "C-x C-z")
-(keymap-global-set "M-o" #'other-window)
 (keymap-global-set "C-x f" #'find-file)
 (keymap-global-set "C-x C-b" #'ibuffer)
 (keymap-global-set "C-x k" #'kill-current-buffer)
 (keymap-global-set "C-x K" #'kill-buffer)
-(keymap-global-set "C-x o" #'other-window-alternating)
+(keymap-global-set "M-o" #'other-window-alternating)
 (keymap-global-set "M-z" #'zap-up-to-char)
 (keymap-global-set "M-/" #'hippie-expand)
 (keymap-global-set "C-x l" #'count-words)
