@@ -604,6 +604,7 @@
 
 ;;;; wsl
 (if (string-search "WSL2" (shell-command-to-string "uname -a"))
+     (display-time-mode)
      (setq
       browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
       browse-url-generic-args '("/c" "start" "")

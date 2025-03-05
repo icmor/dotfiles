@@ -106,4 +106,5 @@ if [[ -n $"(grep 'NAME="Ubuntu"' /etc/os-release)" ]]; then
 	    . /etc/bash_completion
 	fi
     fi
+    alias python="python3"
 fi
