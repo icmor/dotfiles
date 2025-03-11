@@ -15,6 +15,7 @@
 	markdown-mode
 	minions
 	no-littering
+	olivetti
 	pdf-tools
 	proof-general
 	pyvenv
@@ -32,7 +33,7 @@
 ;;; general
 (setq package-native-compile t)
 (setq native-comp-async-report-warnings-errors 'silent)
-(add-to-list 'safe-local-variable-values ' (outline-minor-mode . t))
+(setq safe-local-variable-values '((outline-minor-mode . t)))
 
 ;;;; litter
 (setq auto-save-list-file-prefix
@@ -44,7 +45,7 @@
 (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
 (setq tramp-backup-directory-alist backup-directory-alist)
 (setq version-control t)
-(setq kept-new-versions 4)
+(setq kept-new-versions 2)
 (setq kept-old-versions 2)
 (setq delete-old-versions t)
 
@@ -87,11 +88,18 @@
           (other-window (* direction (or arg 1)))))))
 (put 'other-window 'repeat-map nil)
 
-(defun my-org-sort (&optional level)
+(defun my-org-sort-alphabetical (&optional level)
   "Sort org headlines alphabetically at LEVEL (default 1)."
   (interactive "P")
   (org-map-entries
    (lambda nil (org-sort-entries nil ?a))
+   (concat "LEVEL=" (number-to-string (or level 1)))))
+
+(defun my-org-sort-chronological (&optional level)
+  "Sort org headlines alphabetically at LEVEL (default 1)."
+  (interactive "P")
+  (org-map-entries
+   (lambda nil (org-sort-entries nil ?t))
    (concat "LEVEL=" (number-to-string (or level 1)))))
 
 (defun my-project-find-library ()
@@ -189,28 +197,25 @@
 
 ;;; org
 ;;;; general
-(setq org-use-speed-commands t)
-(setq org-startup-folded 'show2levels)
 (setq org-agenda-files '("~/org/gtd.org" "~/org/inbox.org" "~/org/things.org"))
 (setq org-modules '(org-habit ol-man ol-info))
-(setq org-log-repeat nil)
-(setq org-return-follows-link t)
 (setq org-cycle-include-plain-lists 'integrate)
+(setq org-list-allow-alphabetical t)
+(setq org-use-speed-commands t)
+(setq org-startup-folded t)
+(setq org-return-follows-link t)
 (setq org-capture-bookmark nil)
 (setq org-archive-default-command nil)
-(setq org-list-allow-alphabetical t)
+(setq org-log-repeat nil)
 (setq org-hierarchical-todo-statistics nil)
 (setq org-refile-targets '((nil . (:maxlevel . 3))
 			   (org-agenda-files . (:level . 1))))
-(with-eval-after-load 'org
-  (keymap-set org-mode-map "M-{" #'backward-paragraph)
-  (keymap-set org-mode-map "M-}" #'forward-paragraph))
 
 ;;;; visual
 (setq org-adapt-indentation nil)
 (setq org-startup-with-inline-images t)
 (setq org-image-actual-width 250)
-(add-hook 'org-mode-hook #'visual-line-mode)
+(add-hook 'org-mode-hook #'olivetti-mode)
 (add-hook 'org-mode-hook #'ws-butler-mode)
 
 ;;;; org + latex
@@ -272,9 +277,9 @@
       '(("i" "Inbox")
 	("ii" "Inbox" entry (file+headline "inbox.org" "Inbox")
 	 "* %?\n")
-	("iw" "Waiting" entry (file+headline "inbox.org" "Waiting")
+	("is" "School" entry (file+headline "inbox.org" "School")
 	 "* %?\n")
-	("id" "Ideas" entry (file+headline "inbox.org" "Ideas")
+	("iw" "Waiting" entry (file+headline "inbox.org" "Waiting")
 	 "* %?\n")
 	("c" "Tasks" entry (file+headline "gtd.org" "Tasks")
          "* TODO %?\n")
@@ -374,6 +379,8 @@
 (setq-default TeX-output-dir "auctex")
 (setq-default TeX-auto-local "auctex")
 (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+(add-hook 'TeX-mode-hook #'olivetti-mode)
+(add-hook 'TeX-mode-hook #'ws-butler-mode)
 (with-eval-after-load 'latex
   (keymap-set TeX-mode-map "C-c C-x C-l" #'my-preview-dwim))
 
@@ -396,14 +403,31 @@
   (add-to-list 'pdf-annot-default-annotation-properties
 	       '(highlight (color . "DarkSeaGreen1"))))
 
+;; fix registers
+(with-eval-after-load 'pdf-tools
+  (defvar pdf-bookmarks nil)
+  (keymap-set pdf-view-mode-map "C-x r SPC"
+	      (lambda (b) (interactive "cPoint to register: ")
+		(setf (alist-get b pdf-bookmarks)
+		      (pdf-view-bookmark-make-record))))
+  (keymap-set pdf-view-mode-map "C-x r j"
+	      (lambda (b) (interactive "cJump to register: ")
+		(pdf-view-bookmark-jump (alist-get b pdf-bookmarks)))))
+
+
+;;;; magit
+(add-hook 'git-commit-mode-hook #'auto-fill-mode)
+(add-hook 'git-commit-mode-hook (lambda () (setq-local fill-column 72)))
+
 ;;;; ibuffer
 (with-eval-after-load 'ibuffer
   (keymap-set ibuffer-mode-map "* n" #'ibuffer-mark-common-buffers)
   (keymap-set ibuffer-mode-map "* w" #'ibuffer-mark-eww-buffers))
 
+;;;; olivetti-mode
+(setq olivetti-body-width 0.95)
+
 ;;;; proced
-(setq proced-auto-update-flag t)
-(setq proced-auto-update-interval 1)
 (setq proced-goal-attribute nil)
 (setq proced-enable-color-flag t)
 (with-eval-after-load 'proced
@@ -459,7 +483,7 @@
 ;;;; project
 (setq project-libs
       `((c-ts-mode . "/usr/include")
-	(c++-mode . "/usr/include")
+	(c++-ts-mode . "/usr/include")
 	(java-mode . "/usr/lib/jvm")
 	(python-ts-mode . ,(car (file-expand-wildcards "/usr/lib/python3.??")))))
 (setq project-kill-buffers-display-buffer-list t)
@@ -488,6 +512,8 @@
 (add-hook 'gdb-locals-mode-hook #'gdb-locals-values)
 
 ;;;; c
+(setq c-ts-mode-indent-offset 8)
+(setq c-ts-mode-indent-style 'linux)
 (defun my-set-c-compile-command ()
   (let ((file (file-relative-name buffer-file-name)))
     (setq-local compile-command
@@ -559,9 +585,12 @@
 ;;;; markdown
 (setq markdown-fontify-code-blocks-natively t)
 (setq markdown-command "pandoc --quiet -f gfm -s")
-(add-hook 'markdown-mode-hook 'visual-line-mode)
-(add-hook 'rst-mode-hook #'visual-line-mode)
-(add-hook 'conf-mode-hook #'visual-line-mode)
+(add-hook 'markdown-mode-hook 'olivetti-mode)
+(add-hook 'markdown-mode-hook 'ws-butler-mode)
+(add-hook 'rst-mode-hook #'olivetti-mode)
+(add-hook 'rst-mode-hook #'ws-butler-mode)
+(add-hook 'conf-mode-hook #'olivetti-mode)
+(add-hook 'conf-mode-hook #'ws-butler-mode)
 
 ;;;; proof-general
 (setq proof-splash-enable nil)
@@ -599,6 +628,8 @@
 (setq completion-styles '(basic partial-completion substring))
 (keymap-set minibuffer-mode-map "C-p" #'minibuffer-previous-completion)
 (keymap-set minibuffer-mode-map "C-n" #'minibuffer-next-completion)
+(keymap-unset minibuffer-local-completion-map "SPC")
+(keymap-unset minibuffer-local-completion-map "?")
 (keymap-set completion-in-region-mode-map "C-p" #'minibuffer-previous-completion)
 (keymap-set completion-in-region-mode-map "C-n" #'minibuffer-next-completion)
 
@@ -647,6 +678,7 @@
 (setq sentence-end-double-space nil)
 (setq require-final-newline t)
 (setq save-interprogram-paste-before-kill t)
+(setq ispell-dictionary "es_MX")
 (setq-default fill-column 80)
 (set-default-coding-systems 'utf-8)
 
