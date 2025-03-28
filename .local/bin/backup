@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [[ ! -d "$1" ]]; then
+    echo $1 "is not a valid directory path."
+    exit 1
+fi
+
+for dir in ~/Dropbox/*/; do
+    dest="$1/$(basename $dir)"/
+    echo "backing up $dir -> $dest"
+    rsync -ahv --delete --dry-run $dir $dest
+done
+
+read -e -p "Proceed with backup? [y/n] " answer
+[[ "$answer" != [Yy]* ]]  && exit 0
+
+for dir in ~/Dropbox/*; do
+    dest="$1/$(basename $dir)"
+    sudo rsync -ahv --progress --delete $dir $dest
+done
