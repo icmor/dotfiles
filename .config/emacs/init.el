@@ -1,5 +1,9 @@
 ;;; -*- lexical-binding: t; outline-minor-mode: t -*-
 ;;; packages
+(keymap-global-unset "C-x o")		; temporary
+(keymap-global-unset "M-q")
+(keymap-set prog-mode-map "M-q" #'fill-paragraph)
+
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (setq package-selected-packages
@@ -23,6 +27,7 @@
 	saveplace-pdf-view
 	tmr
 	transpose-frame
+	treesit-auto
 	vterm
 	which-key
 	ws-butler
@@ -238,6 +243,17 @@
 (with-eval-after-load 'org
   (plist-put org-format-latex-options :scale 1.5))
 
+;; https://stackoverflow.com/a/47850858
+(defun org-export-output-file-name-modified
+    (orig-fun extension &optional subtreep pub-dir)
+  (unless pub-dir
+    (setq pub-dir "org-exports")
+    (unless (file-directory-p pub-dir)
+      (make-directory pub-dir)))
+  (apply orig-fun extension subtreep pub-dir nil))
+(advice-add 'org-export-output-file-name
+	    :around #'org-export-output-file-name-modified)
+
 ;;;; calendar
 ;; https://github.com/sggutier/mexican-holidays
 (with-eval-after-load 'calendar
@@ -421,6 +437,7 @@
 
 ;;;; ibuffer
 (with-eval-after-load 'ibuffer
+  (keymap-unset ibuffer-mode-map "M-o")
   (keymap-set ibuffer-mode-map "* n" #'ibuffer-mark-common-buffers)
   (keymap-set ibuffer-mode-map "* w" #'ibuffer-mark-eww-buffers))
 
@@ -453,32 +470,26 @@
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
 
-;;;; tree-sitter
-;; https://github.com/mickeynp/combobulate
-(setq treesit-language-source-alist
-      '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
-	(c . ("https://github.com/tree-sitter/tree-sitter-c"))
-	(cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
-	(css . ("https://github.com/tree-sitter/tree-sitter-css"))
-	(go . ("https://github.com/tree-sitter/tree-sitter-go"))
-	(gomod . ("https://github.com/camdencheek/tree-sitter-go-mod"))
-	(java . ("https://github.com/tree-sitter/tree-sitter-java"))
-	(javascript . ("https://github.com/tree-sitter/tree-sitter-javascript"))
-	(json . ("https://github.com/tree-sitter/tree-sitter-json"))
-	(python . ("https://github.com/tree-sitter/tree-sitter-python"))))
-(dolist (grammar treesit-language-source-alist)
-	(unless (treesit-language-available-p (car grammar))
-	  (treesit-install-language-grammar (car grammar))))
-(dolist (mapping
-         '((bash-mode . bash-ts-mode)
-	   (c-mode . c-ts-mode)
-	   (c++-mode . c++-ts-mode)
-           (css-mode . css-ts-mode)
-	   (java . java-ts-mode)
-	   (javascript . js-ts-mode)
-	   (json . json-ts-mode)
-           (python-mode . python-ts-mode)))
-  (add-to-list 'major-mode-remap-alist mapping))
+;;;; treesit-auto
+;; https://github.com/renzmann/treesit-auto/issues/44
+(require 'treesit-auto)
+(setq treesit-auto-langs
+      '(bash
+	c
+	css
+	cmake
+	cpp
+	dockerfile
+	go
+	gomod
+	java
+	javascript
+	json
+	python
+	yaml))
+(treesit-auto-install-all)
+(treesit-auto-add-to-auto-mode-alist)
+(treesit-auto-mode)
 
 ;;;; project
 (setq project-libs
@@ -489,6 +500,14 @@
 (setq project-kill-buffers-display-buffer-list t)
 (keymap-set project-prefix-map "R" #'my-project-refresh)
 (keymap-set  project-prefix-map "l" #'my-project-find-library)
+
+;;;; eglot
+(setq eglot-autoshutdown t)
+(setq eglot-ignored-server-capabilities
+      '(:documentFormattingProvider
+	:documentRangeFormattingProvider
+	:inlayHintProvider))
+(fset #'jsonrpc--log-event #'ignore)
 
 ;;;; xref
 (setq xref-prompt-for-identifier nil)
@@ -512,7 +531,7 @@
 (add-hook 'gdb-locals-mode-hook #'gdb-locals-values)
 
 ;;;; c
-(setq c-ts-mode-indent-offset 8)
+(setq c-ts-mode-indent-offset 4)
 (setq c-ts-mode-indent-style 'linux)
 (defun my-set-c-compile-command ()
   (let ((file (file-relative-name buffer-file-name)))

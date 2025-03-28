@@ -41,10 +41,15 @@ exec sway-audio-idle-inhibit
 for_window [app_id="^.*"] inhibit_idle fullscreen
 
 ### input
-input * {
+input type:keyboard {
     xkb_layout "us"
     xkb_variant "altgr-intl"
     xkb_options "ctrl:swapcaps"
+}
+
+input type:pointer {
+      accel_profile "flat"
+      dwt enabled
 }
 
 input type:touchpad {
