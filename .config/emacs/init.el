@@ -608,7 +608,6 @@
 (add-hook 'markdown-mode-hook 'ws-butler-mode)
 (add-hook 'rst-mode-hook #'olivetti-mode)
 (add-hook 'rst-mode-hook #'ws-butler-mode)
-(add-hook 'conf-mode-hook #'olivetti-mode)
 (add-hook 'conf-mode-hook #'ws-butler-mode)
 
 ;;;; proof-general
@@ -654,11 +653,11 @@
 
 ;;;; wsl
 (if (string-search "WSL2" (shell-command-to-string "uname -a"))
-     (display-time-mode)
+     (progn (display-time-mode)
      (setq
       browse-url-generic-program  "/mnt/c/Windows/System32/cmd.exe"
       browse-url-generic-args '("/c" "start" "")
-      browse-url-browser-function 'browse-url-generic))
+      browse-url-browser-function 'browse-url-generic)))
 
 ;;;; files
 (setq auto-save-default nil)
