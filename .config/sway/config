@@ -45,6 +45,8 @@ input type:keyboard {
     xkb_layout "us"
     xkb_variant "altgr-intl"
     xkb_options "ctrl:swapcaps"
+    repeat_delay 200
+    repeat_rate 30
 }
 
 input type:pointer {
@@ -61,6 +63,7 @@ input type:touchpad {
 
 ### key bindings
 # programs
+bindsym Menu exec echo "click right" | dotool
 bindsym $mod+Shift+Space exec fuzzel | xargs swaymsg exec --
 bindsym $mod+e exec thunar
 bindsym $mod+m exec emacsclient -nca ""
