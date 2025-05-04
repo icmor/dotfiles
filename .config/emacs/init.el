@@ -1,9 +1,5 @@
 ;;; -*- lexical-binding: t; outline-minor-mode: t -*-
 ;;; packages
-(keymap-global-unset "C-x o")		; temporary
-(keymap-global-unset "M-q")
-(keymap-set prog-mode-map "M-q" #'fill-paragraph)
-
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (setq package-selected-packages
@@ -161,8 +157,8 @@
 
 ;;; bindings
 ;;;; prefix maps
-(keymap-global-set "C-x 4" #'other-window-prefix)
-(keymap-global-set "C-x 5" #'other-frame-prefix)
+(keymap-global-set "C-x o" #'other-window-prefix)
+(keymap-global-set "C-x O" #'other-frame-prefix)
 
 ;;;; global
 (keymap-global-set "<f2>" #'my-shell-toggle)
