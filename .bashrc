@@ -102,14 +102,3 @@ elif [[ "$INSIDE_EMACS" = 'vterm' ]]; then
 elif [[ -n "$EMACS_BASH_COMPLETE" ]]; then
     unset HISTFILE
 fi
-
-# ubuntu
-if [[ -n $"(grep 'NAME="Ubuntu"' /etc/os-release)" ]]; then
-    if ! shopt -oq posix; then
-	if [ -f /usr/share/bash-completion/bash_completion ]; then
-	    . /usr/share/bash-completion/bash_completion
-	elif [ -f /etc/bash_completion ]; then
-	    . /etc/bash_completion
-	fi
-    fi
-fi
