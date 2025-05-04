@@ -61,6 +61,10 @@ alias vmware_stop="pkexec sh -c 'systemctl stop vmware-networks \
 && rmmod vmw_vsock_vmci_transport vmw_vmci vmmon'"
 
 # functions
+function destroy {
+    for pid in $(psgrep "$1" | tr -s ' ' | cut -d' ' -f2); do kill -9 $pid; done
+}
+
 function docker_latest {
 	sudo docker ps | head -2 | tail -1 | cut -d' ' -f 1
 }
@@ -79,7 +83,7 @@ function pdf_grayscale {
 }
 
 function psgrep  {
-    ps aux | grep -v grep | grep --color=auto -i "$1"
+    ps aux | grep --color=auto -i "$1" | grep -v grep
 }
 
 # emacs
