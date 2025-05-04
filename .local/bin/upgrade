@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # package managers
-if [ -n "$(which yay)" ]; then
+if [ -n "$(which pacman 2>&-)" ]; then
+    sudo pacman -Syu --noconfirm
+elif [ -n "$(which yay 2>&-)" ]; then
     yay -Syu --sudoloop --noconfirm
-elif [ -n "$(which pacman)" ]; then
-    pacman -Syu --noconfirm
-elif [ -n "$(which apt)" ]; then
+elif [ -n "$(which apt 2>&-)" ]; then
     sudo apt update
     sudo apt upgrade -y
 fi
 
 # miscellaneous
-if [ -n "$(which flatpak)" ]; then
+if [ -n "$(which flatpak 2>&-)" ]; then
     flatpak update --user --noninteractive
 fi
-if [ -n "$(which emacs)" ]; then
+if [ -n "$(which emacs 2>&-)" ]; then
     emacs --batch -f package-upgrade-all
 fi
