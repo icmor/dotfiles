@@ -1,0 +1,9 @@
+# laptop config
+bindsym Menu exec echo "click right" | dotool
+
+input type:touchpad {
+    dwt enabled
+    tap enabled
+    natural_scroll enabled
+    middle_emulation enabled
+}
