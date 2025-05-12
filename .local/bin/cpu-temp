@@ -1,8 +1,14 @@
 #!/bin/bash
 
-temp=$(cat /sys/class/thermal/thermal_zone4/temp)
-temp=$(($temp / 1000))
+if [[ $(hostnamectl hostname) = "navi" ]]; then
+    temp=$(cat /sys/class/hwmon/hwmon3/temp3_input)
+elif [[ $(hostnamectl hostname) = "turing" ]]; then
+    temp=$(cat /sys/class/thermal/thermal_zone4/temp)
+else
+    exit 1
+fi
 
+temp=$(($temp / 1000))
 if [ $temp -le 50 ]; then
 	color="#66E1E3"
 elif [ $temp -le 70 ]; then
