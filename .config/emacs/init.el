@@ -397,7 +397,7 @@
   (keymap-set TeX-mode-map "C-c C-x C-l" #'my-preview-dwim))
 
 ;;;; pdf-tools
-(if  (or (daemonp) window-system) (pdf-loader-install))
+(if  (or (daemonp) window-system) (pdf-loader-install t))
 (setq pdf-view-resize-factor 1.1)
 (setq pdf-view-continuous nil)
 (add-hook 'pdf-view-mode-hook #'save-place-local-mode)
