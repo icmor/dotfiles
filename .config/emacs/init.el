@@ -668,7 +668,7 @@
 (pixel-scroll-precision-mode)
 
 ;;;; visual
-(add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
+(add-to-list 'default-frame-alist '(font . "Source Code Pro-16"))
 (setq bookmark-set-fringe-mark nil)
 (setq minions-mode-line-lighter "λ")
 (load-theme 'modus-vivendi t)
