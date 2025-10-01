@@ -1,5 +1,5 @@
 [Added Associations]
-application/octet-stream=firefoxdeveloperedition.desktop;
+application/octet-stream=firefox.desktop;
 
 [Default Applications]
 text/english=emacsclient.desktop
@@ -16,10 +16,11 @@ text/x-tcl=emacsclient.desktop
 text/x-tex=emacsclient.desktop
 text/x-c=emacsclient.desktop
 text/x-c++=emacsclient.desktop
-text/html=firefoxdeveloperedition.desktop
-application/pdf=firefoxdeveloperedition.desktop
-application/xhtml+xml=firefoxdeveloperedition.desktop
+text/html=firefox.desktop
+application/pdf=firefox.desktop
+application/xhtml+xml=firefox.desktop
 application/epub+zip=calibre-ebook-viewer.desktop
 image/jpeg=org.gnome.gThumb.desktop
 image/png=org.gnome.gThumb.desktop
+x-scheme-handler/discord-424004941485572097=discord-424004941485572097.desktop
 

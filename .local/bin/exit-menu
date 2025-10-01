@@ -1,6 +1,6 @@
 #!/bin/bash
 
-action=$(echo -e 'logout\nsuspend\nshutdown\nreboot' | fuzzel -d)
+action=$(echo -e 'logout\nsuspend\nshutdown\nreboot\nhibernate' | fuzzel -d)
 
 case $action in
     "logout") swaymsg exit
@@ -10,5 +10,7 @@ case $action in
     "shutdown") systemctl poweroff
 		;;
     "reboot") reboot
+	      ;;
+    "hibernate") systemctl hibernate
 	      ;;
 esac

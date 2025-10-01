@@ -147,7 +147,7 @@ bindsym $mod+Shift+o move scratchpad
 ### modes
 mode "launcher" {
     bindsym c exec calibre; mode "default"
-    bindsym f exec firefox-developer-edition; mode "default"
+    bindsym f exec firefox; mode "default"
     bindsym s exec spotify-launcher; mode "default"
     bindsym t exec telegram-desktop; mode "default"
     bindsym v exec vlc; mode "default"

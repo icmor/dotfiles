@@ -692,7 +692,7 @@
 (setq sentence-end-double-space nil)
 (setq require-final-newline t)
 (setq save-interprogram-paste-before-kill t)
-(setq ispell-dictionary "es_MX")
+(setq ispell-dictionary "es")
 (setq-default fill-column 80)
 (set-default-coding-systems 'utf-8)
 
