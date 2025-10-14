@@ -18,15 +18,19 @@ export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_DATA_HOME="${HOME}/.local/share"
 export XDG_STATE_HOME="${HOME}/.local/state"
 
-export CARGO_HOME="$XDG_DATA_HOME"/cargo
-export CUDA_CACHE_PATH="${XDG_CACHE_HOME}/nv"
+export CARGO_HOME="${XDG_DATA_HOME}"/cargo
+export CUDA_CACHE_PATH="${XDG_CACHE_HOME}"/nv
+export DOTNET_CLI_HOME="${XDG_DATA_HOME}"/dotnet
 export GHCUP_USE_XDG_DIRS="true"
-export GOPATH="${XDG_DATA_HOME}/go"
+export GOPATH="${XDG_DATA_HOME}"/go
 export HISTFILE="${XDG_STATE_HOME}"/bash/history
 export LESSHISTFILE="${XDG_STATE_HOME}"/less/history
 export MYPY_CACHE_DIR="${XDG_CACHE_HOME}/mypy"
-export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME}/pycache"
+export NUGET_PACKAGES="${XDG_CACHE_HOME}"/NuGetPackages
+export PARALLEL_HOME="${XDG_CONFIG_HOME}"/parallel
+export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME}"/pycache
 export TEXMFVAR="${XDG_CACHE_HOME}"/texlive/texmf-var
+export WINEPREFIX="${XDG_DATA_HOME}"/wine
 export XAUTHORITY="${XDG_RUNTIME_DIR}"/Xauthority
 
 
