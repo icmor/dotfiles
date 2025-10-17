@@ -25,7 +25,6 @@
 	transpose-frame
 	treesit-auto
 	vterm
-	which-key
 	ws-butler
 	))
 (package-install-selected-packages)
