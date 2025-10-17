@@ -301,7 +301,7 @@
          "* %?\n")
 	("e" "Events" entry (file+headline "gtd.org" "Events")
          "* %?\n")
-	("t" "Things" entry (file+headline "things.org" "Purchase")
+	("t" "Things" entry (file+headline "things.org" "Comprar")
 	 "* TODO %?\n")))
 
 ;;;; babel
@@ -315,7 +315,15 @@
 ;;; essentials
 ;;;; auth-source
 (setq epg-pinentry-mode 'loopback)
-(setq auth-sources '("~/.authinfo.gpg"))
+(setq auth-sources '("~/.config/emacs/etc/.authinfo.gpg"))
+(setq password-cache-expiry 300)
+
+;;;; tramp
+(connection-local-set-profile-variables
+ 'remote-without-auth-sources '((auth-sources . nil)))
+(connection-local-set-profiles
+ '(:application tramp) 'remote-without-auth-sources)
+
 
 ;;;; dired
 (setq dired-dwim-target t)
@@ -503,6 +511,8 @@
       '(:documentFormattingProvider
 	:documentRangeFormattingProvider
 	:inlayHintProvider))
+(setq eglot-events-buffer-config '(:size 0 :format full))
+(setq eglot-events-buffer-size 0)
 (fset #'jsonrpc--log-event #'ignore)
 
 ;;;; xref
