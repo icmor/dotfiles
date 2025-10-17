@@ -184,6 +184,9 @@ assign [title="Spotify"] → $ws5
 assign [class="steam"] → $ws0
 for_window [app_id="bluetoothctl"] floating enable
 for_window [app_id="pavucontrol"] floating enable
+for_window [class="Unity" title="Color"] floating enable, move position mouse
+for_window [title="UnityEditor.PopupWindow"] floating enable, move position mouse
+for_window [window_type="popup_menu"] floating enable, move position mouse
 
 ### visual
 default_border none
