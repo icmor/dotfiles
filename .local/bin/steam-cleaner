@@ -1,0 +1,117 @@
+#!/bin/bash
+shopt -s nullglob
+
+steamdir="$HOME/.local/share/Steam"
+steamapps="$steamdir/steamapps"
+compatdata="$steamapps/compatdata"
+common="$steamapps/common"
+shadercache="$steamapps/shadercache"
+userid=""			# put your user ID here
+
+if [ -z "$userid" ]; then
+    if [ $(find "$steamdir/userdata" -maxdepth 1 | wc -l) -gt 2 ]; then
+	echo "Found multiple user directories in: $steamdir/userdata"
+	echo "Please specify your user ID in: $0"
+	exit 0
+    fi
+    for dir in "$steamdir/userdata/"*; do
+	userdir="$dir"
+    done
+fi
+
+
+echo "---------- Steam Apps ----------"
+for file in "$steamapps"/*.acf; do
+    name="$(grep "\"name\"" "$file" | cut -f4 | tr -d '"')"
+    appid="$(grep "\"appid\"" "$file" | cut -f4 | tr -d '"')"
+    if [[ "$name" == *"Linux Runtime"*
+		|| "$name" == *"Proton"*
+		|| "$name" == *"Steamworks"* ]]; then
+	continue
+    fi
+    echo "$name ($appid)"
+done
+for file in "$steamapps"/*.acf; do
+    name="$(grep "\"name\"" "$file" | cut -f4 | tr -d '"')"
+    appid="$(grep "\"appid\"" "$file" | cut -f4 | tr -d '"')"
+    if [[ "$name" == *"Linux Runtime"*
+		|| "$name" == *"Proton"*
+		|| "$name" == *"Steamworks"* ]]; then
+	echo "$name ($appid)"
+    fi
+done
+
+echo "---------- Orphaned files ----------"
+for compatdatadir in "$compatdata"/*; do 
+    # check if actually a proton prefix
+    if [ ! -d "$compatdatadir/pfx" ]; then
+	continue
+    fi
+
+    # check if compatid corresponds to a manifest file
+    compatid="$(basename "$compatdatadir")"
+    for file in "$steamapps"/*.acf; do
+	name="$(grep "\"name\"" "$file" | cut -f4 | tr -d '"')"
+	appid="$(grep "\"appid\"" "$file" | cut -f4 | tr -d '"')"
+	if [ "$compatid" == "$appid" ]; then
+	    continue 2
+	fi
+    done
+    
+    userdatadir="$userdir/$compatid"
+    shadercachedir="$shadercache/$compatid"
+    echo "There is no corresponding manifest for game ID $compatid"
+    echo "Proton dir: $compatdatadir"
+    [ -d "$userdatadir" ] && echo "User directory: $userdatadir"
+    [ -d "$shadercachedir" ] && echo "Shader cache directory: ``$shadercachedir"
+    if [ -d "$userdatadir" ]; then
+	if [ ! -f "$userdatadir/remotecache.vdf" ]; then
+	    echo "It appears the game $compatid doesn't have cloud saves."
+	fi
+    fi
+    
+    read -rp "Do you wish to remove the corresponding directories? [y/n/?] " answer
+    if [ "$answer" == "?" ]; then
+	xdg-open "https://store.steampowered.com/app/$compatid/"
+	read -rp "Do you wish to remove the corresponding directories? [y/n] " answer
+    fi
+
+    answer="$(echo "$answer" | tr '[:upper:]' '[:lower:]')"
+    if [ "$answer" == "y" ] || [ "$answer" == "yes" ]; then
+	rm -rd "$compatdatadir"
+	[ -d "$userdatadir" ] && rm -rd "$userdatadir"
+	[ -d "$shadercachedir" ] && rm -rd "$shadercachedir"
+    fi
+done
+
+# common directories
+for commondir in "$common"/*; do
+    if [[ "$commondir" == *"Proton"*
+		|| "$commondir" == *"SteamLinuxRuntime"*
+		|| "$commondir" == *"Steam Controller"*
+		|| "$commondir" == *"Steamworks"* ]]; then
+	continue
+    fi
+    if [ ! -d "$commondir" ]; then
+	continue
+    fi
+
+    # check if common_name corresponds to a manifest file
+    common_name="$(basename "$commondir")"
+    simple_name="$(echo "$common_name" | tr '[:upper:]' '[:lower:]')"
+    for file in "$steamapps"/*.acf; do
+	name="$(grep "\"name\"" "$file" | cut -f4 | tr -d '"')"
+	name="$(echo "$name" | tr '[:upper:]' '[:lower:]' | tr -d '[:blank:]')"
+	if [ "$simple_name" == "$name" ]; then
+	    continue 2
+	fi
+    done
+
+    echo "There is no corresponding manifest for game name $common_name"
+    echo "$commondir"
+    read -rp "Do you wish to remove the corresponding directory? [y/n] " answer
+    answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+    if [ "$answer" == "y" ] || [ "$answer" == "yes" ]; then
+	rm -rd "$commondir"
+    fi
+done
