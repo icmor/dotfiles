@@ -11,6 +11,7 @@ export GTK_THEME=Adwaita:dark
 
 # video
 export WLR_RENDERER=vulkan
+export MESA_VK_IGNORE_CONFORMANCE_WARNING=true
 if [ $HOSTNAME = "turing" ]; then
     export LIBVA_DRIVER_NAME=i965
     export DXVK_FRAME_RATE=60
@@ -25,6 +26,8 @@ if [ $HOSTNAME = "turing" ]; then
        __NV_PRIME_RENDER_OFFLOAD=1 \
        __GLX_VENDOR_LIBRARY_NAME=nvidia \
         __VK_LAYER_NV_optimus=NVIDIA_only"
+elif [ $HOSTNAME = "turing" ]; then
+    export LIBVA_DRIVER_NAME=radeonsi
 fi
 
 # wayland
