@@ -75,6 +75,9 @@ bindsym Shift+XF86AudioLowerVolume \
 bindsym XF86AudioMute exec \
 	pactl set-sink-mute @DEFAULT_SINK@ toggle && pkill -SIGRTMIN+10 i3blocks
 
+bindsym XF86AudioPlay exec strawberry --play-pause
+bindsym XF86AudioNext exec strawberry --next
+bindsym XF86AudioPrev exec strawberry --previous
 
 ### movement
 bindsym $mod+$left focus left
@@ -127,7 +130,7 @@ bindsym $mod+Shift+o move scratchpad
 mode "launcher" {
     bindsym c exec calibre; mode "default"
     bindsym f exec firefox; mode "default"
-    bindsym s exec spotify-launcher; mode "default"
+    bindsym s exec strawberry; mode "default"
     bindsym t exec telegram-desktop; mode "default"
     bindsym v exec gtk-launch mpv; mode "default"
     bindsym z exec zoom; mode "default"
