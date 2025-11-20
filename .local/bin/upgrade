@@ -4,7 +4,7 @@
 if [ -n "$(which pacman 2>&-)" ]; then
     sudo pacman -Syu --noconfirm
     if [ -n "$(which yay 2>&-)" ]; then
-	yay -Syu --sudoloop --noconfirm
+	yay --aur -Syu --sudoloop --noconfirm
     fi
 elif [ -n "$(which apt 2>&-)" ]; then
     sudo apt update
