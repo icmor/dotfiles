@@ -6,7 +6,6 @@
       '(
 	auctex
 	bash-completion
-	cdlatex
 	dumb-jump
 	gcmh
 	haskell-mode
@@ -17,6 +16,7 @@
 	no-littering
 	olivetti
 	pdf-tools
+	popper
 	proof-general
 	pyvenv
 	racket-mode
@@ -87,20 +87,6 @@
           (setq direction (- direction))
           (other-window (* direction (or arg 1)))))))
 (put 'other-window 'repeat-map nil)
-
-(defun my-org-sort-alphabetical (&optional level)
-  "Sort org headlines alphabetically at LEVEL (default 1)."
-  (interactive "P")
-  (org-map-entries
-   (lambda nil (org-sort-entries nil ?a))
-   (concat "LEVEL=" (number-to-string (or level 1)))))
-
-(defun my-org-sort-chronological (&optional level)
-  "Sort org headlines alphabetically at LEVEL (default 1)."
-  (interactive "P")
-  (org-map-entries
-   (lambda nil (org-sort-entries nil ?t))
-   (concat "LEVEL=" (number-to-string (or level 1)))))
 
 (defun my-project-find-library ()
   "Call project-switch-project on language-specific directory"
@@ -444,12 +430,26 @@
   (keymap-set ibuffer-mode-map "* n" #'ibuffer-mark-common-buffers)
   (keymap-set ibuffer-mode-map "* w" #'ibuffer-mark-eww-buffers))
 
+;;;; popper
+(setq popper-reference-buffers
+      '("\\*Messages\\*"
+	"\\*Warnings\\*"
+        "Output\\*$"
+        "\\*Async Shell Command\\*"
+        help-mode
+        compilation-mode))
+(global-set-key (kbd "C-`") 'popper-toggle)
+(global-set-key (kbd "M-`") 'popper-cycle)
+(global-set-key (kbd "C-M-`") 'popper-toggle-type)
+(popper-mode)
+
 ;;;; olivetti-mode
 (setq olivetti-body-width 0.95)
 
 ;;;; proced
 (setq proced-goal-attribute nil)
 (setq proced-enable-color-flag t)
+(setq proced-auto-update-flag 'visible)
 (with-eval-after-load 'proced
   (add-to-list 'proced-format-alist
 	       '(custom user pid pcpu pmem rss state tree (args comm)))
