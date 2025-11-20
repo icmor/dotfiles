@@ -1,13 +1,27 @@
 #!/bin/bash
 
-if [ "$(pactl get-sink-mute @DEFAULT_SINK@ | grep no)" ]; then
+## mouse input
+if [[ $button -eq 1 ]]; then
+    pavucontrol > /dev/null &
+elif [[ $button -eq 3 ]]; then
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+fi
+
+## get sink status
+idle_process="$(pgrep swayidle)"
+icon="🔇"
+playing=""
+### check if not muted
+if [ -n "$(pactl get-sink-mute @DEFAULT_SINK@ | grep no)" ]; then
+    playing="$(pactl list sinks | grep 'State: RUNNING')"
     icon="🎵"
-else
-    icon="🔇"
+fi
+
+## manage swayidle
+if [ -n "$idle_process" ] && [ -n "$playing" ]; then
+    kill -9 "$idle_process"
+elif [ -z "$idle_process" ] && [ -z "$playing" ]; then
+    idle-command >/dev/null 2>&1 &
 fi
 
 echo "$icon" "$(pactl get-sink-volume @DEFAULT_SINK@ | tr -s ' ' | cut -d' ' -f 5 | tr -d '%')"
-
-if [ $button = 1 ]; then
-	pavucontrol > /dev/null &
-fi

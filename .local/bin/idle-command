@@ -1,0 +1,7 @@
+#!/bin/bash
+
+swayidle -w \
+	 timeout 270 'brightnessctl --save; brightnessctl set 0%' \
+	 resume 'brightnessctl --restore' \
+	 timeout 300 'brightnessctl --restore; systemctl suspend' \
+	 before-sleep 'swaylock -f -i ~/Dropbox/images/wallpaper/gorillaz.png'

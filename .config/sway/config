@@ -30,14 +30,6 @@ exec gammastep -l 19:-99
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec swaymsg 'workspace $ws2'
 
-### idle
-exec swayidle -w \
-         timeout 270 'brightnessctl --save; brightnessctl set 0%' \
-	 resume 'brightnessctl --restore' \
-	 timeout 300 'brightnessctl --restore; systemctl suspend' \
-         before-sleep 'swaylock -f -i ~/Dropbox/images/wallpaper/arch.png'
-
-exec sway-audio-idle-inhibit
 for_window [app_id="^.*"] inhibit_idle fullscreen
 
 ### input
