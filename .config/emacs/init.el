@@ -76,6 +76,20 @@
     (ibuffer-mark-by-name-regexp "Org Agenda")
     (ibuffer-mark-by-name-regexp "scratch"))
 
+(defun mpv-org-open-at-point ()
+  "Open all YouTube links under point in a single mpv instance."
+  (interactive)
+  (let ((urls nil))
+    (cl-letf (((symbol-function 'browse-url)
+               (lambda (url &rest _) (push url urls))))
+      (org-open-at-point))
+    (when urls
+      (apply #'start-process "mpv" nil "mpv" (nreverse urls)))))
+
+(defun mpv-play (url &optional _)
+  (start-process "mpv" nil "mpv"
+                 (shell-quote-wildcard-pattern url)))
+
 ;; https://karthinks.com/software/emacs-window-management-almanac/
 (defalias 'other-window-alternating
     (let ((direction 1))
@@ -151,7 +165,9 @@
 (keymap-global-set "M-g l" #'imenu-list-smart-toggle)
 (keymap-global-set "C-c a" #'org-agenda-list)
 (keymap-global-set "C-c c" #'org-capture)
-(keymap-global-set "C-;" (lambda nil (interactive) (switch-to-buffer nil)))
+(keymap-global-set "C-;" #'previous-buffer)
+(keymap-global-set "C-'" #'next-buffer)
+
 (if (or (daemonp) window-system)
     (progn (keymap-global-set "<f1>" #'my-vterm-toggle)
 	   (keymap-global-set "C-<f1>" #'vterm-other-window)))
@@ -222,7 +238,8 @@
  urlcolor={blue!80!black}}
 ")
 (with-eval-after-load 'org
-  (plist-put org-format-latex-options :scale 1.5))
+  (plist-put org-format-latex-options :scale 1.5)
+  (keymap-unset org-mode-map "C-'"))
 
 ;; https://stackoverflow.com/a/47850858
 (defun org-export-output-file-name-modified
@@ -429,6 +446,14 @@
   (keymap-unset ibuffer-mode-map "M-o")
   (keymap-set ibuffer-mode-map "* n" #'ibuffer-mark-common-buffers)
   (keymap-set ibuffer-mode-map "* w" #'ibuffer-mark-eww-buffers))
+
+;;;; browse-url
+;r/emacs/comments/1nw4l50/newsticker_how_to_open_youtube_videos_with_mpv/
+(setf
+ (alist-get
+  "^\\(?:http\\(?:s?://\\)\\)?\\(?:www\\.\\)?\\(?:youtu\\(?:\\(?:\\.be\\|be\\.com\\)/\\)\\)"
+  browse-url-handlers nil nil #'equal)
+ 'mpv-play)
 
 ;;;; popper
 (setq popper-reference-buffers

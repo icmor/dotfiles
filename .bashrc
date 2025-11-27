@@ -24,6 +24,7 @@ export DOTNET_CLI_HOME="${XDG_DATA_HOME}"/dotnet
 export GHCUP_USE_XDG_DIRS="true"
 export GOPATH="${XDG_DATA_HOME}"/go
 export HISTFILE="${XDG_STATE_HOME}"/bash/history
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="{$XDG_CONFIG_HOME}"/java
 export LESSHISTFILE="${XDG_STATE_HOME}"/less/history
 export MYPY_CACHE_DIR="${XDG_CACHE_HOME}/mypy"
 export NUGET_PACKAGES="${XDG_CACHE_HOME}"/NuGetPackages
@@ -31,6 +32,7 @@ export PARALLEL_HOME="${XDG_CONFIG_HOME}"/parallel
 export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME}"/pycache
 export TEXMFVAR="${XDG_CACHE_HOME}"/texlive/texmf-var
 export WINEPREFIX="${XDG_DATA_HOME}"/wine
+export WORKON_HOME="${XDG_DATA_HOME}"/virtualenvs
 export XAUTHORITY="${XDG_RUNTIME_DIR}"/Xauthority
 
 

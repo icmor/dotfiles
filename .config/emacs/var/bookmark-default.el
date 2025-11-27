@@ -2,7 +2,19 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("emacs"
+(("music"
+ (filename . "~/Music/music_videos.org")
+ (front-context-string . "")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 26915 57297 421653 476000))
+("life"
+ (filename . "~/Dropbox/org/life.org")
+ (front-context-string . "")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 26913 4556 445601 877000))
+("emacs"
  (filename . "~/dotfiles/.config/emacs/init.el")
  (front-context-string . "")
  (rear-context-string)

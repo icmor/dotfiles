@@ -30,7 +30,7 @@ exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec swaymsg 'workspace $ws2'
 exec inactive-transparency
 
-for_window [app_id="^.*"] inhibit_idle fullscreen
+for_window [app_id=".*"] inhibit_idle fullscreen
 
 ### input
 input type:keyboard {
@@ -62,6 +62,7 @@ bindsym $mod+Shift+r reload
 bindsym $mod+Shift+q exec exit-menu
 bindsym $mod+Print exec screenshot
 bindsym $mod+Shift+Print exec screenshot --interactive
+bindsym $mod+t exec toggle-transparency
 
 # media keys
 bindsym XF86AudioRaiseVolume exec \
@@ -74,10 +75,6 @@ bindsym Shift+XF86AudioLowerVolume \
 	exec pactl set-sink-volume @DEFAULT_SINK@ 0% && pkill -SIGRTMIN+10 i3blocks
 bindsym XF86AudioMute exec \
 	pactl set-sink-mute @DEFAULT_SINK@ toggle && pkill -SIGRTMIN+10 i3blocks
-
-bindsym XF86AudioPlay exec strawberry --play-pause
-bindsym XF86AudioNext exec strawberry --next
-bindsym XF86AudioPrev exec strawberry --previous
 
 ### movement
 bindsym $mod+$left focus left
@@ -172,11 +169,6 @@ assign [app_id="org.telegram.desktop"] → $ws4
 assign [title="Spotify"] → $ws9
 assign [app_id="org.strawberrymusicplayer.strawberry"] → $ws9
 # gaming
-assign [app_id="net.shadps4.qtlauncher"] → $ws0
-assign [app_id="rpcs3"] → $ws0
-assign [class="Ares"] → $ws0
-assign [class="Ryujins"] → $ws0
-assign [class="dolphin-emu"] → $ws0
 assign [class="steam"] → $ws0
 
 ### visual
