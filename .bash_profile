@@ -1,6 +1,6 @@
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-HOSTNAME=$(hostnamectl hostname)
+HOSTNAME=$(cat /etc/hostname)
 export PATH=${PATH}:${HOME}/.local/bin
 export NO_AT_BRIDGE=1	# supress gtk accessibility warnings
 export EDITOR="vim"
