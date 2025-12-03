@@ -60,6 +60,8 @@ alias open="xdg-open"
 alias trash="gio trash"
 alias wlan="iwctl station wlan0"
 
+alias exton="swaymsg output HDMI-A-2 enable"
+alias extoff="swaymsg output HDMI-A-2 disable"
 alias nvidia_reset="sudo rmmod nvidia_drm && sudo modprobe nvidia_drm"
 alias vmware_start="pkexec sh -c 'systemctl start vmware-networks \
 && modprobe -a vmw_vmci vmmon' && vmware 1>&2 2>&- &"
