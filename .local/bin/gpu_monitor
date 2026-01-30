@@ -1,5 +1,5 @@
 #!/bin/bash
 
 sudo watch -n 0.5 -t -x \
-     cat /sys/kernel/debug/dri/1/amdgpu_pm_info \
-     /sys/class/drm/card1/device/power_dpm_force_performance_level
+     cat /sys/class/drm/card1/device/power_dpm_force_performance_level \
+     /sys/kernel/debug/dri/1/amdgpu_pm_info

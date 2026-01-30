@@ -1,0 +1,23 @@
+#!/bin/bash
+
+inhibit="$(pgrep -f "systemd-inhibit.*sleep inf")"
+indicator="🍵"
+color_on="d2691e"
+color_off="696969"
+if [ $button = 1 ]; then
+    if [[ "$inhibit" == "" ]]; then
+        systemd-inhibit sleep inf >/dev/null &
+    fi
+    color="$color_on"
+elif [ $button = 3 ]; then
+    if [[ "$inhibit" != "" ]]; then
+	kill -9 $inhibit
+    fi
+    color="$color_off"
+elif [[ "$inhibit" != "" ]]; then
+    color="$color_on"
+else
+    color="$color_off"
+fi
+
+printf '{"full_text":"%s", "color":"%s"}\n' $indicator $color

@@ -2,8 +2,20 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("music"
- (filename . "~/Music/music_videos.org")
+(("arch"
+ (filename . "~/Dropbox/os/arch.txt")
+ (front-context-string . "")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 27004 2579 328184 774000))
+("org-refile-last-stored"
+ (filename . "~/Dropbox/org/inbox.org")
+ (front-context-string . "")
+ (rear-context-string . "")
+ (position . 219)
+ (last-modified 26975 60605 242181 596000))
+("music"
+ (filename . "~/Music/music.org")
  (front-context-string . "")
  (rear-context-string)
  (position . 1)

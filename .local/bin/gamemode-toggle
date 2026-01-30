@@ -1,0 +1,24 @@
+#!/bin/bash
+
+gamemoded="$(cat /sys/class/drm/card1/device/power_dpm_force_performance_level)"
+indicator="🎮"
+color_on="00ee00"
+color_off="696969"
+if [ $button = 1 ]; then
+    if [[ "$gamemoded" == "low" ]]; then
+        gamemoderun sleep infinity >/dev/null 2>&1 &
+    fi
+    color="$color_on"
+elif [ $button = 3 ]; then
+    systemctl --user stop gamemoded
+    if [[ "$(cat /sys/class/drm/card1/device/power_dpm_force_performance_level)" == "auto" ]]; then
+	echo low | pkexec tee /sys/class/drm/card1/device/power_dpm_force_performance_level >/dev/null 2>&1
+    fi
+    color="$color_off"
+elif [[ "$gamemoded" == "auto" ]]; then
+    color="$color_on"
+else
+    color="$color_off"
+fi
+
+printf '{"full_text":"%s", "color":"%s"}\n' $indicator $color

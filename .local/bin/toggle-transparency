@@ -1,8 +1,8 @@
 #!/bin/bash
 
-transparency_process="$(ps aux | grep inactive-transparency | grep -v grep)"
+transparency_process="$(pgrep -f inactive-transparency)"
 if [ -n "$transparency_process" ]; then
-    kill -9 "$(echo "$transparency_process" | tr -s ' ' | cut -d' ' -f2)"
+    kill -9 $transparency_process
     swaymsg -t get_tree | jq -r '.. |
     select(.type? == "con" and .id? and (.app_id != null or
     (.window_properties? // {} | .class != null))) |

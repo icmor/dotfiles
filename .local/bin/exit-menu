@@ -1,6 +1,6 @@
 #!/bin/bash
 
-action=$(echo -e 'logout\nsuspend\nshutdown\nreboot\nhibernate' | fuzzel -d)
+action=$(echo -e 'suspend\nshutdown\nreboot\nlogout\nhibernate' | fuzzel -d)
 
 case $action in
     "logout") swaymsg exit

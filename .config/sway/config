@@ -162,7 +162,7 @@ for_window [class="Unity" title="Color"] floating enable, move position mouse
 for_window [title="UnityEditor.PopupWindow"] floating enable, move position mouse
 for_window [window_type="popup_menu"] floating enable, move position mouse
 # messaging
-assign [app_id="discord"] → $ws4
+assign [class="discord"] → $ws4
 assign [app_id="zoom"] → $ws4
 assign [app_id="org.telegram.desktop"] → $ws4
 # music

@@ -13,28 +13,30 @@ PROMPT_DIRTRIM=2
 [[ -f ~/.env ]] && source ~/.env
 
 # XDG
-export XDG_CACHE_HOME="${HOME}/.cache"
-export XDG_CONFIG_HOME="${HOME}/.config"
-export XDG_DATA_HOME="${HOME}/.local/share"
-export XDG_STATE_HOME="${HOME}/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
 
-export CARGO_HOME="${XDG_DATA_HOME}"/cargo
-export CUDA_CACHE_PATH="${XDG_CACHE_HOME}"/nv
-export DOTNET_CLI_HOME="${XDG_DATA_HOME}"/dotnet
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
+export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
 export GHCUP_USE_XDG_DIRS="true"
-export GOPATH="${XDG_DATA_HOME}"/go
-export HISTFILE="${XDG_STATE_HOME}"/bash/history
-export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="{$XDG_CONFIG_HOME}"/java
-export LESSHISTFILE="${XDG_STATE_HOME}"/less/history
-export MYPY_CACHE_DIR="${XDG_CACHE_HOME}/mypy"
-export NUGET_PACKAGES="${XDG_CACHE_HOME}"/NuGetPackages
-export PARALLEL_HOME="${XDG_CONFIG_HOME}"/parallel
-export PYTHONPYCACHEPREFIX="${XDG_CACHE_HOME}"/pycache
-export TEXMFVAR="${XDG_CACHE_HOME}"/texlive/texmf-var
-export WINEPREFIX="${XDG_DATA_HOME}"/wine
-export WORKON_HOME="${XDG_DATA_HOME}"/virtualenvs
-export XAUTHORITY="${XDG_RUNTIME_DIR}"/Xauthority
+export GOPATH="$XDG_DATA_HOME"/go
+export HISTFILE="$XDG_STATE_HOME"/bash/history
+# export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
+export LESSHISTFILE="$XDG_STATE_HOME"/less/history
+export MYPY_CACHE_DIR="$XDG_CACHE_HOME/mypy"
+export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
+export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
+export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME"/pycache
+export TEXMFVAR="$XDG_CACHE_HOME"/texlive/texmf-var
+export WINEPREFIX="$XDG_DATA_HOME"/wine
+export WORKON_HOME="$XDG_DATA_HOME"/virtualenvs
+export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 
+alias mitmproxy="mitmproxy --set confdir=$XDG_CONFIG_HOME/mitmproxy"
+alias mitmweb="mitmweb --set confdir=$XDG_CONFIG_HOME/mitmproxy"
 
 case "$TERM" in
     *color*|foot)
@@ -60,9 +62,11 @@ alias open="xdg-open"
 alias trash="gio trash"
 alias wlan="iwctl station wlan0"
 
-alias exton="swaymsg output HDMI-A-2 enable"
+alias exton="swaymsg output HDMI-A-2 enable \
+&& pactl set-default-sink alsa_output.pci-0000_03_00.1.hdmi-stereo-extra3"
 alias extoff="swaymsg output HDMI-A-2 disable"
 alias nvidia_reset="sudo rmmod nvidia_drm && sudo modprobe nvidia_drm"
+alias caffeine="systemd-inhibit sleep inf"
 alias vmware_start="pkexec sh -c 'systemctl start vmware-networks \
 && modprobe -a vmw_vmci vmmon' && vmware 1>&2 2>&- &"
 alias vmware_stop="pkexec sh -c 'systemctl stop vmware-networks \
