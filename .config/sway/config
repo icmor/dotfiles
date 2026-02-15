@@ -48,7 +48,7 @@ input type:pointer {
 ### key bindings
 # programs
 bindsym $mod+Shift+Space exec fuzzel | xargs swaymsg exec --
-bindsym $mod+e exec thunar
+bindsym $mod+e exec pcmanfm
 bindsym $mod+m exec emacsclient -nca ""
 bindsym $mod+Shift+m exec emacsclient -ca "" -e	'(progn (org-agenda-list) (delete-other-windows))'
 bindsym $mod+Shift+Return exec emacsclient -ca "" -e '(vterm)'
