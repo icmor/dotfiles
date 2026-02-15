@@ -24,7 +24,6 @@ export DOTNET_CLI_HOME="$XDG_DATA_HOME"/dotnet
 export GHCUP_USE_XDG_DIRS="true"
 export GOPATH="$XDG_DATA_HOME"/go
 export HISTFILE="$XDG_STATE_HOME"/bash/history
-# export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export MYPY_CACHE_DIR="$XDG_CACHE_HOME/mypy"
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
@@ -61,17 +60,18 @@ alias wlan="iwctl station wlan0"
 
 alias exton="swaymsg output HDMI-A-2 enable \
 && pactl set-default-sink alsa_output.pci-0000_03_00.1.hdmi-stereo-extra3"
-alias extoff="swaymsg output HDMI-A-2 disable"
 alias nvidia_reset="sudo rmmod nvidia_drm && sudo modprobe nvidia_drm"
 alias caffeine="systemd-inhibit sleep inf"
 alias vmware_start="pkexec sh -c 'systemctl start vmware-networks \
 && modprobe -a vmw_vmci vmmon' && vmware 1>&2 2>&- &"
 alias vmware_stop="pkexec sh -c 'systemctl stop vmware-networks \
-&& rmmod vmw_vsock_vmci_transport vmw_vmci vmmon'"
+&& modprobe -rq vmw_vsock_vmci_transport vmw_vmci vmmon'"
 
 # functions
 function destroy {
-    for pid in $(psgrep "$1" | tr -s ' ' | cut -d' ' -f2); do kill -9 $pid; done
+    for pid in $(pgrep -if ".*$1.*"); do
+	kill -9 $pid
+    done
 }
 
 function docker_latest {
