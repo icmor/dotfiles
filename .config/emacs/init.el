@@ -642,6 +642,10 @@
 
 ;;;; proof-general
 (setq proof-splash-enable nil)
+(with-eval-after-load 'coq-mode
+  (keymap-set coq-mode-map "C-c C-c" #'proof-process-buffer))
+(with-eval-after-load 'coq-mode
+  (keymap-set coq-mode-map "C-M-i" #'proof-script-complete))
 
 ;;;; man
 (add-to-list 'display-buffer-alist
