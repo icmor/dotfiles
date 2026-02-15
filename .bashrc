@@ -35,9 +35,6 @@ export WINEPREFIX="$XDG_DATA_HOME"/wine
 export WORKON_HOME="$XDG_DATA_HOME"/virtualenvs
 export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 
-alias mitmproxy="mitmproxy --set confdir=$XDG_CONFIG_HOME/mitmproxy"
-alias mitmweb="mitmweb --set confdir=$XDG_CONFIG_HOME/mitmproxy"
-
 case "$TERM" in
     *color*|foot)
 	PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
