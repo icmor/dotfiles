@@ -643,7 +643,7 @@
 ;;;; proof-general
 (setq proof-splash-enable nil)
 (with-eval-after-load 'coq-mode
-  (keymap-set coq-mode-map "C-c C-c" #'proof-process-buffer))
+  (keymap-set coq-mode-map "C-c C-c" #'proof-goto-point))
 (with-eval-after-load 'coq-mode
   (keymap-set coq-mode-map "C-M-i" #'proof-script-complete))
 
