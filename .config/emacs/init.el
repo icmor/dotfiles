@@ -7,6 +7,7 @@
 	auctex
 	bash-completion
 	dumb-jump
+	elfeed
 	gcmh
 	haskell-mode
 	imenu-list
@@ -165,6 +166,7 @@
 (keymap-global-set "M-g l" #'imenu-list-smart-toggle)
 (keymap-global-set "C-c a" #'org-agenda-list)
 (keymap-global-set "C-c c" #'org-capture)
+(keymap-global-set "C-c n" #'elfeed)
 (keymap-global-set "C-;" #'previous-buffer)
 (keymap-global-set "C-'" #'next-buffer)
 
@@ -483,6 +485,9 @@
 
 ;;;; calc
 (setq calc-group-digits t)
+
+;;;; elfeed
+(load-file (no-littering-expand-var-file-name "feeds.el"))
 
 ;;;; irc
 (setq rcirc-default-nick "icmor")
