@@ -487,7 +487,10 @@
 (setq calc-group-digits t)
 
 ;;;; elfeed
-(load-file (no-littering-expand-var-file-name "feeds.el"))
+(condition-case nil
+    (load-file (no-littering-expand-var-file-name "feeds.el"))
+  ((error nil)
+   (message "feeds.el not found")))
 
 ;;;; irc
 (setq rcirc-default-nick "icmor")
