@@ -14,7 +14,7 @@ done
 read -e -p "Proceed with backup? [y/n] " answer
 [[ "$answer" != [Yy]* ]]  && exit 0
 
-for dir in ~/Dropbox/*; do
+for dir in ~/Dropbox/*/; do
     dest="$1/$(basename $dir)"
     sudo rsync -ahv --progress --delete $dir $dest
 done
