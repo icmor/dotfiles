@@ -6,9 +6,7 @@
    "https://www.youtube.com/feeds/videos.xml?channel_id=UC2Kyj04yISmHr1V-UlJz4eg" ; Jared Henderson
    "https://www.youtube.com/feeds/videos.xml?channel_id=UCshObcm-nLhbu8MY50EZ5Ng" ; Benn Jordan
    "https://www.youtube.com/feeds/videos.xml?channel_id=UCriil4aussYUAGVwpm_zI9w" ; Sarah Davis Baker
-   "https://www.youtube.com/feeds/videos.xml?channel_id=UCyJbb85EUgWjl38GcF236Jg" ; Ruido Social
-   "http://critical-distance.com/archives/feed"
-   "https://ciechanow.ski/atom.xml"
-   "https://protesilaos.com/commentary.xml"
-   "https://protesilaos.com/books.xml"
+   "https://www.youtube.com/feeds/videos.xml?channel_id=UC5CYeHPLer3lbEhgonvbbAA" ; Noah Caldwell-Gervais
+   "https://www.youtube.com/feeds/videos.xml?playlist_id=PLxp4ZFkiTSQJISiUkeyznN47GSE2SeXdG" ; Play, Watch, Listen
+   "https://www.youtube.com/feeds/videos.xml?playlist_id=PLbcyJSeTLtlwyCd8BWh0iFvhJzmn9B6NN" ; Friends Per Second
    ))

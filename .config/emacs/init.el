@@ -355,6 +355,7 @@
 ;;;; shell
 (setq shell-command-prompt-show-cwd t)
 (bash-completion-setup)
+(add-hook 'shell-mode-hook #'shell-dirtrack-mode)
 (add-hook 'shell-mode-hook
 	  (defun my-shell-history-hook ()
 	    (setq comint-input-ring-file-name "~/.local/state/bash/history")
@@ -463,8 +464,7 @@
 	"\\*Warnings\\*"
         "Output\\*$"
         "\\*Async Shell Command\\*"
-        help-mode
-        compilation-mode))
+        help-mode))
 (global-set-key (kbd "C-`") 'popper-toggle)
 (global-set-key (kbd "M-`") 'popper-cycle)
 (global-set-key (kbd "C-M-`") 'popper-toggle-type)
@@ -491,6 +491,11 @@
     (load-file (no-littering-expand-var-file-name "feeds.el"))
   ((error nil)
    (message "feeds.el not found")))
+(with-eval-after-load 'elfeed
+  (add-hook 'elfeed-new-entry-hook
+          (elfeed-make-tagger :feed-url "youtube\\.com/shorts"
+                              :add 'read)))
+>>>>>>> 68426e5 (emacs various)
 
 ;;;; irc
 (setq rcirc-default-nick "icmor")
@@ -605,6 +610,8 @@
 
 ;;;; html
 (with-eval-after-load 'mhtml-mode
+  (keymap-unset mhtml-mode-map "M-o"))
+(with-eval-after-load 'mhtml-mode
   (add-to-list 'html-tag-alist
 	       '("html"
 		 (n "<head>
@@ -656,6 +663,8 @@
   (keymap-set coq-mode-map "C-M-i" #'proof-script-complete))
 
 ;;;; man
+(setq Man-switches "-a")
+(setq Man-notify-method 'aggressive)
 (add-to-list 'display-buffer-alist
 	     '("\\`\\*Man .*\\*\\'" .
 	       (display-buffer-reuse-mode-window
