@@ -2,14 +2,23 @@
 
 blocked="$(rfkill list bluetooth | grep yes)"
 indicator="߷"
+
 if [ $button = 1 ]; then
     [[ -n "$blocked" ]] && rfkill unblock bluetooth
+    blocked=""
     color="00bfff"	# bluetooth on
 elif [ $button = 3 ]; then
     [[ -z "$blocked" ]] && rfkill block bluetooth
+    blocked="yes"
     color="696969"	# bluetooth off
-elif [ -z "$blocked" ]; then
+fi
+
+if [ -z "$blocked" ]; then
     color="00bfff"	# bluetooth on
+    connected="$(bluetoothctl info | grep "Battery")"
+    if [ -n "$connected" ]; then
+    indicator=$(sed 's/.*(\([[:digit:]]\+\))/\1%/' <<< "$connected")
+    fi
 else
     color="696969"	# bluetooth off
 fi
