@@ -19,7 +19,6 @@ if [ -z "$userid" ]; then
     done
 fi
 
-
 echo "---------- Steam Apps ----------"
 for file in "$steamapps"/*.acf; do
     name="$(grep "\"name\"" "$file" | cut -f4 | tr -d '"')"
@@ -34,9 +33,7 @@ done
 for file in "$steamapps"/*.acf; do
     name="$(grep "\"name\"" "$file" | cut -f4 | tr -d '"')"
     appid="$(grep "\"appid\"" "$file" | cut -f4 | tr -d '"')"
-    if [[ "$name" == *"Linux Runtime"*
-		|| "$name" == *"Proton"*
-		|| "$name" == *"Steamworks"* ]]; then
+    if [[ "$name" =~ "(Linux Runtime|Proton|Steamworks)" ]]; then
 	echo "$name ($appid)"
     fi
 done
