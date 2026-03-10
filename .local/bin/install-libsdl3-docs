@@ -1,0 +1,15 @@
+#!/bin/bash
+
+mkdir libsdl3-docs
+cd libsdl3-docs
+curl -s ftp://ftp.us.debian.org/debian/pool/main/libs/libsdl3/ \
+    | grep -o libsdl3-doc_.*deb \
+    | sort -V \
+    | tail -1 \
+    | xargs -I{} curl -O ftp.us.debian.org/debian/pool/main/libs/libsdl3/{}
+ar x *.deb
+tar xvf data.tar.xz
+sudo rsync -a usr/share/man/man3 /usr/local/share/man/
+cd ..
+rm -rf libsdl3-docs
+sudo mandb
