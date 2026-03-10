@@ -9,6 +9,12 @@ export EDITOR="vim"
 export QT_STYLE_OVERRIDE=adwaita-dark
 export GTK_THEME=Adwaita:dark
 
+# compiler flags
+export ERROR_FLAGS="-Wall -Wextra -Wconversion -Wundef -Wformat=2 \
+-Wformat-truncation -Wdouble-promotion -Wshadow -fno-common"
+export SANITIZER_FLAGS="-fsanitize=address -fsanitize=undefined -fsanitize=leak"
+
+
 # video
 export WLR_RENDERER=vulkan
 export MESA_VK_IGNORE_CONFORMANCE_WARNING=true
