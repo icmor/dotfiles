@@ -495,8 +495,6 @@
   (add-hook 'elfeed-new-entry-hook
           (elfeed-make-tagger :feed-url "youtube\\.com/shorts"
                               :add 'read)))
->>>>>>> 68426e5 (emacs various)
-
 ;;;; irc
 (setq rcirc-default-nick "icmor")
 (setq rcirc-default-user-name "icmor")

@@ -158,17 +158,17 @@ bindsym $mod+Shift+r mode "resize"
 ### rules
 # floating rules
 for_window [app_id="pavucontrol"] floating enable
+for_window [app_id="zoom" title="zoom"] floating enable
+for_window [app_id="zoom" title="Zoom Meeting"] floating disable
+for_window [app_id="zoom" title="Zoom - Free Account"] floating disable
 for_window [class="Unity" title="Color"] floating enable, move position mouse
 for_window [title="UnityEditor.PopupWindow"] floating enable, move position mouse
 for_window [window_type="popup_menu"] floating enable, move position mouse
-# messaging
 assign [class="discord"] → $ws4
 assign [app_id="zoom"] → $ws4
 assign [app_id="org.telegram.desktop"] → $ws4
-# music
 assign [title="Spotify"] → $ws9
 assign [app_id="org.strawberrymusicplayer.strawberry"] → $ws9
-# gaming
 assign [class="steam"] → $ws0
 
 ### visual
