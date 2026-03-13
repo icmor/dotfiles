@@ -5,16 +5,22 @@ if [[ ! -d "$1" ]]; then
     exit 1
 fi
 
+# dry-run
+logfile=$(mktemp)
 for dir in ~/Dropbox/*/; do
     dest="$1/$(basename $dir)"/
     echo "backing up $dir -> $dest"
-    rsync -ahv --delete --dry-run $dir $dest
+    rsync -ahv --no-links --delete --dry-run $dir $dest >> $logfile
 done
+read -e
+[[ "$TERM" == "dumb-color" ]] && cat $logfile || less $logfile
+rm $logfile
 
+# actual backup
 read -e -p "Proceed with backup? [y/n] " answer
 [[ "$answer" != [Yy]* ]]  && exit 0
 
 for dir in ~/Dropbox/*/; do
     dest="$1/$(basename $dir)"
-    sudo rsync -ahv --progress --delete $dir $dest
+    sudo rsync -ahv --no-links --progress --delete $dir $dest
 done
