@@ -3,11 +3,8 @@
 transparency_process="$(pgrep -f inactive-transparency)"
 if [ -n "$transparency_process" ]; then
     kill -9 $transparency_process
-    swaymsg -t get_tree | jq -r '.. |
-    select(.type? == "con" and .id? and (.app_id != null or
-    (.window_properties? // {} | .class != null))) |
-    .id' | while read -r id; do
-	swaymsg "[con_id=$id]" opacity 1
+    swaymsg -t get_tree | grep \"app_id\" | cut -d\" -f4 | while read -r id; do
+	swaymsg "[app_id=$id]" opacity 1
     done
 else
     inactive-transparency >/dev/null 2>&1 &
