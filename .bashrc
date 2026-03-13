@@ -30,6 +30,7 @@ export MYPY_CACHE_DIR="$XDG_CACHE_HOME/mypy"
 export NUGET_PACKAGES="$XDG_CACHE_HOME"/NuGetPackages
 export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
 export PYTHONPYCACHEPREFIX="$XDG_CACHE_HOME"/pycache
+export PYTHON_HISTORY=:"$XDG_STATE_HOME"/python/history
 export TEXMFVAR="$XDG_CACHE_HOME"/texlive/texmf-var
 export WINEPREFIX="$XDG_DATA_HOME"/wine
 export WORKON_HOME="$XDG_DATA_HOME"/virtualenvs
