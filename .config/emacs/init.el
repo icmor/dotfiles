@@ -198,6 +198,8 @@
 (keymap-global-set "C-x C-<right>" #'windmove-swap-states-right)
 (keymap-global-set "C-x C-<up>" #'windmove-swap-states-up)
 (keymap-global-set "C-x C-<down>" #'windmove-swap-states-down)
+(keymap-global-set "C-h b" #'which-key-show-major-mode)
+(keymap-global-set "C-h B" #'describe-bindings)
 
 ;;; org
 ;;;; general
@@ -699,6 +701,10 @@
 (keymap-unset minibuffer-local-completion-map "?")
 (keymap-set completion-in-region-mode-map "C-p" #'minibuffer-previous-completion)
 (keymap-set completion-in-region-mode-map "C-n" #'minibuffer-next-completion)
+
+;;;; help
+;; https://lists.gnu.org/archive/html/emacs-devel/2024-03/msg00080.html
+(setq describe-bindings-outline-rules nil)
 
 ;;;; files
 (setq auto-save-default nil)
