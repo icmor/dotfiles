@@ -404,8 +404,8 @@
 (setq-default TeX-output-dir "auctex")
 (setq-default TeX-auto-local "auctex")
 (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
-(add-hook 'TeX-mode-hook #'olivetti-mode)
-(add-hook 'TeX-mode-hook #'ws-butler-mode)
+(add-hook 'LaTeX-mode-hook #'olivetti-mode)
+(add-hook 'LaTeX-mode-hook #'ws-butler-mode)
 (with-eval-after-load 'latex
   (keymap-set TeX-mode-map "C-c C-x C-l" #'my-preview-dwim))
 
