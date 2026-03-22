@@ -167,13 +167,20 @@
 (keymap-global-set "C-c a" #'org-agenda-list)
 (keymap-global-set "C-c c" #'org-capture)
 (keymap-global-set "C-c n" #'elfeed)
-(keymap-global-set "C-;" #'previous-buffer)
-(keymap-global-set "C-'" #'next-buffer)
 (keymap-global-set "C-c t" #'tmr)
 
 (if (or (daemonp) window-system)
     (progn (keymap-global-set "<f1>" #'my-vterm-toggle)
 	   (keymap-global-set "C-<f1>" #'vterm-other-window)))
+
+;; contested bindings
+(bind-key* "M-o" #'other-window-alternating)
+(bind-key* "C-;" #'previous-buffer)
+(bind-key* "C-'" #'next-buffer)
+(bind-key* "<up>" #'windmove-up)
+(bind-key* "<down>" #'windmove-down)
+(bind-key* "<left>" #'windmove-left)
+(bind-key* "<right>" #'windmove-right)
 
 ;;;; better defaults
 (keymap-global-unset "C-x C-z")
@@ -181,7 +188,6 @@
 (keymap-global-set "C-x C-b" #'ibuffer)
 (keymap-global-set "C-x k" #'kill-current-buffer)
 (keymap-global-set "C-x K" #'kill-buffer)
-(keymap-global-set "M-o" #'other-window-alternating)
 (keymap-global-set "M-z" #'zap-up-to-char)
 (keymap-global-set "M-/" #'hippie-expand)
 (keymap-global-set "C-x l" #'count-words)
@@ -191,10 +197,6 @@
 (keymap-global-set "C-M-o" #'open-line)
 (keymap-global-set "C-h C-m" #'man)
 (keymap-global-set "C-x C-c" #'save-buffers-kill-emacs)
-(keymap-global-set "<left>" #'windmove-left)
-(keymap-global-set "<right>" #'windmove-right)
-(keymap-global-set "<up>" #'windmove-up)
-(keymap-global-set "<down>" #'windmove-down)
 (keymap-global-set "C-x C-<left>" #'windmove-swap-states-left)
 (keymap-global-set "C-x C-<right>" #'windmove-swap-states-right)
 (keymap-global-set "C-x C-<up>" #'windmove-swap-states-up)
@@ -247,8 +249,7 @@
  urlcolor={blue!80!black}}
 ")
 (with-eval-after-load 'org
-  (plist-put org-format-latex-options :scale 1.5)
-  (keymap-unset org-mode-map "C-'"))
+  (plist-put org-format-latex-options :scale 1.5))
 
 ;; https://stackoverflow.com/a/47850858
 (defun org-export-output-file-name-modified
@@ -423,17 +424,9 @@
 (add-hook 'pdf-view-mode-hook #'save-place-local-mode)
 (add-hook 'pdf-annot-list-mode-hook #'pdf-annot-list-follow-minor-mode)
 (with-eval-after-load 'pdf-tools
-  (keymap-set pdf-view-mode-map "D" #'pdf-annot-delete)
   (keymap-set pdf-view-mode-map "M" #'pdf-view-midnight-minor-mode)
-  (keymap-set pdf-view-mode-map "S" #'save-buffer)
-  (keymap-set pdf-view-mode-map "L" #'pdf-annot-list-annotations)
-  (keymap-set pdf-view-mode-map "T" #'pdf-annot-add-highlight-markup-annotation)
   (keymap-set pdf-view-mode-map "<prior>" #'pdf-view-scroll-down-or-previous-page)
   (keymap-set pdf-view-mode-map "<next>" #'pdf-view-scroll-up-or-next-page))
-(with-eval-after-load 'pdf-annot
-  (keymap-set pdf-annot-list-mode-map "RET" #'tablist-quit)
-  (add-to-list 'pdf-annot-default-annotation-properties
-	       '(highlight (color . "DarkSeaGreen1"))))
 
 ;; fix registers
 (with-eval-after-load 'pdf-tools
@@ -453,7 +446,6 @@
 
 ;;;; ibuffer
 (with-eval-after-load 'ibuffer
-  (keymap-unset ibuffer-mode-map "M-o")
   (keymap-set ibuffer-mode-map "* n" #'ibuffer-mark-common-buffers)
   (keymap-set ibuffer-mode-map "* w" #'ibuffer-mark-eww-buffers))
 
@@ -618,8 +610,6 @@
 
 ;;;; html
 (with-eval-after-load 'mhtml-mode
-  (keymap-unset mhtml-mode-map "M-o"))
-(with-eval-after-load 'mhtml-mode
   (add-to-list 'html-tag-alist
 	       '("html"
 		 (n "<head>
@@ -705,10 +695,10 @@
 (setq completion-styles '(basic partial-completion substring))
 (keymap-set minibuffer-mode-map "C-p" #'minibuffer-previous-completion)
 (keymap-set minibuffer-mode-map "C-n" #'minibuffer-next-completion)
-(keymap-unset minibuffer-local-completion-map "SPC")
-(keymap-unset minibuffer-local-completion-map "?")
 (keymap-set completion-in-region-mode-map "C-p" #'minibuffer-previous-completion)
 (keymap-set completion-in-region-mode-map "C-n" #'minibuffer-next-completion)
+(keymap-unset minibuffer-local-completion-map "SPC")
+(keymap-unset minibuffer-local-completion-map "?")
 
 ;;;; help
 ;; https://lists.gnu.org/archive/html/emacs-devel/2024-03/msg00080.html
