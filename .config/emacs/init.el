@@ -227,7 +227,11 @@
 ;;;; org + latex
 (setq org-latex-packages-alist
       '(("margin=2.5cm" "geometry" nil)
+	("" "listings" nil)
 	("" "xcolor" nil)))
+(setq org-export-headline-levels 5)
+(setq org-export-with-section-numbers 2)
+(setq org-latex-toc-command "\\tableofcontents\n\\clearpage\n")
 (setq org-latex-hyperref-template "\\hypersetup{
  pdfauthor={%a},
  pdftitle={%t},
