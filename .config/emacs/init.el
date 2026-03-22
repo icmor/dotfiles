@@ -169,6 +169,7 @@
 (keymap-global-set "C-c n" #'elfeed)
 (keymap-global-set "C-;" #'previous-buffer)
 (keymap-global-set "C-'" #'next-buffer)
+(keymap-global-set "C-c t" #'tmr)
 
 (if (or (daemonp) window-system)
     (progn (keymap-global-set "<f1>" #'my-vterm-toggle)
@@ -501,6 +502,9 @@
   (add-hook 'elfeed-new-entry-hook
           (elfeed-make-tagger :feed-url "youtube\\.com/shorts"
                               :add 'read)))
+;;;; tmr
+(tmr-mode-line-mode)
+
 ;;;; irc
 (setq rcirc-default-nick "icmor")
 (setq rcirc-default-user-name "icmor")
