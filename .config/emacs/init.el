@@ -194,10 +194,10 @@
 (bind-key* "M-o" #'other-window-alternating)
 (bind-key* "C-;" #'previous-buffer)
 (bind-key* "C-'" #'next-buffer)
-(bind-key* "<up>" #'windmove-up)
-(bind-key* "<down>" #'windmove-down)
-(bind-key* "<left>" #'windmove-left)
-(bind-key* "<right>" #'windmove-right)
+(bind-key* "C-<up>" #'windmove-up)
+(bind-key* "C-<down>" #'windmove-down)
+(bind-key* "C-<left>" #'windmove-left)
+(bind-key* "C-<right>" #'windmove-right)
 
 ;;;; better defaults
 (keymap-global-unset "C-x C-z")
@@ -218,8 +218,6 @@
 (keymap-global-set "C-x C-<right>" #'windmove-swap-states-right)
 (keymap-global-set "C-x C-<up>" #'windmove-swap-states-up)
 (keymap-global-set "C-x C-<down>" #'windmove-swap-states-down)
-(keymap-global-set "C-h b" #'which-key-show-major-mode)
-(keymap-global-set "C-h B" #'describe-bindings)
 
 ;;; org
 ;;;; general
@@ -769,6 +767,17 @@
 (blink-cursor-mode -1)
 (tooltip-mode -1)
 (minions-mode)
+
+;;;; windmove
+(defvar my-windmove-repeat-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "<up>")    #'windmove-up)
+    (define-key map (kbd "<down>")  #'windmove-down)
+    (define-key map (kbd "<left>")  #'windmove-left)
+    (define-key map (kbd "<right>") #'windmove-right)
+    map))
+(dolist (cmd '(windmove-up windmove-down windmove-left windmove-right))
+  (put cmd 'repeat-map 'my-windmove-repeat-map))
 
 ;;;; bookmarks
 (setq bookmark-save-flag 1)
