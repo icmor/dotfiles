@@ -630,8 +630,7 @@
 
 ;;;; python
 (defun my-set-python-compile-command ()
-  (let* ((infile (file-relative-name buffer-file-name))
-	 (outfile (string-remove-suffix ".c" infile)))
+  (let ((infile (file-relative-name buffer-file-name)))
     (setq-local compile-command (concat "mypy --strict " infile))))
 (setq python-indent 4)
 (setq python-check-command "flake8 --color=never")
