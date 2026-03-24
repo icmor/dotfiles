@@ -70,12 +70,12 @@
 
 (defun ibuffer-mark-common-buffers nil
   """Mark commonly used buffers in ibuffer for ease of use."""
-    (interactive)
-    (ibuffer-update nil)
-    (ibuffer-mark-by-name-regexp "shell")
-    (ibuffer-mark-by-name-regexp "vterm")
-    (ibuffer-mark-by-name-regexp "Org Agenda")
-    (ibuffer-mark-by-name-regexp "scratch"))
+  (interactive)
+  (ibuffer-update nil)
+  (ibuffer-mark-by-name-regexp "shell")
+  (ibuffer-mark-by-name-regexp "vterm")
+  (ibuffer-mark-by-name-regexp "Org Agenda")
+  (ibuffer-mark-by-name-regexp "scratch"))
 
 (defun mpv-org-open-at-point ()
   "Open all YouTube links under point in a single mpv instance."
@@ -93,14 +93,14 @@
 
 ;; https://karthinks.com/software/emacs-window-management-almanac/
 (defalias 'other-window-alternating
-    (let ((direction 1))
-      (lambda (&optional arg)
-        "Call `other-window', switching directions each time."
-        (interactive)
-        (if (equal last-command 'other-window-alternating)
-            (other-window (* direction (or arg 1)))
-          (setq direction (- direction))
-          (other-window (* direction (or arg 1)))))))
+  (let ((direction 1))
+    (lambda (&optional arg)
+      "Call `other-window', switching directions each time."
+      (interactive)
+      (if (equal last-command 'other-window-alternating)
+          (other-window (* direction (or arg 1)))
+        (setq direction (- direction))
+        (other-window (* direction (or arg 1)))))))
 (put 'other-window 'repeat-map nil)
 
 (defun my-gdb-restart ()
