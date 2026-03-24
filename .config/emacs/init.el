@@ -103,6 +103,18 @@
           (other-window (* direction (or arg 1)))))))
 (put 'other-window 'repeat-map nil)
 
+(defun my-gdb-restart ()
+  "Kill all running GUD sessions and restart GDB."
+  (interactive)
+  (dolist (buf (buffer-list))
+    (let ((name (buffer-name buf)))
+      (when (and name (string-match-p "^\\*gud-?.*\\*$" name))
+        (let ((proc (get-buffer-process buf)))
+          (when proc
+            (kill-process proc)))
+        (kill-buffer buf))))
+  (call-interactively 'gdb))
+
 (defun my-project-find-library ()
   "Call project-switch-project on language-specific directory"
   (interactive)
@@ -129,6 +141,11 @@
    ((equal arg '(4))
     (preview-clearout-section))
    ((preview-at-point))))
+
+(defun my-recompile (&optional arg)
+  "Recompile or with prefix argument compile"
+  (interactive "P")
+  (if (not arg) (recompile) (call-interactively #'compile)))
 
 (defun my-shell-toggle (&optional arg)
   "Toggle a shell window (with ARG name it *s<arg>*)."
@@ -539,6 +556,7 @@
 	(java-mode . "/usr/lib/jvm")
 	(python-ts-mode . ,(car (file-expand-wildcards "/usr/lib/python3.??")))))
 (setq project-kill-buffers-display-buffer-list t)
+(setq project-vc-extra-root-markers '(".project"))
 (keymap-set project-prefix-map "R" #'my-project-refresh)
 (keymap-set  project-prefix-map "l" #'my-project-find-library)
 
@@ -546,11 +564,13 @@
 (setq eglot-autoshutdown t)
 (setq eglot-ignored-server-capabilities
       '(:documentFormattingProvider
+	:textDocument/publishDiagnostics
 	:documentRangeFormattingProvider
 	:inlayHintProvider))
 (setq eglot-events-buffer-config '(:size 0 :format full))
 (setq eglot-events-buffer-size 0)
 (fset #'jsonrpc--log-event #'ignore)
+(add-hook 'eglot--managed-mode-hook (lambda () (flymake-mode -1)))
 
 ;;;; xref
 (setq xref-prompt-for-identifier nil)
@@ -562,28 +582,53 @@
   (keymap-set imenu-list-major-mode-map "<tab>" #'hs-toggle-hiding))
 
 ;;;; gud
-(setq gdb-default-window-configuration-file "~/.config/gdb/gdbwindows.el")
+(setq gdb-default-window-configuration-file "var/gdbwindows.el")
+(setq-default gdb-many-windows t)
 (setq gdb-debuginfod-enable-setting nil)
-(setq gdb-many-windows t)
+(with-eval-after-load 'gdb
+  (add-hook 'gdb-breakpoints-mode-hook #'toggle-truncate-lines)
+  (add-hook 'gdb-locals-mode-hook #'toggle-truncate-lines))
+
+;; fixes functions not working because they expect an EVENT (mouse click)
+(with-eval-after-load 'gdb-mi
+  (define-key gdb-memory-mode-map "R"
+    (lambda () (interactive) (gdb-memory-set-rows nil)))
+  (define-key gdb-memory-mode-map "C"
+	      (lambda () (interactive) (gdb-memory-set-columns nil))))
+(with-eval-after-load 'gud
+  (keymap-set gud-global-map "C-c" #'my-gdb-restart)
+  (keymap-set gud-global-map "r" #'gud-run)
+  (keymap-set gud-minor-mode-map "C-c C-p" #'comint-previous-prompt)
+  (keymap-set gud-minor-mode-map "C-c C-n" #'comint-next-prompt))
+
 ;; https://stackoverflow.com/a/24923325
 (defadvice gdb-inferior-filter
     (around gdb-inferior-filter-without-stealing)
   (with-current-buffer (gdb-get-buffer-create 'gdb-inferior-io)
     (comint-output-filter proc string)))
 (ad-activate 'gdb-inferior-filter)
-(add-hook 'gdb-locals-mode-hook #'gdb-locals-values)
 
 ;;;; c
 (setq c-ts-mode-indent-offset 4)
 (setq c-ts-mode-indent-style 'linux)
-(defun my-set-c-compile-command ()
-  (let ((file (file-relative-name buffer-file-name)))
-    (setq-local compile-command
-		(concat "gcc -Wall -g -o " (file-name-base file) " " file))))
+(with-eval-after-load 'eglot
+  (let ((clang-args
+	`("clangd"
+          ,(concat "-j=" (number-to-string (num-processors)))
+	  "--log=error"
+          "--malloc-trim"
+          "--background-index"
+          "--cross-file-rename"
+          "--completion-style=detailed"
+          "--pch-storage=memory"
+          "--header-insertion=never"
+          "--header-insertion-decorators=0")))
+    (add-to-list 'eglot-server-programs
+		 `((c-mode c++-mode) . ,clang-args))))
+(add-hook 'c-ts-mode-hook #'eglot-ensure)
 (add-hook 'c-ts-mode-hook #'c-ts-mode-toggle-comment-style)
-(add-hook 'c-ts-mode-hook #'my-set-c-compile-command)
 (with-eval-after-load 'c-ts-mode
-  (keymap-set c-ts-mode-map "C-c C-c" #'compile))
+  (keymap-set c-ts-mode-map "C-c C-c" #'my-recompile))
 
 ;;;; python
 (defun my-set-python-compile-command ()
