@@ -132,12 +132,13 @@ bindsym $mod+Shift+o move scratchpad
 ### modes
 mode "launcher" {
     bindsym c exec calibre; mode "default"
+    bindsym d exec gtk-launch discord; mode "default"
     bindsym f exec firefox; mode "default"
+    bindsym p exec emacsclient -ca "" -e '(progn (proced) (delete-other-windows))'; mode "default"
     bindsym s exec strawberry; mode "default"
     bindsym t exec telegram-desktop; mode "default"
     bindsym v exec gtk-launch mpv; mode "default"
     bindsym z exec zoom; mode "default"
-    bindsym d exec gtk-launch discord; mode "default"
 
     bindsym Escape mode "default"
     bindsym Return mode "default"
