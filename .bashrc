@@ -70,12 +70,6 @@ alias vmware_stop="pkexec sh -c 'systemctl stop vmware-networks \
 && modprobe -rq vmw_vsock_vmci_transport vmw_vmci vmmon'"
 
 # functions
-function destroy {
-    for pid in $(pgrep -if ".*$1.*"); do
-	kill -9 $pid
-    done
-}
-
 function docker_latest {
 	sudo docker ps | head -2 | tail -1 | cut -d' ' -f 1
 }
@@ -98,10 +92,6 @@ function proton_run {
     STEAM_COMPAT_CLIENT_INSTALL_PATH=~/.local/share/Steam/steamapps/compatdata \
     ~/".local/share/Steam/steamapps/common/Proton - Experimental/proton" \
     run "$2"
-}
-
-function psgrep  {
-    ps aux | grep --color=auto -i "$1" | grep -v grep
 }
 
 # emacs
