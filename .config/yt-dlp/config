@@ -1,4 +1,0 @@
-# randomize sleep intervals to prevent youtube ip ban
---sleep-requests 1.5
---min-sleep-interval 30
---max-sleep-interval 60

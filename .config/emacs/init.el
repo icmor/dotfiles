@@ -82,7 +82,17 @@
   (ibuffer-mark-by-name-regexp "scratch"))
 
 (defun mpv-play (url &optional _)
-  (start-process "mpv" nil "mpv" (shell-quote-wildcard-pattern url)))
+  (let ((sock "/tmp/mpvsocket")
+        (cmd  "{\"command\":[\"loadfile\",\"%s\",\"append-play\"]}\n"))
+    (condition-case nil
+        (let ((proc (make-network-process
+		     :name "mpv-ipc"
+		     :family 'local
+		     :service sock)))
+          (process-send-string proc (format cmd url))
+	  (delete-process proc))
+      (file-error (start-process "mpv" nil "mpv"
+				 (concat "--input-ipc-server=" sock) url)))))
 
 ;; https://karthinks.com/software/emacs-window-management-almanac/
 (defalias 'other-window-alternating
