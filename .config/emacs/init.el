@@ -480,6 +480,7 @@
             (elfeed-make-tagger :feed-url "youtube\\.com/shorts" :add 'read)))
 ;;;; tmr
 (with-eval-after-load 'tmr #'tmr-mode-line-mode)
+(setopt tmr-sound-file "~/.config/emacs/var/secret.wav")
 
 ;;;; irc
 (setopt rcirc-default-nick "icmor")
