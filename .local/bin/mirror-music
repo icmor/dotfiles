@@ -1,0 +1,41 @@
+#!/bin/bash
+
+src=~/"Music/music_library/"
+dest=~/"Public/MTP/Internal shared storage/Music/music_library/"
+
+if [[ ! -d ~/"Public/MTP" ]]; then
+    echo ~/"Public/MTP" "does not exist."
+    exit 1
+fi
+
+[[ -d "$dest" ]] || aft-mtp-mount ~/"Public/MTP"
+
+rsync_args=(
+    --recursive
+    --human-readable
+    --progress
+    --verbose
+    --delete
+    --delete-excluded
+    --ignore-existing
+    --size-only
+    --no-perms
+    --no-owner
+    --no-group
+    --omit-dir-times
+    --partial
+    --inplace
+)
+
+# dry-run
+if [[ "$TERM" == "dumb-color" ]]; then
+    rsync "${rsync_args[@]}" --dry-run "$src" "$dest" | cat
+else
+    rsync "${rsync_args[@]}" --dry-run "$src" "$dest" | less
+fi
+
+# actual backup
+read -e -p "Proceed with backup? [y/n] " answer
+[[ "$answer" != [Yy]* ]]  && exit 0
+
+rsync "${rsync_args[@]}" "$src" "$dest"
