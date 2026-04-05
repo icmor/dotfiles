@@ -1,7 +1,7 @@
 #!/bin/bash
 
 swayidle -w \
-	 timeout 270 'brightnessctl --save; brightnessctl set 0%' \
-	 resume 'brightnessctl --restore' \
-	 timeout 300 'brightnessctl --restore; systemctl suspend' \
+	 timeout 270 'swaymsg "output * dpms off"' \
+	 resume 'swaymsg "output * dpms on"' \
+	 timeout 300 'systemctl suspend' \
 	 before-sleep 'swaylock -f -i ~/Dropbox/images/wallpaper/gorillaz.png'
