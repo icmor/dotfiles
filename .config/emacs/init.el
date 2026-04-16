@@ -122,9 +122,11 @@
       (when (and name (string-match-p "^\\*gud-?.*\\*$" name))
         (let ((proc (get-buffer-process buf)))
           (when proc
-            (kill-process proc)))
-        (kill-buffer buf))))
-  (call-interactively 'gdb))
+            (comint-send-string proc "quit\n"))))))
+  (let* ((proj (project-current))
+         (root (when proj (project-root proj)))
+         (default-directory (or root default-directory)))
+    (call-interactively #'gdb)))
 
 (defun my-project-find-library ()
   "Call project-switch-project on language-specific directory"
@@ -171,6 +173,26 @@
     (call-interactively #'vterm)))
 
 ;;; bindings
+;;;; prefix maps
+(define-prefix-command 'my-gud-map)
+(keymap-set my-gud-map "c" #'my-gdb-restart)
+(keymap-set my-gud-map "b" #'gud-break)
+(keymap-set my-gud-map "f" #'gud-finish)
+(keymap-set my-gud-map "n" #'gud-next)
+(keymap-set my-gud-map "r" #'gud-go)
+(keymap-set my-gud-map "s" #'gud-step)
+
+(defvar-keymap my-gud-repeat-map
+  :repeat t
+  "c" #'my-gdb-restart
+  "b" #'gud-break
+  "f" #'gud-finish
+  "n" #'gud-next
+  "r" #'gud-go
+  "s" #'gud-step)
+(dolist (cmd '(gud-next gud-step gud-finish gud-cont))
+  (put cmd 'repeat-map 'my-gud-repeat-map))
+
 ;;;; global
 (keymap-global-set "<f2>" #'my-shell-toggle)
 (keymap-global-set "C-<f2>" #'my-shell-other-window)
@@ -525,6 +547,8 @@
 (setopt project-kill-buffers-display-buffer-list t)
 (setopt project-vc-extra-root-markers '(".project"))
 (keymap-set project-prefix-map "l" #'my-project-find-library)
+(keymap-set project-prefix-map "t" #'visit-tags-table)
+
 
 ;;;; eglot
 (setopt eglot-ignored-server-capabilities
@@ -568,6 +592,11 @@
 (setopt gdb-many-windows t)
 (add-hook 'gdb-breakpoints-mode-hook #'toggle-truncate-lines)
 (add-hook 'gdb-locals-mode-hook #'toggle-truncate-lines)
+(with-eval-after-load 'gud
+  ;; gud shadows the standard comint bindings in the gdb window
+  (keymap-set gud-minor-mode-map "C-c C-a" 'my-gud-map)
+  (keymap-set gud-minor-mode-map "C-c C-p" #'comint-previous-prompt)
+  (keymap-set gud-minor-mode-map "C-c C-n" #'comint-next-prompt))
 
 ;; fixes functions not working because they expect an EVENT (mouse click)
 (with-eval-after-load 'gdb-mi
@@ -575,11 +604,6 @@
 	      (lambda () (interactive) (gdb-memory-set-rows nil)))
   (keymap-set gdb-memory-mode-map "C"
 	      (lambda () (interactive) (gdb-memory-set-columns nil))))
-(with-eval-after-load 'gud
-  (keymap-set gud-global-map "r" #'gud-run)
-  (keymap-set gud-global-map "C-c" #'my-gdb-restart)
-  (keymap-set gud-minor-mode-map "C-c C-p" #'comint-previous-prompt)
-  (keymap-set gud-minor-mode-map "C-c C-n" #'comint-next-prompt))
 
 ;; https://stackoverflow.com/a/24923325
 (defun my-gdb-inferior-filter (orig proc string)
@@ -588,13 +612,12 @@
 (advice-add 'gdb-inferior-filter :around #'my-gdb-inferior-filter)
 
 ;;;; c
-(setopt c-ts-mode-indent-offset 4)
+(setopt c-ts-indent-offset 4)
 (setopt c-ts-mode-indent-style 'linux)
 (add-hook 'c-ts-mode-hook #'c-ts-mode-toggle-comment-style)
 (with-eval-after-load 'c-ts-mode
-  (keymap-set c-ts-mode-map "C-c C-r" #'gdb)
-  (keymap-set c-ts-mode-map "C-c C-d" #'man-follow)
-  (keymap-set c-ts-mode-map "C-c C-c" #'project-compile))
+  (keymap-set c-ts-mode-map "C-c C-a" 'my-gud-map)
+  (keymap-set c-ts-mode-map "C-c C-d" #'man-follow))
 
 ;;;; python
 (defun my-set-python-compile-command ()
