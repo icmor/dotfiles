@@ -27,19 +27,21 @@ qemu_args=(
     # q35 is required for secureboot
     -machine type=q35,accel=kvm
     # system drive
-    -drive file=$VM_DIR/windows-snapshot.qcow2,index=0,media=disk,if=virtio,cache=none,aio=native
+    -drive file=$VM_DIR/windows-disk.qcow2,index=0,media=disk,if=virtio,cache=none,aio=native
+    # immutable mode (use commit all to commit changes)
+    -snapshot
     # windows iso
     # -drive file=$VM_DIR/windows.iso,index=2,media=cdrom
     # fedora virtio drivers
     -drive file=$VM_DIR/virtio-win.iso,index=3,media=cdrom
     -boot menu=on
-    # cpu windows enlightenments (intended for hyper-v)
+    # cpu windows enlightenments (created for hyper-v)
     -cpu host,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time,topoext=on
     -smp cores=4,threads=2,sockets=1
     -m 16G
     # TPM with manually signed certificate
     -drive if=pflash,format=raw,readonly=on,file=/usr/share/edk2/x64/OVMF_CODE.4m.fd
-    -drive if=pflash,format=raw,file=$EFI_DIR/OVMF_VARS_SECUREBOOT.4m.fd
+    -drive if=pflash,format=qcow2,file=$EFI_DIR/OVMF_VARS_SECUREBOOT.4m.fd.qcow2
     -chardev socket,id=chrtpm,path=$TPM_SOCK
     -tpmdev emulator,id=tpm0,chardev=chrtpm
     -device tpm-tis,tpmdev=tpm0
