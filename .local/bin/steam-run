@@ -1,0 +1,11 @@
+#!/bin/bash
+
+gameid="$1"
+exe="$2"
+dir="$(dirname "$exe")"
+
+cd "$dir" || return 1
+
+STEAM_COMPAT_DATA_PATH="$HOME/.local/share/Steam/steamapps/compatdata/$gameid" \
+STEAM_COMPAT_CLIENT_INSTALL_PATH="$HOME/.local/share/Steam" \
+"$HOME/.local/share/Steam/steamapps/common/Proton - Experimental/proton" run "$(basename "$exe")"

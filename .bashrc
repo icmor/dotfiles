@@ -87,13 +87,6 @@ function pdf_grayscale {
        -sColorConversionStrategy=Gray -dOverrideICC -o "$2" -f "$1"
 }
 
-function proton_run {
-    STEAM_COMPAT_DATA_PATH=~/.local/share/Steam/steamapps/compatdata/"$1" \
-    STEAM_COMPAT_CLIENT_INSTALL_PATH=~/.local/share/Steam/steamapps/compatdata \
-    ~/".local/share/Steam/steamapps/common/Proton - Experimental/proton" \
-    run "$2"
-}
-
 # emacs
 if [[ "$INSIDE_EMACS" == *"comint"* ]]; then
     unset COLUMNS
