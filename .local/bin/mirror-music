@@ -1,14 +1,14 @@
 #!/bin/bash
 
-src=~/"Music/music_library/"
-dest=~/"Public/MTP/Internal shared storage/Music/music_library/"
+src="${HOME}/Music/music_library/"
+dest="${HOME}/Public/MTP/Internal shared storage/Music/music_library/"
 
-if [[ ! -d ~/"Public/MTP" ]]; then
-    echo ~/"Public/MTP" "does not exist."
+if [[ ! -d "${HOME}/Public/MTP" ]]; then
+    echo "${HOME}/Public/MTP" "does not exist."
     exit 1
 fi
 
-[[ -d "$dest" ]] || aft-mtp-mount ~/"Public/MTP"
+[[ -d "$dest" ]] || aft-mtp-mount "${HOME}/Public/MTP"
 
 rsync_args=(
     --recursive
@@ -39,3 +39,4 @@ read -e -p "Proceed with backup? [y/n] " answer
 [[ "$answer" != [Yy]* ]]  && exit 0
 
 rsync "${rsync_args[@]}" "$src" "$dest"
+pkexec umount -R "${HOME}/Public/MTP"

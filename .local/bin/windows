@@ -28,6 +28,8 @@ qemu_args=(
     -machine type=q35,accel=kvm
     # system drive
     -drive file=$VM_DIR/windows-disk.qcow2,index=0,media=disk,if=virtio,cache=none,aio=native
+    # chkdsk on host hard drive (setfacl -m u:$USER:r /dev/sda)
+    # -drive file=/dev/sda,format=raw,if=virtio,cache=none,aio=native
     # immutable mode (use commit all to commit changes)
     -snapshot
     # windows iso

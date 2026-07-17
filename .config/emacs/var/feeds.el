@@ -2,15 +2,17 @@
 (setq
  elfeed-feeds
  '(
+   ;; news
+   "https://archlinux.org/feeds/news/"								; Arch Wiki
    ;; video
-   "https://www.youtube.com/feeds/videos.xml?channel_id=UCKpBmnEfSy20al-Fk_2YzVA"		; Charalanahzard
-   "https://www.youtube.com/feeds/videos.xml?channel_id=UC2Kyj04yISmHr1V-UlJz4eg"		; Jared Henderson
-   "https://www.youtube.com/feeds/videos.xml?channel_id=UCshObcm-nLhbu8MY50EZ5Ng"		; Benn Jordan
-   "https://www.youtube.com/feeds/videos.xml?channel_id=UCriil4aussYUAGVwpm_zI9w"		; Sarah Davis Baker
-   "https://www.youtube.com/feeds/videos.xml?channel_id=UCaTznQhurW5AaiYPbhEA-KA"		; Molly Rocket
+   ("https://www.youtube.com/feeds/videos.xml?playlist_id=UULFKpBmnEfSy20al-Fk_2YzVA" :title "Alannah Pearce")
+   ("https://www.youtube.com/feeds/videos.xml?playlist_id=UULFOT2iLov0V7Re7ku_3UBtcQ" :title "Hank Green")
+   ("https://www.youtube.com/feeds/videos.xml?playlist_id=UULF2Kyj04yISmHr1V-UlJz4eg" :title "Jared Henderson")
+   ("https://www.youtube.com/feeds/videos.xml?playlist_id=UULFaTznQhurW5AaiYPbhEA-KA" :title "Molly Rocket")
+   ("https://www.youtube.com/feeds/videos.xml?playlist_id=UULFriil4aussYUAGVwpm_zI9w" :title "Sarah Davis Baker")
    ;; podcasts
-   "https://www.youtube.com/feeds/videos.xml?playlist_id=PLxp4ZFkiTSQJISiUkeyznN47GSE2SeXdG"	; Play, Watch, Listen
-   "https://www.youtube.com/feeds/videos.xml?playlist_id=PLbcyJSeTLtlwyCd8BWh0iFvhJzmn9B6NN"	; Friends Per Second
+   ("https://www.youtube.com/feeds/videos.xml?playlist_id=PLbcyJSeTLtlwyCd8BWh0iFvhJzmn9B6NN" :title "Friends Per Second")
+   ("https://www.youtube.com/feeds/videos.xml?playlist_id=PLxp4ZFkiTSQJISiUkeyznN47GSE2SeXdG" :title "Play, Watch, Listen")
    ;; software
-   "https://github.com/arkenfox/user.js/releases.atom"						; arkenfox
+   ("https://github.com/arkenfox/user.js/releases.atom" :title "arkenfox")
    ))

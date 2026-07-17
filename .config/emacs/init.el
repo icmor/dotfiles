@@ -23,7 +23,6 @@
 	  racket-mode
 	  saveplace-pdf-view
 	  tmr
-	  transpose-frame
 	  treesit-auto
 	  vterm
 	  ws-butler
@@ -80,6 +79,14 @@
   (ibuffer-mark-by-name-regexp "vterm")
   (ibuffer-mark-by-name-regexp "Org Agenda")
   (ibuffer-mark-by-name-regexp "scratch"))
+
+(defun normalize-unicode (start end)
+  (interactive "r")
+  (require 'ucs-normalize)
+  (ucs-normalize-NFC-region start end)
+  (replace-string "ı́" "í" nil start end)
+  (replace-string "’" "'" nil start end)
+  (replace-string "∼" "~" nil start end))
 
 (defun mpv-play (url &optional _)
   (let ((sock "/tmp/mpvsocket")
@@ -175,7 +182,7 @@
 ;;; bindings
 ;;;; prefix maps
 (define-prefix-command 'my-gud-map)
-(keymap-set my-gud-map "c" #'my-gdb-restart)
+(keymap-set my-gud-map "C-a" #'my-gdb-restart)
 (keymap-set my-gud-map "b" #'gud-break)
 (keymap-set my-gud-map "f" #'gud-finish)
 (keymap-set my-gud-map "n" #'gud-next)
@@ -242,16 +249,17 @@
 
 ;;; org
 ;;;; general
-(setopt org-agenda-files '("~/org/gtd.org" "~/org/inbox.org"))
+(setopt org-agenda-files '("~/org/gtd.org" "~/org/inbox.org" "~/org/life.org"))
 (setopt org-modules '(org-habit ol-man ol-info))
 (setopt org-cycle-include-plain-lists 'integrate)
 (setopt org-list-allow-alphabetical t)
 (setopt org-use-speed-commands t)
-(setopt org-startup-folded 'fold)
+(setopt org-startup-folded 'show2levels)
 (setopt org-return-follows-link t)
 (setopt org-capture-bookmark nil)
 (setopt org-archive-default-command nil)
 (setopt org-log-repeat nil)
+(setopt org-log-into-drawer t)
 (setopt org-hierarchical-todo-statistics nil)
 (setopt org-refile-targets '((nil . (:maxlevel . 3))
 			     (org-agenda-files . (:level . 1))))
@@ -269,7 +277,7 @@
 	  ("" "listings" nil)
 	  ("" "xcolor" nil)))
 (setopt org-export-headline-levels 5)
-(setopt org-export-with-section-numbers 2)
+(setopt org-export-with-section-numbers nil)
 (setopt org-latex-toc-command "\\tableofcontents\n\\clearpage\n")
 (setopt org-latex-hyperref-template "\\hypersetup{
  pdfauthor={%a},
@@ -286,6 +294,10 @@
 ")
 (with-eval-after-load 'org
   (plist-put org-format-latex-options :scale 1.5))
+(setq org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+(setq org-latex-listings 'minted)
 
 ;; https://stackoverflow.com/a/47850858
 (defun my-org-export-output-file-name (orig-fun extension &optional subtreep pub-dir)
@@ -333,8 +345,6 @@
 	'(("i" "Inbox")
 	  ("ii" "Inbox" entry (file+headline "inbox.org" "Inbox")
 	   "* %?\n")
-	  ("is" "School" entry (file+headline "inbox.org" "School")
-	   "* %?\n")
 	  ("iw" "Waiting" entry (file+headline "inbox.org" "Waiting")
 	   "* %?\n")
 	  ("c" "Tasks" entry (file+headline "gtd.org" "Tasks")
@@ -352,8 +362,10 @@
 (setopt org-confirm-babel-evaluate nil)
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((emacs-lisp . t)
+ '((C . t)
+   (emacs-lisp . t)
    (python . t)
+   (haskell . t)
    (dot . t)))
 
 ;;; essentials
@@ -469,8 +481,7 @@
           "\\*Async Shell Command\\*"
           help-mode))
 (keymap-global-set "C-<tab>" 'popper-toggle)
-(keymap-global-set "M-<tab>" 'popper-cycle)
-(keymap-global-set "C-M-<tab>" 'popper-toggle-type)
+(keymap-global-set "M-<tab>" 'popper-toggle-type)
 (popper-mode)
 
 ;;;; remember
@@ -497,9 +508,7 @@
 ;;;; elfeed
 (condition-case nil (load-file (no-littering-expand-var-file-name "feeds.el"))
   ((error nil) (message "feeds.el not found")))
-(with-eval-after-load 'elfeed
-  (add-hook 'elfeed-new-entry-hook
-            (elfeed-make-tagger :feed-url "youtube\\.com/shorts" :add 'read)))
+
 ;;;; tmr
 (with-eval-after-load 'tmr #'tmr-mode-line-mode)
 (setopt tmr-sound-file "~/.config/emacs/var/secret.wav")
@@ -511,7 +520,9 @@
 
 ;;; programming
 ;;;; general
-(setopt compilation-read-command nil)
+(setopt ansi-color-for-compilation-mode t)
+(setopt ansi-osc-for-compilation-buffer t)
+(add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 (add-hook 'compilation-filter-hook #'ansi-osc-compilation-filter)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
@@ -532,6 +543,7 @@
 	  java
 	  javascript
 	  json
+	  markdown
 	  python
 	  yaml))
 (setopt treesit-auto-install 'prompt)
@@ -747,7 +759,7 @@
 ;;;; visual
 (setopt bookmark-set-fringe-mark nil)
 (setopt minions-mode-line-lighter "λ")
-(add-to-list 'default-frame-alist '(font . "Source Code Pro-16"))
+(set-face-attribute 'default nil :family "Source Code Pro" :height 160)
 (load-theme 'modus-vivendi t)
 (blink-cursor-mode -1)
 (tooltip-mode -1)
