@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gammastep -l 19:-99

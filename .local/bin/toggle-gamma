@@ -1,0 +1,23 @@
+#!/bin/bash
+
+gamma="$(pgrep gammastep)"
+indicator="🌙"
+color_on="eedd82"
+color_off="696969"
+if [ $button = 1 ]; then
+    if [[ "$gamma" == "" ]]; then
+        gamma-command >/dev/null &
+    fi
+    color="$color_on"
+elif [ $button = 3 ]; then
+    if [[ "$gamma" != "" ]]; then
+	kill -9 $gamma
+    fi
+    color="$color_off"
+elif [[ "$gamma" != "" ]]; then
+    color="$color_on"
+else
+    color="$color_off"
+fi
+
+printf '{"full_text":"%s", "color":"%s"}\n' $indicator $color

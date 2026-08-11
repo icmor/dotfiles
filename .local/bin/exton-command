@@ -1,0 +1,4 @@
+#!/bin/bash
+
+swaymsg output HDMI-A-2 enable
+pactl set-default-sink alsa_output.pci-0000_03_00.1.hdmi-stereo-extra3

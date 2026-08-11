@@ -26,10 +26,10 @@ floating_modifier $mod normal
 ### startup
 exec dunst
 exec dropbox
-exec gammastep -l 19:-99
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec swaymsg 'workspace $ws2'
+exec gamma-command
 exec inactive-transparency
+exec swaymsg 'workspace $ws2'
 
 for_window [app_id=".*"] inhibit_idle fullscreen
 

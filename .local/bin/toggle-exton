@@ -1,0 +1,23 @@
+#!/bin/bash
+
+exton="$(swaymsg -t get_outputs | grep -c '"active": true')"
+indicator="📺"
+color_on="7d26cd"
+color_off="696969"
+if [ $button = 1 ]; then
+    if [[ $exton == 1 ]]; then
+        exton-command >/dev/null &
+    fi
+    color="$color_on"
+elif [ $button = 3 ]; then
+    if [[ $exton = 2 ]]; then
+	swaymsg reload
+    fi
+    color="$color_off"
+elif [[ $exton = 2 ]]; then
+    color="$color_on"
+else
+    color="$color_off"
+fi
+
+printf '{"full_text":"%s", "color":"%s"}\n' $indicator $color

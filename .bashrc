@@ -55,13 +55,12 @@ alias ll='ls -Alh'
 alias l='ls -CAF'
 
 alias gcd="cd \$(git rev-parse --show-toplevel)"
+alias governor="cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor"
 alias ed="emacs -nw"
 alias open="xdg-open"
 alias trash="gio trash"
 alias wlan="iwctl station wlan0"
 
-alias exton="swaymsg output HDMI-A-2 enable \
-&& pactl set-default-sink alsa_output.pci-0000_03_00.1.hdmi-stereo-extra3"
 alias nvidia_reset="sudo rmmod nvidia_drm && sudo modprobe nvidia_drm"
 alias caffeine="systemd-inhibit sleep inf"
 alias vmware_start="pkexec sh -c 'systemctl start vmware-networks \
