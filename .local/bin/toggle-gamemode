@@ -6,7 +6,7 @@ color_on="00ee00"
 color_off="696969"
 if [ $button = 1 ]; then
     if [[ "$gamemoded" == "low" ]]; then
-        gamemoderun sleep infinity >/dev/null 2>&1 &
+        setsid gamemoderun sleep infinity >/dev/null 2>&1 &
     fi
     color="$color_on"
 elif [ $button = 3 ]; then

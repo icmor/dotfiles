@@ -6,7 +6,7 @@ color_on="eedd82"
 color_off="696969"
 if [ $button = 1 ]; then
     if [[ "$gamma" == "" ]]; then
-        gamma-command >/dev/null &
+        setsid gamma-command >/dev/null &
     fi
     color="$color_on"
 elif [ $button = 3 ]; then

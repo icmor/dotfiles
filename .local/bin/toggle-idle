@@ -6,7 +6,7 @@ color_on="d2691e"
 color_off="696969"
 if [ $button = 1 ]; then
     if [[ "$inhibit" == "" ]]; then
-        systemd-inhibit sleep inf >/dev/null &
+        setsid systemd-inhibit sleep inf >/dev/null &
     fi
     color="$color_on"
 elif [ $button = 3 ]; then
