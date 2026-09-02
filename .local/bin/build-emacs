@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [[ ! -f "INSTALL" ]] || \
+       [[ $(head -1 INSTALL) != "GNU Emacs Installation Guide" ]]; then
+    echo "Must execute in the top-level directory of the emacs source."
+    exit 0
+fi
+
+sudo pacman -S --needed cmake libgccjit tree-sitter imagemagick
+
+./configure \
+    --with-tree-sitter \
+    --with-native-compilation=aot \
+    --with-imagemagick \
+    --with-pgtk
+
+make -j$(nproc)
+sudo make install
+
+read -rp "Run make distclean? [y/n] " answer
+answer=$(echo "$answer" | tr '[:upper:]' '[:lower:]')
+if [ "$answer" == "y" ] || [ "$answer" == "yes" ]; then
+    make distclean
+fi
