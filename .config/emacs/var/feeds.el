@@ -6,7 +6,6 @@
    "https://archlinux.org/feeds/news/"								; Arch Wiki
    ;; video
    ("https://www.youtube.com/feeds/videos.xml?playlist_id=UULFKpBmnEfSy20al-Fk_2YzVA" :title "Alannah Pearce")
-   ("https://www.youtube.com/feeds/videos.xml?playlist_id=UULFOT2iLov0V7Re7ku_3UBtcQ" :title "Hank Green")
    ("https://www.youtube.com/feeds/videos.xml?playlist_id=UULF2Kyj04yISmHr1V-UlJz4eg" :title "Jared Henderson")
    ("https://www.youtube.com/feeds/videos.xml?playlist_id=UULFaTznQhurW5AaiYPbhEA-KA" :title "Molly Rocket")
    ("https://www.youtube.com/feeds/videos.xml?playlist_id=UULFriil4aussYUAGVwpm_zI9w" :title "Sarah Davis Baker")
