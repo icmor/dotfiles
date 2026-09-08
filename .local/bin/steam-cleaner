@@ -60,7 +60,7 @@ for compatdatadir in "$compatdata"/*; do
     echo "There is no corresponding manifest for game ID $compatid"
     echo "Proton dir: $compatdatadir"
     [ -d "$userdatadir" ] && echo "User directory: $userdatadir"
-    [ -d "$shadercachedir" ] && echo "Shader cache directory: ``$shadercachedir"
+    [ -d "$shadercachedir" ] && echo "Shader cache directory: $shadercachedir"
     if [ -d "$userdatadir" ]; then
 	if [ ! -f "$userdatadir/remotecache.vdf" ]; then
 	    echo "It appears the game $compatid doesn't have cloud saves."

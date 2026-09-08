@@ -6,6 +6,12 @@ dir="$(dirname "$exe")"
 
 cd "$dir" || return 1
 
+proton=(
+    # "/usr/share/steam/compatibilitytools.d/proton-ge-custom/proton"
+    # "$HOME/.local/share/Steam/steamapps/common/Proton - Experimental/proton"
+    "$HOME/.local/share/Steam/steamapps/common/Proton 11.0/proton"
+)
+
 STEAM_COMPAT_DATA_PATH="$HOME/.local/share/Steam/steamapps/compatdata/$gameid" \
 STEAM_COMPAT_CLIENT_INSTALL_PATH="$HOME/.local/share/Steam" \
-"$HOME/.local/share/Steam/steamapps/common/Proton - Experimental/proton" run "$(basename "$exe")"
+"${proton[0]}" run "$(basename "$exe")"
