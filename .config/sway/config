@@ -27,7 +27,6 @@ floating_modifier $mod normal
 exec dunst
 exec dropbox
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
-exec gamma-command
 exec inactive-transparency
 exec swaymsg 'workspace $ws2'
 
@@ -76,6 +75,8 @@ bindsym Shift+XF86AudioLowerVolume \
 	exec pactl set-sink-volume @DEFAULT_SINK@ 0% && pkill -SIGRTMIN+10 i3blocks
 bindsym XF86AudioMute exec \
 	pactl set-sink-mute @DEFAULT_SINK@ toggle && pkill -SIGRTMIN+10 i3blocks
+bindsym Shift+XF86AudioMute exec \
+	toggle-mute
 
 ### movement
 bindsym $mod+$left focus left

@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+pid=$(
+    swaymsg -t get_tree -r |
+    jq -er 'first(.. | objects | select(.focused? == true and .pid? != null) | .pid)'
+) || exit 1
+
+clients=$(
+    pactl -f json list clients |
+    jq -r --arg pid "$pid" '
+        .[] |
+        select(.properties["application.process.id"] == $pid) |
+        .index
+    '
+)
+
+[ -n "$clients" ] || exit 0
+
+streams=$(
+    pactl -f json list sink-inputs |
+    jq -r --arg clients "$clients" '
+        .[] |
+        select(.client as $c | ($clients | split("\n") | index($c))) |
+        "\(.index) \(.mute)"
+    '
+)
+
+[ -n "$streams" ] || exit 0
+
+first_mute=$(printf '%s\n' "$streams" | head -n1 | cut -d' ' -f2)
+
+if [ "$first_mute" = "true" ]; then
+    state=0
+else
+    state=1
+fi
+
+while read -r index mute; do
+    pactl set-sink-input-mute "$index" "$state"
+done <<< "$streams"
