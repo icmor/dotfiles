@@ -143,21 +143,38 @@ mode "launcher" {
 bindsym $mod+space mode "launcher"
 
 mode "resize" {
-     bindsym h resize grow left 10 px or 10 ppt
-     bindsym l resize grow right 10 px or 10 ppt
-     bindsym k resize grow up 10 px or 10 ppt
-     bindsym j resize grow down 10 px or 10 ppt
+    bindsym h resize grow left 10 px or 10 ppt
+    bindsym l resize grow right 10 px or 10 ppt
+    bindsym k resize grow up 10 px or 10 ppt
+    bindsym j resize grow down 10 px or 10 ppt
 
-     bindsym Shift+h resize shrink left 10 px or 10 ppt
-     bindsym Shift+l resize shrink right 10 px or 10 ppt
-     bindsym Shift+k resize shrink up 10 px or 10 ppt
-     bindsym Shift+j resize shrink down 10 px or 10 ppt
+    bindsym Shift+h resize shrink left 10 px or 10 ppt
+    bindsym Shift+l resize shrink right 10 px or 10 ppt
+    bindsym Shift+k resize shrink up 10 px or 10 ppt
+    bindsym Shift+j resize shrink down 10 px or 10 ppt
 
-     bindsym Return mode "default"
-     bindsym Escape mode "default"
-     bindsym $mod+Shift+r mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+Shift+r mode "default"
 }
 bindsym $mod+Shift+r mode "resize"
+
+mode "mouse" {
+     bindsym Left  seat - cursor move -20 0
+     bindsym Right seat - cursor move 20 0
+     bindsym Up    seat - cursor move 0 -20
+     bindsym Down  seat - cursor move 0 20
+
+     bindsym --no-repeat space seat - cursor press button1
+     bindsym --release space seat - cursor release button1
+     bindsym --no-repeat Shift+space seat - cursor press button3
+     bindsym --release Shift+space seat - cursor release button3
+     bindsym Return mode "default"
+     bindsym Escape mode "default"
+     bindsym grave seat - cursor set 0 0
+     bindsym $mod+grave mode "default"
+}
+bindsym $mod+grave mode "mouse"
 
 ### rules
 # floating rules
