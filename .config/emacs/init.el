@@ -21,9 +21,7 @@
 	  proof-general
 	  pyvenv
 	  racket-mode
-	  saveplace-pdf-view
 	  tmr
-	  treesit-auto
 	  vterm
 	  ws-butler
 	  ))
@@ -528,27 +526,31 @@
 (add-hook 'prog-mode-hook #'electric-pair-local-mode)
 (add-hook 'prog-mode-hook #'ws-butler-mode)
 
-;;;; treesit-auto
-;; https://github.com/renzmann/treesit-auto/issues/44
-(require 'treesit-auto)
-(setopt treesit-auto-langs
-	'(bash
-	  c
-	  css
-	  cmake
-	  cpp
-	  dockerfile
-	  go
-	  gomod
-	  java
-	  javascript
-	  json
-	  markdown
-	  python
-	  yaml))
-(setopt treesit-auto-install 'prompt)
-(treesit-auto-add-to-auto-mode-alist)
-(global-treesit-auto-mode)
+;;;; tree-sitter
+(setopt treesit-enabled-modes
+	'(bash-ts-mode
+	  c++-ts-mode
+	  c-or-c++-ts-mode
+	  c-ts-mode
+	  cmake-ts-mode
+	  csharp-ts-mode
+	  css-ts-mode
+	  dockerfile-ts-mode
+	  gitattributes-generic-ts-mode
+	  go-mod-ts-mode
+	  go-ts-mode
+	  html-ts-mode
+	  java-ts-mode
+	  js-ts-mode
+	  json-ts-mode
+	  lua-ts-mode
+	  markdown-ts-mode
+	  mhtml-ts-mode
+	  php-ts-mode
+	  python-ts-mode
+	  rust-ts-mode
+	  toml-ts-mode
+	  yaml-ts-mode))
 
 ;;;; project
 (defvar project-libs
