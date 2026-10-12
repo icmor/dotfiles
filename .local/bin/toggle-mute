@@ -1,40 +1,28 @@
 #!/usr/bin/env bash
 
+# get all pids associated with a process
+tree() {
+    local child
+    echo "$1"
+    for child in $(pgrep -P "$1"); do
+        tree "$child"
+    done
+}
+
+# get pid of active window
 pid=$(
     swaymsg -t get_tree -r |
-    jq -er 'first(.. | objects | select(.focused? == true and .pid? != null) | .pid)'
+    jq -e 'first(.. | select(.focused? == true) | .pid // empty)'
 ) || exit 1
 
-clients=$(
-    pactl -f json list clients |
-    jq -r --arg pid "$pid" '
-        .[] |
-        select(.properties["application.process.id"] == $pid) |
-        .index
-    '
-)
-
-[ -n "$clients" ] || exit 0
-
-streams=$(
-    pactl -f json list sink-inputs |
-    jq -r --arg clients "$clients" '
-        .[] |
-        select(.client as $c | ($clients | split("\n") | index($c))) |
-        "\(.index) \(.mute)"
-    '
-)
-
-[ -n "$streams" ] || exit 0
-
-first_mute=$(printf '%s\n' "$streams" | head -n1 | cut -d' ' -f2)
-
-if [ "$first_mute" = "true" ]; then
-    state=0
-else
-    state=1
-fi
-
-while read -r index mute; do
+{ pactl -f json list clients; pactl -f json list sink-inputs; } |
+jq -r '
+    map(select(.properties["application.process.id"] | IN($ARGS.positional[])) | .index | tostring) as $clients
+    | input
+    | map(select(.client | IN($clients[])))
+    | (if .[0].mute then 0 else 1 end) as $state
+    | .[] | "\(.index) \($state)"
+' --args $(tree "$pid") |
+while read -r index state; do
     pactl set-sink-input-mute "$index" "$state"
-done <<< "$streams"
+done
