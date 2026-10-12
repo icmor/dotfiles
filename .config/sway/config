@@ -160,10 +160,14 @@ mode "resize" {
 bindsym $mod+Shift+r mode "resize"
 
 mode "mouse" {
-     bindsym Left  seat - cursor move -20 0
+     bindsym Left seat - cursor move -20 0
+     bindsym Shift+Left  seat - cursor move -45 0
      bindsym Right seat - cursor move 20 0
-     bindsym Up    seat - cursor move 0 -20
-     bindsym Down  seat - cursor move 0 20
+     bindsym Shift+Right seat - cursor move 45 0
+     bindsym Up seat - cursor move 0 -20
+     bindsym Shift+Up  seat - cursor move 0 -45
+     bindsym Down seat - cursor move 0 20
+     bindsym Shift+Down seat - cursor move 0 45
 
      bindsym --no-repeat space seat - cursor press button1
      bindsym --release space seat - cursor release button1
