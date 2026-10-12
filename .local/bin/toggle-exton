@@ -5,14 +5,11 @@ indicator="📺"
 color_on="7d26cd"
 color_off="696969"
 if [ $button = 1 ]; then
-    if [[ $exton == 1 ]]; then
-        exton-command >/dev/null &
-    fi
+    exton-command >/dev/null &
     color="$color_on"
 elif [ $button = 3 ]; then
-    if [[ $exton = 2 ]]; then
-	swaymsg reload
-    fi
+    swaymsg reload
+    pactl set-default-sink @DEFAULT_SINK@
     color="$color_off"
 elif [[ $exton = 2 ]]; then
     color="$color_on"
