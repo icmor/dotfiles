@@ -30,7 +30,7 @@ qemu_args=(
     -drive file=$VM_DIR/windows-disk.qcow2,index=0,media=disk,if=virtio,cache=none,aio=native
     # chkdsk on host hard drive (setfacl -m u:$USER:r /dev/sda)
     # -drive file=/dev/sda,format=raw,if=virtio,cache=none,aio=native
-    # immutable mode (use commit all to commit changes)
+    # immutable mode (commit changes with: commit <block name from info block>)
     -snapshot
     # windows iso
     # -drive file=$VM_DIR/windows.iso,index=2,media=cdrom
@@ -64,6 +64,9 @@ qemu_args=(
     -spice disable-ticketing=on
     -chardev spicevmc,id=vdagent,name=vdagent
     -device virtserialport,chardev=vdagent,name=com.redhat.spice.0
+    # USB redirection
+    -chardev spicevmc,name=usbredir,id=usbredirchardev1
+    -device usb-redir,chardev=usbredirchardev1,id=usbredirdev1
 )
 
 qemu-system-x86_64 "${qemu_args[@]}"
