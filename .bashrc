@@ -54,9 +54,10 @@ alias egrep='egrep --color=auto'
 alias ll='ls -Alh'
 alias l='ls -CAF'
 
+alias bt="bluetoothctl"
+alias ed="emacs -nw"
 alias gcd="cd \$(git rev-parse --show-toplevel)"
 alias governor="cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor"
-alias ed="emacs -nw"
 alias open="xdg-open"
 alias trash="gio trash"
 alias wlan="iwctl station wlan0"
